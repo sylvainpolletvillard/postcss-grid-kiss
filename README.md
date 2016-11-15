@@ -56,6 +56,10 @@ body {
 }
 ```
 
+which displays this kind of grid layout:
+
+![example-result](assets/example-result.png)
+
 ## [Try it online][playground]
 
 You can play with the plugin on the [playground][playground]. Edit the CSS and HTML on the left and the grid will be updated instantly.
@@ -117,18 +121,17 @@ main {
 - `grid-template-columns` ✅
 - `grid-template-rows` ✅
 - `grid-template-areas` ✅
-- `grid-column-gap` [❌][1]
-- `grid-row-gap` [❌][1]
-- `grid-gap` [❌][1]
-**
-- `justify-items` [❌][2] 
-- `align-items` [❌][2]
+- `grid-column-gap` ❌ [1]
+- `grid-row-gap` ❌ [1]
+- `grid-gap` ❌ [1]
+- `justify-items` ❌ [2] 
+- `align-items` ❌ [2]
 - `justify-content` ✅
 - `align-content` ✅
-- `grid-auto-columns` [❌][3]
-- `grid-auto-rows` [❌][3]
-- `grid-auto-flow` [❌][3]
-- `grid` [❌][4]
+- `grid-auto-columns` ❌ [3]
+- `grid-auto-rows` ❌ [3]
+- `grid-auto-flow` ❌ [3]
+- `grid` ❌ [4]
 
 [1]: gaps are actually faked as empty zones, so you can draw these zones explicitely
 
@@ -140,12 +143,12 @@ main {
 
 ### on the zones (a.k.a. grid items)
 
-- `grid-column-start` [❌][5]
-- `grid-column-end` [❌][5]
-- `grid-row-start` [❌][5]
-- `grid-row-end` [❌][5]
-- `grid-column` [❌][5]
-- `grid-row` [❌][5]
+- `grid-column-start` ❌ [5]
+- `grid-column-end` ❌ [5]
+- `grid-row-start` ❌ [5]
+- `grid-row-end` ❌ [5]
+- `grid-column` ❌ [5]
+- `grid-row` ❌ [5]
 - `grid-area` ✅
 - `justify-self` ✅
 - `align-self` ✅
