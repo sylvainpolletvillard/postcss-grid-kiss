@@ -2,9 +2,30 @@
 
 This is a [PostCSS][postcss-website] plugin aiming to replace the 24 new properties brought by [CSS Grids][w3c-spec] with a single one that you immediately understand when you see it.
 
+Table of contents
+-----------------
+
+* [Example](#example)
+* [Try it online](#try-it-online)
+* [How to draw a grid ?](#how-to-draw-a-grid)
+* [Alternative styles](#alternative-styles)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Properties supported](#properties-supported)
+* [Alignment of the grid](#alignment-of-the-grid)
+  - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
+  - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
+* [Alignment inside zones](#alignment-inside-zones)
+  - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
+  - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
+* [Dimensions values for rows and columns](#dimensions-values-for-rows-and-columns)
+  - [Values accepted](#values-accepted)
+  - [Horizontal dimensions](#horizontal-dimensions)
+  - [Vertical dimensions](#vertical-dimensions)
+
 ##Example
 
-```
+```css
 body {
 	grid-kiss:
 		"+-------------------------------+      "
@@ -24,7 +45,7 @@ body {
 
 is converted to:
 
-```
+```css
 body > header {
 	grid-area: header;
 	align-self: start
@@ -79,7 +100,7 @@ You can play with the plugin on the [playground][playground]. Edit the CSS and H
 
 - `┌ ┐ └ ┘` for corners and `│ ─` for segments
 
-```
+```css
 div {
 	grid-kiss:		   
 	"┌──────┐  ┌──────┐         "
@@ -100,7 +121,7 @@ div {
 
 - `╔ ╗ ╚ ╝` for corners and `║ ═` for segments
 
-```
+```css
 main {
 	grid-kiss:		   
 	"╔═══════╗  ╔════════════════╗      "
@@ -112,6 +133,42 @@ main {
 }
 ```
 
+## Installation
+
+- with [yarn](https://yarnpkg.com/)
+```bash
+yarn add postcss-grid-kiss --dev
+```
+
+- with [npm](https://www.npmjs.com/)
+```bash
+npm install postcss-grid-kiss --save-dev
+```
+
+## Usage
+
+If you never used PostCSS before, read [PostCSS usage documentation](https://github.com/postcss/postcss#usage) first.
+
+- with command line interface :
+
+```bash
+postcss src/your.css --output dist/compiled.css --use postcss-grid-kiss
+```
+
+- with Node:
+```js
+const postcss  = require('postcss'),
+      gridkiss = require('postcss-grid-kiss');
+
+postcss([ gridkiss ])
+    .process(css, { from: 'src/your.css', to: 'compiled.css' })
+    .then(function (result) {
+        fs.writeFileSync('compiled.css', result.css);
+        if( result.map ) fs.writeFileSync('compiled.css.map', result.map);
+    });
+```
+
+Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchains.
 
 ## Properties supported
 
