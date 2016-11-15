@@ -1,6 +1,6 @@
 #grid-kiss: Keep CSS Grids simple, stupid
 
-This is a PostCSS plugins aiming to replace the 24 new properties brought by CSS Grids with a single one that you immediately understand when you see it.
+This is a [PostCSS][postcss-website] plugin aiming to replace the 24 new properties brought by [CSS Grids][w3c-spec] with a single one that you immediately understand when you see it.
 
 ##Example
 
@@ -572,3 +572,5 @@ The `-` separators between dimensions are not mandatory, they are only here to m
 Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
 
 [playground]:playground/index.html
+[postcss-website]:http://postcss.org/
+[w3c-spec]:https://www.w3.org/TR/css-grid-1/
