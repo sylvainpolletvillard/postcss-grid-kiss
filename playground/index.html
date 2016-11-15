@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PostCSS playground</title>
+	<link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div id="cssgridssupport">
+	<div class="warning">
+		<p>Sorry, your browser does not support CSS grids</p>
+		<p>Try with Chrome Canary or Firefox Nightly</p>
+		<p>See also <a href="http://caniuse.com/#feat=css-grid">http://caniuse.com/#feat=css-grid</a></p>
+	</div>
+</div>
+<header>
+	<h1>PostCSS playground</h1>
+</header>
+<textarea id="input">
+body {
+	grid-kiss:
+		"+-------------------------------+      "
+		"|           header ↑            | 120px"
+		"+-------------------------------+      "
+		"                                       "
+		"+--150px---+  +---- < 640px ----+      "
+		"| .sidebar |  |       main      | auto "
+		"+----------+  +-----------------+      "
+		"                                       "
+		"+-------------------------------+      "
+		"|              ↓                |      "
+		"|         → footer ←            | 60px "
+		"+-------------------------------+      "
+}
+
+header   { background: cyan; }
+.sidebar { background: lime; }
+main     { background: yellow; }
+footer   { background: pink; }
+</textarea>
+<pre id="output"></pre>
+<textarea id="html">
+<header>
+	Header
+</header>
+
+<aside class="sidebar">
+	Sidebar
+</aside>
+
+<main>
+	Main content
+</main>
+
+<footer>
+	Footer
+</footer>
+</textarea>
+<iframe frameborder="0" id="demo" src="frame.html"></iframe>
+<footer>grid-kiss PostCSS plugin by Sylvain Pollet-Villard</footer>
+
+<script defer src="dist/bundle.js"></script>
+</body>
+</html>

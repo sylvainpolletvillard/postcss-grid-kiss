@@ -1,0 +1,100 @@
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	font-family: "Source Code Pro", "Consolas", sans-serif;
+	tab-size: 2;
+}
+
+body {
+	display: grid;
+	grid-template-areas:
+		"header header"
+		"input  output  "
+		"html demo  "
+		"footer footer"
+		"hidden hidden";
+	grid-template-rows: 6em 1fr 1fr 2em 0;
+	grid-template-columns: minmax(640px, max-content) 1fr;
+}
+
+header {
+	grid-area: header;
+	padding: 0.5em;
+	margin: 0;
+}
+
+h1 {
+	display: inline-block;
+}
+
+#cssgridssupport {
+	grid-area: hidden;
+	overflow: hidden;
+}
+
+.warning {
+	background: white;
+	color: red;
+	font-size: 3em;
+	font-weight: bold;
+	border: 0.5em solid red;
+	z-index: 9999;
+	padding: 1em;
+	text-align: center;
+}
+
+#input {
+	grid-area: input;
+	position: relative;
+}
+
+#output {
+	grid-area: output;
+	position: relative;
+}
+
+#output::before {
+	content: "Output of PostCSS";
+	padding: 1em;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: gray;
+	background-color: #f0f0f0;
+}
+
+#output .error {
+	color: red;
+	font-weight: bold;
+}
+
+#html {
+	grid-area: html;
+	position: relative;
+}
+
+#demo {
+	grid-area: demo;
+	position: relative;
+}
+
+footer {
+	grid-area: footer;
+	padding: 0.5em;
+	margin: 0;
+	vertical-align: bottom;
+	border-top: 1px solid #ccc;
+}
+
+textarea {
+	background-color: #fffcf6;
+}
+
+textarea,
+pre {
+	border: 1px solid #f0f0f0;
+	padding: 0.5em;
+	margin: 0;
+}
