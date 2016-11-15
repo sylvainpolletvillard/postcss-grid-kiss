@@ -14,7 +14,7 @@
 		"kiss"
 	],
 	"scripts": {
-		"test": "ava -v --serial --fail-fast",
+		"test": "ava -v",
 		"playground": "webpack playground/main.js playground/dist/bundle.js & http-server playground/ -o"
 	},
 	"engines": {
