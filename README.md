@@ -87,7 +87,7 @@ You can play with the plugin on the [playground][playground]. Edit the CSS and H
 
 ## How to draw a grid
 
-- Draw the different zones of your grid as shown in the example
+- Draw the different zones of your grid as shown in the example. You can use some tools like [AsciiFlow](http://asciiflow.com/).
 - Inside every zone, write a CSS selector that matches the corresponding element. It can be a `tag` name, a `.class`, an `#id`, or `any.other[valid]#selector`
 - The elements matched have to be **direct descendants** of the grid element
 - Separate each row by a newline (`\n`) and give the same indentation level to every row
