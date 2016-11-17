@@ -30,7 +30,7 @@ module.exports = function () {
 				// grid properties
 				for (let [prop,value] of output) {
 					if (value != null){
-						decl.parent.append({prop, value});
+						decl.cloneAfter({ prop, value });
 					}
 				}
 
@@ -42,13 +42,16 @@ module.exports = function () {
 					zoneRules.set("justify-self", getJustifySelf(zone));
 					zoneRules.set("align-self", getAlignSelf(zone));
 
-					let rule = postcss.rule({ selector: `${decl.parent.selector} > ${zone.selector}` });
+					let rule = postcss.rule({
+						selector: `${decl.parent.selector} > ${zone.selector}`,
+						source: decl.source
+					});
 					for (let [prop,value] of zoneRules) {
 						if (value != null){
 							rule.append({prop, value});
 						}
 					}
-					decl.parent.parent.insertBefore(decl.parent, rule);
+					decl.parent.parent.insertAfter(decl.parent, rule);
 				}
 
 				decl.remove();
