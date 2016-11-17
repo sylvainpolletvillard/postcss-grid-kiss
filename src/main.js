@@ -16,7 +16,7 @@ module.exports = function () {
 		css.walkDecls(function (decl) {
 			if (decl.prop === 'grid-kiss') {
 
-				const input  = parse(decl.value);
+				const input  = parse(decl);
 				const output = new Map;
 				const indent = decl.raws.before.match(/.*$/)[0];
 

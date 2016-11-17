@@ -2,15 +2,15 @@ const {range} = require("./utils");
 
 const CORNERS_CHARS = /[+┌┐└┘╔╗╚╝]/
 
-function parse(str){
+function parse(decl){
 	const
-		rows = getRows(str),
+		rows = getRows(decl.value),
 		cols = getCols({ rows }),
 		{ colIndexes, rowIndexes } = getCorners({ rows }),
 		zones = getZones({ rows, cols, colIndexes, rowIndexes });
 
 	return {
-		rows, cols, zones, rowIndexes, colIndexes
+		decl, rows, cols, zones, rowIndexes, colIndexes
 	};
 }
 

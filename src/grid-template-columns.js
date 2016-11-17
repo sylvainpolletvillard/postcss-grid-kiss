@@ -1,7 +1,7 @@
 const {range} = require("./utils");
 const {parseDimension} = require("./dimension");
 
-exports.getGridCols = function({ rows, zones, colIndexes, rowIndexes }){
+exports.getGridCols = function({ decl, rows, zones, colIndexes, rowIndexes }){
 
 	const gridCols = range(0, Math.floor(colIndexes.length / 2)).fill("1fr"); // autofill by default
 
@@ -18,7 +18,10 @@ exports.getGridCols = function({ rows, zones, colIndexes, rowIndexes }){
 				if (colIndexRight === colIndexLeft + 1) {
 					gridCols[Math.floor(colIndexLeft / 2)] = colDim;
 				} else {
-					throw new Error(`You cannot specify the width of a zone occupying more than one column.`)
+					throw decl.error(
+						`You cannot specify the width of a zone occupying more than one column.`,
+						{ plugin: 'postcss-mixins' }
+					);
 				}
 			}
 		}
