@@ -106,7 +106,8 @@ footer {
 }
 
 footer aside {
-	float: right;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 textarea {

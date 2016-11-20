@@ -12928,11 +12928,15 @@
 /* 67 */
 /***/ function(module, exports) {
 
+	function format([str]){
+		return str.replace(/\n\t/g, "\n").trim();
+	}
+	
 	module.exports = [
 	
 		{
 			name: "Basic website layout",
-			html: `
+			html: format`
 	<header>
 		Header
 	</header>
@@ -12949,7 +12953,7 @@
 		Footer
 	</footer>
 			`,
-			css: `
+			css: format`
 	body {
 		grid-kiss:
 			"+------------------------------+      "
@@ -12975,7 +12979,7 @@
 	
 		{
 			name: "Alternative style #1",
-			css: `
+			css: format`
 	#grid {
 	    grid-kiss:         
 	    "┌──────┐ ┌────────────────┐         "
@@ -13009,7 +13013,7 @@
 	}    
 	`,
 	
-			html: `
+			html: format`
 	<div id="container">
 		<div id="grid">
 			<div class="foo">Foo</div>

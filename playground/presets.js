@@ -1,8 +1,12 @@
+function format([str]){
+	return str.replace(/\n\t/g, "\n").trim();
+}
+
 module.exports = [
 
 	{
 		name: "Basic website layout",
-		html: `
+		html: format`
 <header>
 	Header
 </header>
@@ -19,7 +23,7 @@ module.exports = [
 	Footer
 </footer>
 		`,
-		css: `
+		css: format`
 body {
 	grid-kiss:
 		"+------------------------------+      "
@@ -45,7 +49,7 @@ footer   { background: pink; }
 
 	{
 		name: "Alternative style #1",
-		css: `
+		css: format`
 #grid {
     grid-kiss:         
     "┌──────┐ ┌────────────────┐         "
@@ -79,7 +83,7 @@ footer   { background: pink; }
 }    
 `,
 
-		html: `
+		html: format`
 <div id="container">
 	<div id="grid">
 		<div class="foo">Foo</div>
