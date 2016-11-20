@@ -1,8 +1,9 @@
 const {parseDimension} = require("./dimension");
 
-exports.getGridRows = function({ rows, colIndexes, rowIndexes }){
+exports.getGridRows = function(input){
 
 	const
+		{ rows, colIndexes, rowIndexes } = input,
 		lastContentColIndex = colIndexes.slice(-1)[0],
 	    gridRows = [];
 
@@ -18,5 +19,6 @@ exports.getGridRows = function({ rows, colIndexes, rowIndexes }){
 		y++;
 	}
 
+	input.rowsDim = gridRows;
 	return gridRows.join(" ");
 }
