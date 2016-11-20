@@ -44,48 +44,71 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var postcss = __webpack_require__(1);
-	var gridkiss =  __webpack_require__(54);
+	const
+		postcss = __webpack_require__(1),
+		gridkiss =  __webpack_require__(54),
+		presets = __webpack_require__(67);
 	
-	var processor = postcss([ gridkiss ]);
+	let processor = postcss([ gridkiss ]);
 	
-	window.onload = function(){
+	window.onload = function() {
 	
-		var input = document.querySelector("#input");
-		var output = document.querySelector("#output");
-		var demo = document.querySelector("#demo");
-		var html = document.querySelector("#html");
+		const
+			input  = document.querySelector("#input"),
+			output = document.querySelector("#output"),
+			demo   = document.querySelector("#demo"),
+			html   = document.querySelector("#html"),
+			fallbackCheckbox = document.querySelector(".options input[type='checkbox']"),
+			presetSelector = document.querySelector("select.presets");
 	
 		input.addEventListener("input", update);
 		html.addEventListener("input", update);
-		if(demo.contentDocument.readyState  == 'complete'){ update(); }
-		else { demo.onload = update; }
 	
-		function update(){
-			demo.contentDocument.body.innerHTML = html.value;
-			processor.process(input.value)
-				.then(function (result) {
-					output.textContent = result.css;
-					var warnings = result.warnings();
-					if(warnings && warnings.length > 0){
-						output.innerHTML = warnings.map(function(warning){
-							return `<p class='warning'>${warning.toString()}</p>`
-						}).join('\n') + output.innerHTML;
-					}
-					setTimeout(() => {
-						demo.contentDocument.querySelector("#css_injected").textContent = output.textContent;
-					}, 10);
-				}).catch(error => {
-				output.innerHTML = `<p class='error'>${error.stack}</p>`
-			})
-		}
-	
-		var fallbackCheckbox = document.querySelector(".options input[type='checkbox']");
 		fallbackCheckbox.addEventListener("change", function updateProcessor(){
 			processor = postcss([ gridkiss({ fallback: this.checked }) ]);
 			update();
 		});
+	
+		presetSelector.innerHTML = presets.map((preset, index) => `<option value=${index}>${preset.name}</option>`);
+		presetSelector.addEventListener("change", () => selectPreset(presets[presetSelector.value]))
+	
+		if (demo.contentDocument.readyState == 'complete') {
+			init();
+		} else {
+			demo.onload = init;
+		}
+	
+	
+		function init(){
+			selectPreset(presets[0]);
+		}
+	
+		function selectPreset(preset){
+			input.textContent = preset.css;
+			html.textContent = preset.html;
+			update();
+		}
+	
+		function update(){
+			demo.contentDocument.body.innerHTML = html.value;
+			processor.process(input.value)
+				.then(result => {
+					output.textContent = result.css;
+					const warnings = result.warnings().map(w => `<p class='warning'>${w.toString()}</p>`)
+					if(warnings && warnings.length > 0){
+						output.innerHTML = warnings.join('\n') + output.innerHTML;
+					}
+					setTimeout(() => {
+						demo.contentDocument.querySelector("#css_injected").textContent = output.textContent;
+					}, 10);
+				})
+				.catch(error => {
+					output.innerHTML = `<p class='error'>${error.stack}</p>`
+				})
+		}
+	
 	}
+
 
 /***/ },
 /* 1 */
@@ -12900,6 +12923,107 @@
 	}
 	
 	module.exports = { getFallback, zoneFallback, gridFallback}
+
+/***/ },
+/* 67 */
+/***/ function(module, exports) {
+
+	module.exports = [
+	
+		{
+			name: "Basic website layout",
+			html: `
+	<header>
+		Header
+	</header>
+	
+	<aside class="sidebar">
+		Sidebar
+	</aside>
+	
+	<main>
+		Main content
+	</main>
+	
+	<footer>
+		Footer
+	</footer>
+			`,
+			css: `
+	body {
+		grid-kiss:
+			"+------------------------------+      "
+			"|           header ↑           | 120px"
+			"+------------------------------+      "
+			"                                      "
+			"+--150px---+  +----- auto -----+      "
+			"| .sidebar |  |      main      | auto "
+			"+----------+  +----------------+      "
+			"                                      "
+			"+------------------------------+      "
+			"|              ↓               |      "
+			"|         → footer ←           | 60px "
+			"+------------------------------+      "
+	}
+	
+	header   { background: cyan; }
+	.sidebar { background: lime; }
+	main     { background: yellow; }
+	footer   { background: pink; }
+	`
+		},
+	
+		{
+			name: "Alternative style #1",
+			css: `
+	#grid {
+	    grid-kiss:         
+	    "┌──────┐ ┌────────────────┐         "
+	    "│      │ │                │  100px  "
+	    "│   ↑  │ │     .bar       │         "
+	    "│ .baz │ └────────────────┘    -    "    
+	    "│   ↓  │ ┌───────┐ ┌──────┐         "
+	    "│      │ |       | │  ↑   │  100px  "
+	    "└──────┘ └───────┘ │      │         "    
+	    "┌────────────────┐ │ .foo │    -    "
+	    "│     .qux       │ │  ↓   │         "
+	    "│                │ │      │  100px  "
+	    "└────────────────┘ └──────┘         "
+	    "  100px |  100px  |  100px          "
+	    ;
+	    grid-gap: 10px 10px;    
+	}
+	
+	#grid > div {
+	    border:2px solid black;
+	    background-color: #ccc;
+	    padding: 0.5em;
+	    box-sizing: border-box;
+	}
+	
+	#container {    
+	    width: 400px;
+	    height: 400px;
+	    padding: 1em;
+	    box-sizing: border-box;
+	}    
+	`,
+	
+			html: `
+	<div id="container">
+		<div id="grid">
+			<div class="foo">Foo</div>
+			<div class="bar">Bar</div>
+			<div class="baz">Baz</div>
+			<div class="qux">Qux</div>
+		</div>	
+	</div>
+	`
+	
+		}
+	
+	
+	]
 
 /***/ }
 /******/ ]);

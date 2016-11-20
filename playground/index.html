@@ -15,6 +15,10 @@
 </div>
 <header>
 	<h1>grid-kiss playground</h1>
+	<label>
+		Preset examples:
+		<select name="presets" class="presets"></select>
+	</label>
 	<aside class="options">
 		<ul>
 			<li>
@@ -25,47 +29,12 @@
 		</ul>
 	</aside>
 </header>
-<textarea id="input">
-body {
-	grid-kiss:
-		"+------------------------------+      "
-		"|           header ↑           | 120px"
-		"+------------------------------+      "
-		"                                      "
-		"+--150px---+  +----- auto -----+      "
-		"| .sidebar |  |      main      | auto "
-		"+----------+  +----------------+      "
-		"                                      "
-		"+------------------------------+      "
-		"|              ↓               |      "
-		"|         → footer ←           | 60px "
-		"+------------------------------+      "
-}
 
-header   { background: cyan; }
-.sidebar { background: lime; }
-main     { background: yellow; }
-footer   { background: pink; }
-</textarea>
+<textarea id="input"></textarea>
 <pre id="output"></pre>
-<textarea id="html">
-<header>
-	Header
-</header>
-
-<aside class="sidebar">
-	Sidebar
-</aside>
-
-<main>
-	Main content
-</main>
-
-<footer>
-	Footer
-</footer>
-</textarea>
+<textarea id="html"></textarea>
 <iframe frameborder="0" id="demo" src="frame.html"></iframe>
+
 <footer>
 	<span><a href="https://github.com/sylvainpolletvillard/postcss-grid-kiss" target="_blank">grid-kiss PostCSS plugin</a> by Sylvain Pollet-Villard</span>
 	<aside>

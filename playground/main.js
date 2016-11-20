@@ -1,42 +1,64 @@
-var postcss = require('postcss');
-var gridkiss =  require('../index');
+const
+	postcss = require('postcss'),
+	gridkiss =  require('../index'),
+	presets = require('./presets');
 
-var processor = postcss([ gridkiss ]);
+let processor = postcss([ gridkiss ]);
 
-window.onload = function(){
+window.onload = function() {
 
-	var input = document.querySelector("#input");
-	var output = document.querySelector("#output");
-	var demo = document.querySelector("#demo");
-	var html = document.querySelector("#html");
+	const
+		input  = document.querySelector("#input"),
+		output = document.querySelector("#output"),
+		demo   = document.querySelector("#demo"),
+		html   = document.querySelector("#html"),
+		fallbackCheckbox = document.querySelector(".options input[type='checkbox']"),
+		presetSelector = document.querySelector("select.presets");
 
 	input.addEventListener("input", update);
 	html.addEventListener("input", update);
-	if(demo.contentDocument.readyState  == 'complete'){ update(); }
-	else { demo.onload = update; }
 
-	function update(){
-		demo.contentDocument.body.innerHTML = html.value;
-		processor.process(input.value)
-			.then(function (result) {
-				output.textContent = result.css;
-				var warnings = result.warnings();
-				if(warnings && warnings.length > 0){
-					output.innerHTML = warnings.map(function(warning){
-						return `<p class='warning'>${warning.toString()}</p>`
-					}).join('\n') + output.innerHTML;
-				}
-				setTimeout(() => {
-					demo.contentDocument.querySelector("#css_injected").textContent = output.textContent;
-				}, 10);
-			}).catch(error => {
-			output.innerHTML = `<p class='error'>${error.stack}</p>`
-		})
-	}
-
-	var fallbackCheckbox = document.querySelector(".options input[type='checkbox']");
 	fallbackCheckbox.addEventListener("change", function updateProcessor(){
 		processor = postcss([ gridkiss({ fallback: this.checked }) ]);
 		update();
 	});
+
+	presetSelector.innerHTML = presets.map((preset, index) => `<option value=${index}>${preset.name}</option>`);
+	presetSelector.addEventListener("change", () => selectPreset(presets[presetSelector.value]))
+
+	if (demo.contentDocument.readyState == 'complete') {
+		init();
+	} else {
+		demo.onload = init;
+	}
+
+
+	function init(){
+		selectPreset(presets[0]);
+	}
+
+	function selectPreset(preset){
+		input.textContent = preset.css;
+		html.textContent = preset.html;
+		update();
+	}
+
+	function update(){
+		demo.contentDocument.body.innerHTML = html.value;
+		processor.process(input.value)
+			.then(result => {
+				output.textContent = result.css;
+				const warnings = result.warnings().map(w => `<p class='warning'>${w.toString()}</p>`)
+				if(warnings && warnings.length > 0){
+					output.innerHTML = warnings.join('\n') + output.innerHTML;
+				}
+				setTimeout(() => {
+					demo.contentDocument.querySelector("#css_injected").textContent = output.textContent;
+				}, 10);
+			})
+			.catch(error => {
+				output.innerHTML = `<p class='error'>${error.stack}</p>`
+			})
+	}
+
 }
