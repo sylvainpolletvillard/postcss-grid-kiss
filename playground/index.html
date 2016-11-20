@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>PostCSS playground</title>
+	<title>grid-kiss playground</title>
 	<link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -14,23 +14,32 @@
 	</div>
 </div>
 <header>
-	<h1>PostCSS playground</h1>
+	<h1>grid-kiss playground</h1>
+	<aside class="options">
+		<ul>
+			<li>
+				<label>
+					<input type="checkbox">	Add fallback for browsers not supporting Grid Layout
+				</label>
+			</li>
+		</ul>
+	</aside>
 </header>
 <textarea id="input">
 body {
 	grid-kiss:
-		"+-------------------------------+      "
-		"|           header ↑            | 120px"
-		"+-------------------------------+      "
-		"                                       "
-		"+--150px---+  +---- < 640px ----+      "
-		"| .sidebar |  |       main      | auto "
-		"+----------+  +-----------------+      "
-		"                                       "
-		"+-------------------------------+      "
-		"|              ↓                |      "
-		"|         → footer ←            | 60px "
-		"+-------------------------------+      "
+		"+------------------------------+      "
+		"|           header ↑           | 120px"
+		"+------------------------------+      "
+		"                                      "
+		"+--150px---+  +----- auto -----+      "
+		"| .sidebar |  |      main      | auto "
+		"+----------+  +----------------+      "
+		"                                      "
+		"+------------------------------+      "
+		"|              ↓               |      "
+		"|         → footer ←           | 60px "
+		"+------------------------------+      "
 }
 
 header   { background: cyan; }
@@ -57,8 +66,15 @@ footer   { background: pink; }
 </footer>
 </textarea>
 <iframe frameborder="0" id="demo" src="frame.html"></iframe>
-<footer>grid-kiss PostCSS plugin by Sylvain Pollet-Villard</footer>
+<footer>
+	<span><a href="https://github.com/sylvainpolletvillard/postcss-grid-kiss" target="_blank">grid-kiss PostCSS plugin</a> by Sylvain Pollet-Villard</span>
+	<aside>
+		<a class="github-button" href="https://github.com/sylvainpolletvillard/postcss-grid-kiss" data-icon="octicon-star" data-style="mega" data-count-href="/sylvainpolletvillard/postcss-grid-kiss/stargazers" data-count-api="/repos/sylvainpolletvillard/postcss-grid-kiss#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star sylvainpolletvillard/postcss-grid-kiss on GitHub">Star</a>
+		<a class="github-button" href="https://github.com/sylvainpolletvillard/postcss-grid-kiss/fork" data-icon="octicon-repo-forked" data-style="mega" data-count-href="/sylvainpolletvillard/postcss-grid-kiss/network" data-count-api="/repos/sylvainpolletvillard/postcss-grid-kiss#forks_count" data-count-aria-label="# forks on GitHub" aria-label="Fork sylvainpolletvillard/postcss-grid-kiss on GitHub">Fork</a>
+	</aside>
+</footer>
 
 <script defer src="dist/bundle.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>

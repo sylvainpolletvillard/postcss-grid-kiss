@@ -14,7 +14,7 @@ body {
 		"html demo  "
 		"footer footer"
 		"hidden hidden";
-	grid-template-rows: 6em 1fr 1fr 2em 0;
+	grid-template-rows: 6em 40vh 1fr 48px 0;
 	grid-template-columns: minmax(640px, max-content) 1fr;
 }
 
@@ -28,12 +28,21 @@ h1 {
 	display: inline-block;
 }
 
+aside.options {
+	float: right;
+}
+
+aside.options ul {
+	list-style: none;
+	padding: 0;
+}
+
 #cssgridssupport {
 	grid-area: hidden;
 	overflow: hidden;
 }
 
-.warning {
+#cssgridssupport .warning {
 	background: white;
 	color: red;
 	font-size: 3em;
@@ -52,6 +61,7 @@ h1 {
 #output {
 	grid-area: output;
 	position: relative;
+	overflow: auto;
 }
 
 #output::before {
@@ -70,6 +80,12 @@ h1 {
 	font-weight: bold;
 }
 
+#output .warning {
+	color: darkorange;
+	font-weight: bold;
+
+}
+
 #html {
 	grid-area: html;
 	position: relative;
@@ -78,6 +94,7 @@ h1 {
 #demo {
 	grid-area: demo;
 	position: relative;
+	overflow: auto;
 }
 
 footer {
@@ -86,6 +103,10 @@ footer {
 	margin: 0;
 	vertical-align: bottom;
 	border-top: 1px solid #ccc;
+}
+
+footer aside {
+	float: right;
 }
 
 textarea {
@@ -97,4 +118,74 @@ pre {
 	border: 1px solid #f0f0f0;
 	padding: 0.5em;
 	margin: 0;
+}
+
+@supports not (grid-template-areas:"test") {
+	body {
+		position: relative;
+		display: block
+	}
+
+	header {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		box-sizing: border-box;
+		height: 6rem;
+	}
+
+    #input {
+	    position: absolute;
+	    left: 0;
+	    top: 6rem;
+	    width: 640px;
+	    height: calc(50% - 6rem);
+	    overflow: auto;
+	    box-sizing: border-box;
+    }
+
+    #output {
+	    position: absolute;
+		left: 640px;
+	    right: 0;
+	    top: 6rem;
+	    height: calc(50% - 6rem);
+	    overflow: auto;
+	    box-sizing: border-box;
+    }
+
+    #html {
+	    position: absolute;
+	    top: 50%;
+	    left: 0;
+	    width: 640px;
+	    height: calc(50% - 48px);
+	    overflow: auto;
+	    box-sizing: border-box;
+    }
+
+    #demo {
+	    position: absolute;
+	    top: 50%;
+	    left: 640px;
+	    right: 0;
+	    height: calc(50% - 48px);
+	    width: calc(100% - 640px);
+	    box-sizing: border-box;
+    }
+
+    footer {
+	    position: absolute;
+	    bottom: 0;
+	    left: 0;
+	    right: 0;
+	    height: 48px;
+	    width: 100%;
+	    box-sizing: border-box;
+    }
+
+	#cssgridssupport .warning {
+		display: none;
+	}
 }
