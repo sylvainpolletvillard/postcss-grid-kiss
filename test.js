@@ -4,8 +4,8 @@ const postcss = require('postcss'),
 
 const {parseDimension} = require("./src/dimension");
 
-async function process(input){
-	return postcss(gridkiss).process(input).then(res => {
+async function process(input, options){
+	return postcss(gridkiss(options)).process(input).then(res => {
 		const output = {};
 		res.root.walkRules((rule) => {
 			output[rule.selector] = {};
@@ -13,6 +13,17 @@ async function process(input){
 				output[rule.selector][decl.prop] = decl.value;
 			})
 		});
+		res.root.walkAtRules((atrule) => {
+			output.fallback = { name: atrule.name, params: atrule.params };
+			atrule.walkRules((rule) => {
+				output.fallback[rule.selector] = {};
+				rule.walkDecls((decl) => {
+					output.fallback[rule.selector][decl.prop] = decl.value;
+				})
+			});
+		});
+
+
 		//console.log(input, output);
 		return output;
 	}).catch(err => console.error(err));
@@ -481,3 +492,200 @@ test('other ascii formats: double segments', async t => {
 		"grid-template-areas": '\n\t\t"nav article article"\n\t\t"nav ...     aside  "'
 	})
 });
+
+test('fallback properties with mixed relative/fixed', async t => {
+	let output = await process(
+	`body {
+		grid-kiss:
+		"+------------------------------+      "
+		"|           header ↑           | 120px"
+		"+------------------------------+      "
+		"                                      "
+		"+--150px---+  +----- auto -----+      "
+		"| .sidebar |  |      main      | auto "
+		"+----------+  +----------------+      "
+		"                                      "
+		"+------------------------------+      "
+		"|              ↓               |      "
+		"|         → footer ←           | 60px "
+		"+------------------------------+      "
+	}`, { fallback: true });
+
+	t.is(output.fallback.name, "supports");
+	t.is(output.fallback.params, 'not (grid-template-areas:"test")');
+
+	t.deepEqual(output.fallback["body"], {
+		"position": "relative",
+		"display": "block",
+		"width": "100%",
+		"height": "100%"
+	})
+
+	t.deepEqual(output.fallback["body > header"], {
+		"position":"absolute",
+		"top":"0",
+		"max-height":"120px",
+		"left": "0",
+		"width":"100%"
+	})
+
+	t.deepEqual(output.fallback["body > .sidebar"], {
+		"position": "absolute",
+		"top":"120px",
+		"height":"calc(100% - 120px - 60px)",
+		"left":"0",
+		"width":"150px"
+	})
+
+	t.deepEqual(output.fallback["body > main"], {
+		"position": "absolute",
+		"top":"120px",
+		"height":"calc(100% - 120px - 60px)",
+		"left":"150px",
+		"width":"calc(100% - 150px)"
+	})
+
+	t.deepEqual(output.fallback["body > footer"], {
+		"position":"absolute",
+		"bottom":"0",
+		"max-height":"60px",
+		"left":"calc(100% / 2)",
+		"max-width":"100%",
+		"transform":"translateX(-50%)"
+	})
+
+})
+
+test('fallback properties with all fixed', async t => {
+
+	let output = await process(
+	`body {
+		grid-kiss:        
+	    "┌──────┐ ┌────────────────┐         "
+	    "│      │ │                │  100px  "
+	    "│   ↑  │ │    < .bar      │         "
+	    "│ .baz │ └────────────────┘    -    "    
+	    "│   ↓  │ ┌───────┐ ┌──────┐         "
+	    "│      │ |       | │      │  100px  "
+	    "└──────┘ └───────┘ │  ↓   │         "    
+	    "┌────────────────┐ │ .foo │    -    "
+	    "│     .qux       │ │  ↑   │         "
+	    "│    >     <     │ │      │  100px  "
+	    "└────────────────┘ └──────┘         "
+	    "  100px |  100px  |  100px          "
+	    ;
+	}`, { fallback: true });
+
+	t.is(output.fallback.name, "supports");
+	t.is(output.fallback.params, 'not (grid-template-areas:"test")');
+
+	t.deepEqual(output.fallback["body"], {
+		"position": "relative",
+		"display": "block",
+		"width": "calc(100px + 100px + 100px)",
+		"height": "calc(100px + 100px + 100px)"
+	})
+
+	t.deepEqual(output.fallback["body > .baz"], {
+		"position": "absolute",
+		"top":"0",
+		"height":"calc(100px + 100px)",
+		"left":"0",
+		"width": "100px"
+	})
+
+	t.deepEqual(output.fallback["body > .bar"], {
+		"position": "absolute",
+		"top":"0",
+		"height":"100px",
+		"left":"100px",
+		"max-width": "calc(100px + 100px)"
+	})
+
+	t.deepEqual(output.fallback["body > .qux"], {
+		"position": "absolute",
+		"top":"calc(100px + 100px)",
+		"height":"100px",
+		"left":"calc(calc(100px + 100px) / 2)",
+		"max-width":"calc(100px + 100px)",
+		"transform": "translateX(-50%)"
+	})
+
+	t.deepEqual(output.fallback["body > .foo"], {
+		"position": "absolute",
+		"top":"calc(100px + calc(calc(100px + 100px) / 2))",
+		"max-height":"calc(100px + 100px)",
+		"left":"calc(100px + 100px)",
+		"transform": "translateY(-50%)",
+		"width":"100px"
+	})
+
+})
+
+test('fallback properties with all relative', async t => {
+	let output = await process(
+	`body {
+		grid-kiss:        
+	   "╔═10═╗                  ╔═10═╗    "
+	   "║ .a>║                  ║<.b ║ 3fr"
+	   "╚════╝                  ╚════╝    "
+	   "      ╔═20═╗      ╔═20═╗          "
+	   "      ║ .c ║      ║ .d ║       5fr"
+	   "      ╚════╝      ╚════╝          "
+	   "            ╔═30═╗                "
+	   "            ║ .e ║             7fr"
+	   "            ╚════╝                "	   
+	   ;	    
+	}`, { fallback: true });
+
+	t.is(output.fallback.name, "supports");
+	t.is(output.fallback.params, 'not (grid-template-areas:"test")');
+
+	t.deepEqual(output.fallback["body"], {
+		"position": "relative",
+		"display": "block",
+		"width": "100%",
+		"height": "100%"
+	})
+
+	t.deepEqual(output.fallback["body > .a"], {
+		"position": "absolute",
+		"top":"0",
+		"height":"calc(100% * 3 / 15)",
+		"right":"calc(100% * 80 / 90)",
+		"max-width":"calc(100% * 10 / 90)",
+	})
+
+	t.deepEqual(output.fallback["body > .b"], {
+		"position": "absolute",
+		"top":"0",
+		"height":"calc(100% * 3 / 15)",
+		"left":"calc(100% * 80 / 90)",
+		"max-width":"calc(100% * 10 / 90)",
+	})
+
+	t.deepEqual(output.fallback["body > .c"], {
+		"position": "absolute",
+		"top":"calc(100% * 3 / 15)",
+		"height":"calc(100% * 5 / 15)",
+		"left":"calc(100% * 10 / 90)",
+		"width":"calc(100% * 20 / 90)",
+	})
+
+	t.deepEqual(output.fallback["body > .d"], {
+		"position": "absolute",
+		"top":"calc(100% * 3 / 15)",
+		"height":"calc(100% * 5 / 15)",
+		"left":"calc(100% * 60 / 90)",
+		"width":"calc(100% * 20 / 90)",
+	})
+
+	t.deepEqual(output.fallback["body > .e"], {
+		"position": "absolute",
+		"top":"calc(100% * 8 / 15)",
+		"height":"calc(100% * 7 / 15)",
+		"left":"calc(100% * 30 / 90)",
+		"width":"calc(100% * 30 / 90)",
+	})
+
+})
