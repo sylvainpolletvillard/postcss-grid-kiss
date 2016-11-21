@@ -59,7 +59,6 @@ function zoneFallback({
 	const fallbackProps = new Map;
 
 	fallbackProps.set("position", "absolute");
-	fallbackProps.set("display", "block");
 
 	setVerticalPos({
 		fallbackProps, props, rowIndexes, rowsDim, zone
