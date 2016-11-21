@@ -32,7 +32,7 @@ module.exports = function (options = {}) {
 				// grid properties
 				for (let [prop,value] of grid.props) {
 					if (value != null){
-						decl.cloneAfter({ prop, value });
+						decl.cloneBefore({ prop, value });
 					}
 				}
 
