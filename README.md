@@ -20,16 +20,15 @@ Table of contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [Properties supported](#properties-supported)
-* [Alignment of the grid](#alignment-of-the-grid)
+* [Fallback for browsers not supporting CSS Grid Layout](#fallback-for-browsers-not-supporting-css-grid-layout)
+* [Documentation](#documentation)
   - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
   - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
-* [Alignment inside zones](#alignment-inside-zones)
   - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
   - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
-* [Dimensions values for rows and columns](#dimensions-values-for-rows-and-columns)
-  - [Values accepted](#values-accepted)
-  - [Horizontal dimensions](#horizontal-dimensions)
-  - [Vertical dimensions](#vertical-dimensions)
+  - [Values accepted for dimensions](#values-accepted-for-dimensions)
+  - [Dimensions of columns](#dimensions-of-columns)
+  - [Dimensions of rows](#dimensions-of-rows)
 
 ##Example
 
@@ -220,11 +219,45 @@ Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchai
 
 [5] named areas are used instead of indexes
 
-## Alignment of the grid
+## Fallback for browsers not supporting CSS Grid Layout
 
-Specifies how all the zones are aligned inside the grid container. Irrelevant if one of the zones fits all the remaining free space.
+As of November 2016, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation with experimental support on Chrome Canary and Firefox Nightly. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope a decent browser support at mid-2017.
+
+In the meantime, `post-css-grid` proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to the `@supports` rule:
+
+```css
+@supports not (grid-template-areas:"test") {
+    /* fallback styles */
+}
+```
+
+To use this fallback with your setup, set the `fallback` option to `true`:
+
+```javascript
+postcss([ gridkiss({ fallback: true }) ])
+```
+
+or in a PostCSS config file:
+
+```javascript
+"postcss-css-grid": {
+   "fallback": true
+}
+```
+
+Your layouts will be correctly displayed on any browser supporting `@supports` and `calc()`, which is like [80% of browsers](http://caniuse.com/#search=supports). Unfortunately, Internet Explorer does not support `@supports` 🙄 . I plan to add a `fallback: 'only'` option in a future release which will only keep the fallback CSS code, so that `@supports` is no longer required.
+
+Now, about the fallback itself: you should note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. **It comes with a few caveats that you have to be aware:**
+
+- Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
+- Zones require the property `box-sizing:border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
+- Of course, other Grid Layout properties such as `grid-gap` are not covered by this fallback
+
+## Documentation
 
 ### Horizontal alignment of the grid
+
+Specifies how all the zones are aligned horizontally inside the grid container. Irrelevant if one of the zones fits all the remaining free space.
 
 - `justify-content: stretch`
 when there are no two consecutive spaces at the beginning or the end of the rows
@@ -340,6 +373,8 @@ when there are two consecutive spaces or more at the beginning and the end of th
 ![justify-content-space-around](assets/grid-justify-content-space-around.png)
 
 ### Vertical alignment of the grid
+
+Specifies how all the zones are aligned vertically inside the grid container. Irrelevant if one of the zones fits all the remaining free space.
 
 - `align content: stretch`
 when no space rows
@@ -475,11 +510,10 @@ when there is one space row at the beginning and at the end, and two space rows 
 
 ![align-content-space-around](assets/grid-align-content-space-around.png)
 
-## Alignment inside zones
+### Horizontal alignment inside a zone
 
 Each zone can specify an alignment indicator. When no indicators are specified, defaults are stretch horizontally and vertically.
 
-### Horizontal alignment inside a zone
 
 - `justify-self: start` with `<` or `←`
 ```
@@ -556,9 +590,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
 
 
-## Dimensions values for rows and columns  
-
-### Values accepted
+### Values accepted for dimensions
 Dimensions can be any of the specified values:
 
 - a non-negative length. 
@@ -592,7 +624,7 @@ Dimensions can be any of the specified values:
 
 When no value is specified, row and column sizes are set as `auto`
 
-### Horizontal dimensions
+### Dimensions of columns
 
 Declare the size of a column by writing the dimension **inside the top or bottom border of a zone**:
 
@@ -616,7 +648,7 @@ You cannot set the width of a zone occupying more than one column. This would im
 
 The `|` separators between dimensions are not mandatory, they are only here to make the grid more readable.
 
-### Vertical dimensions
+### Dimensions of rows
 
 Declare the size of a row by writing the dimension **just after the last column of the grid**
 ```
@@ -642,3 +674,4 @@ Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-g
 [playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/master/playground/index.html
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
+[can-i-use]:http://caniuse.com/#feat=css-grid
