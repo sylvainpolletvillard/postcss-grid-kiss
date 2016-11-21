@@ -672,7 +672,7 @@ The `-` separators between dimensions are not mandatory, they are only here to m
 
 Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
 
-[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/master/playground/index.html
+[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/0.3.0/playground/index.html
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
