@@ -18,13 +18,16 @@ window.onload = function() {
 	input.addEventListener("input", update);
 	html.addEventListener("input", update);
 
-	fallbackCheckbox.addEventListener("change", function updateProcessor(){
-		processor = postcss([ gridkiss({ fallback: this.checked }) ]);
+	fallbackCheckbox.addEventListener("change", () => {
+		updateProcessor();
 		update();
 	});
 
 	presetSelector.innerHTML = presets.map((preset, index) => `<option value=${index}>${preset.name}</option>`);
-	presetSelector.addEventListener("change", () => selectPreset(presets[presetSelector.value]))
+	presetSelector.addEventListener("change", () => {
+		selectPreset(presets[presetSelector.value]);
+		update();
+	})
 
 	if (demo.contentDocument.readyState == 'complete') {
 		init();
@@ -32,14 +35,19 @@ window.onload = function() {
 		demo.onload = init;
 	}
 
-
 	function init(){
 		selectPreset(presets[0]);
+		updateProcessor();
+		update();
 	}
 
 	function selectPreset(preset){
 		input.textContent = preset.css;
 		html.textContent = preset.html;
+	}
+
+	function updateProcessor(){
+		processor = postcss([ gridkiss({ fallback: fallbackCheckbox.checked }) ]);
 		update();
 	}
 

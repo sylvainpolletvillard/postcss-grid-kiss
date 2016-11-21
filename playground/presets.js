@@ -72,14 +72,12 @@ footer   { background: pink; }
     border:2px solid black;
     background-color: #ccc;
     padding: 0.5em;
-    box-sizing: border-box;
 }
 
 #container {    
     width: 400px;
     height: 400px;
     padding: 1em;
-    box-sizing: border-box;
 }    
 `,
 
@@ -117,7 +115,6 @@ div {
    background: #eee;
    border: 1px solid #999;
    padding: 1em;
-   box-sizing: border-box;
 }`,
 
 		html: `

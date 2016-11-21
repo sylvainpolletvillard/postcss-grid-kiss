@@ -64,13 +64,16 @@
 		input.addEventListener("input", update);
 		html.addEventListener("input", update);
 	
-		fallbackCheckbox.addEventListener("change", function updateProcessor(){
-			processor = postcss([ gridkiss({ fallback: this.checked }) ]);
+		fallbackCheckbox.addEventListener("change", () => {
+			updateProcessor();
 			update();
 		});
 	
 		presetSelector.innerHTML = presets.map((preset, index) => `<option value=${index}>${preset.name}</option>`);
-		presetSelector.addEventListener("change", () => selectPreset(presets[presetSelector.value]))
+		presetSelector.addEventListener("change", () => {
+			selectPreset(presets[presetSelector.value]);
+			update();
+		})
 	
 		if (demo.contentDocument.readyState == 'complete') {
 			init();
@@ -78,14 +81,19 @@
 			demo.onload = init;
 		}
 	
-	
 		function init(){
 			selectPreset(presets[0]);
+			updateProcessor();
+			update();
 		}
 	
 		function selectPreset(preset){
 			input.textContent = preset.css;
 			html.textContent = preset.html;
+		}
+	
+		function updateProcessor(){
+			processor = postcss([ gridkiss({ fallback: fallbackCheckbox.checked }) ]);
 			update();
 		}
 	
@@ -12780,6 +12788,7 @@
 		const fallbackProps = new Map;
 	
 		fallbackProps.set("position", "absolute");
+		fallbackProps.set("box-sizing", "border-box");
 	
 		setVerticalPos({
 			fallbackProps, props, rowIndexes, rowsDim, zone
@@ -13012,14 +13021,12 @@
 	    border:2px solid black;
 	    background-color: #ccc;
 	    padding: 0.5em;
-	    box-sizing: border-box;
 	}
 	
 	#container {    
 	    width: 400px;
 	    height: 400px;
 	    padding: 1em;
-	    box-sizing: border-box;
 	}    
 	`,
 	
@@ -13057,7 +13064,6 @@
 	   background: #eee;
 	   border: 1px solid #999;
 	   padding: 1em;
-	   box-sizing: border-box;
 	}`,
 	
 			html: `
