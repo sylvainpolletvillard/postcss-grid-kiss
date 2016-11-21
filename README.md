@@ -252,6 +252,7 @@ Now, about the fallback itself: you should note that a fallback based on absolut
 - Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
 - Zones require the property `box-sizing:border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
 - Of course, other Grid Layout properties such as `grid-gap` are not covered by this fallback
+- The output CSS is significally bigger, almost doubled in size
 
 ## Documentation
 
