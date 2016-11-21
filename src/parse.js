@@ -44,16 +44,27 @@ function getCorners({ rows }){
 function getZones({ rows, cols, colIndexes, rowIndexes }){
 	const zones = [];
 
-	for(let y=0; y<rowIndexes.length; y++){
-		for(let x=0; x<colIndexes.length; x++){
+	for(let y=0; y<rowIndexes.length; y+=2){
+		for(let x=0; x<colIndexes.length; x+=2){
 			let top = rowIndexes[y],
 			    left = colIndexes[x];
 
 			if(!isInZone({ zones, x:left, y:top }) && (x+1) in colIndexes && (y+1) in rowIndexes){
-				let bottom = cols[left].slice(top+1).search(CORNERS_CHARS)+top+1,
-				    right = rows[top].slice(left+1).search(CORNERS_CHARS)+left+1;
 
-				let zone = { top, bottom, left, right,
+				let bottom, right;
+
+				if(CORNERS_CHARS.test(rows[top][left])) {
+					// a zone starts here, see how far if goes
+					bottom = cols[left].slice(top+1).search(CORNERS_CHARS)+top+1,
+					right = rows[top].slice(left+1).search(CORNERS_CHARS)+left+1;
+				} else {
+					// no zone found, presumed as hole
+					bottom = rowIndexes[y+1];
+					right = colIndexes[x+1];
+				}
+
+				let zone = {
+					top, bottom, left, right,
 					topIndex: y,
 					leftIndex: x,
 					bottomIndex: rowIndexes.findIndex(rowIndex => rowIndex === bottom),
