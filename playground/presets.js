@@ -48,7 +48,7 @@ footer   { background: pink; }
 	},
 
 	{
-		name: "Alternative style #1",
+		name: "Zones on multiple rows and cols ; alternative style #1",
 		css: format`
 #grid {
     grid-kiss:         
@@ -92,6 +92,40 @@ footer   { background: pink; }
 		<div class="qux">Qux</div>
 	</div>	
 </div>
+`
+
+	},
+
+	{
+		name: "Variable fractions of free space ; alternate style #2",
+
+		css: format`
+body {
+	grid-kiss:
+	"╔═10═╗                  ╔═10═╗    "
+	"║ .a>║                  ║<.b ║ 3fr"
+	"╚════╝                  ╚════╝    "
+	"      ╔═20═╗      ╔═20═╗          "
+	"      ║ .c ║      ║ .d ║       5fr"
+	"      ╚════╝      ╚════╝          "
+	"            ╔═30═╗                "
+	"            ║ .e ║             7fr"
+	"            ╚════╝                "
+}
+
+div {   
+   background: #eee;
+   border: 1px solid #999;
+   padding: 1em;
+   box-sizing: border-box;
+}`,
+
+		html: `
+<div class="a">a</div>
+<div class="b">b</div>
+<div class="c">c</div>
+<div class="d">d</div>
+<div class="e">e</div>
 `
 
 	}
