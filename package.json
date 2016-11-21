@@ -1,6 +1,6 @@
 {
 	"name": "postcss-grid-kiss",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "A PostCSS plugin to keep CSS grids stupidly simple",
 	"main": "index.js",
 	"author": "Sylvain Pollet-Villard",
@@ -9,13 +9,16 @@
 	"keywords": [
 		"postcss",
 		"postcss-plugin",
+		"ascii-art",
+		"visual",
 		"css",
 		"grid",
 		"kiss"
 	],
 	"scripts": {
-		"test": "ava -v",
-		"playground": "webpack playground/main.js playground/dist/bundle.js & http-server playground/ -o"
+		"test": "ava",
+		"playground": "webpack & http-server playground/ -o",
+		"watch": "webpack --watch"
 	},
 	"engines": {
 		"node": ">=6.0.0"
