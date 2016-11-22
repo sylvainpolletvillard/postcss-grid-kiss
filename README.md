@@ -245,7 +245,7 @@ Internet Explorer does not support `@supports` 🙄 , so grid-kiss needs to add 
  
 If you don't care about Internet Explorer support and want to reduce the output size, you can add the `screwIE` option to skip the IE hack: 
 
-```
+```javascript
 postcss([ gridkiss({ fallback: true, screwIE: true }) ])
 ```
 
