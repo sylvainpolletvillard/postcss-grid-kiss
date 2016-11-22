@@ -61,22 +61,32 @@ module.exports = function (options = {}) {
 				}
 
 				if(options.fallback){
-					const atRule = postcss.atRule({
-						name: "supports",
-						params: 'not (grid-template-areas:"test")'
-					});
-
 					const fallback = getFallback({
 						zones, grid, input, decl, result
 					});
 
-					atRule.append(fallback.grid.rule);
+					const supportsRule = postcss.atRule({
+						name: "supports",
+						params: 'not (grid-template-areas:"test")'
+					});
+
+					const ieHackRule = postcss.atRule({
+						name: "media",
+						params: 'screen and (min-width:0\\0)'
+					});
+
+					supportsRule.append(fallback.grid.rule);
+					ieHackRule.append(fallback.grid.rule);
 					for(let [zone, zoneFallback] of fallback.zones){
-						atRule.append(zoneFallback.rule);
+						supportsRule.append(zoneFallback.rule);
+						ieHackRule.append(zoneFallback.rule);
 					}
 
 					let lastRule = zones.length > 0 ? zones[zones.length-1].rule : grid.rule;
-					grid.rule.parent.insertAfter(lastRule, atRule);
+					if(!options.screwIE){
+						grid.rule.parent.insertAfter(lastRule, ieHackRule);
+					}
+					grid.rule.parent.insertAfter(lastRule, supportsRule);
 				}
 
 				decl.remove();
