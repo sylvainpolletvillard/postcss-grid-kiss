@@ -125,7 +125,30 @@ div {
 <div class="e">e</div>
 `
 
-	}
+	},
 
+	{
+		name: "Vertical and horizontal center",
+
+		css: format`
+body {
+  grid-kiss:
+    "+-------+"
+    "|   ↓   |"
+    "|→ div ←|"
+    "|   ↑   |"
+    "+-------+"
+}
+
+div { 
+  border: 1px solid black;
+  padding: 1rem;
+  overflow: scroll;
+  resize: both;
+}
+`,
+
+		html: `<div> Resize me </div>`
+	}
 
 ]
