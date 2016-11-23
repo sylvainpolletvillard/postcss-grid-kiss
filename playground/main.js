@@ -27,7 +27,7 @@ window.onload = function() {
 	presetSelector.addEventListener("change", () => {
 		selectPreset(presets[presetSelector.value]);
 		update();
-	})
+	});
 
 	if (demo.contentDocument.readyState == 'complete') {
 		init();
@@ -42,8 +42,8 @@ window.onload = function() {
 	}
 
 	function selectPreset(preset){
-		input.textContent = preset.css;
-		html.textContent = preset.html;
+		input.value = preset.css;
+		html.value = preset.html;
 	}
 
 	function updateProcessor(){
