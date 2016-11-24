@@ -149,6 +149,90 @@ div {
 `,
 
 		html: `<div> Resize me </div>`
+	},
+
+	{
+		name: "Responsive layout with media queries",
+
+		css: `
+body {
+  grid-kiss:
+    "+----------+      "
+    "|  header  | 80px "
+    "+----------+      "
+    "                  "
+    "+----------+      "
+    "|  .bloc1  |      "
+    "+----------+      "
+    "                  "
+    "+----------+      "
+    "|  .bloc2  |      "
+    "+----------+      "
+    "                  "
+    "+----------+      "
+    "|  .bloc3  |      "
+    "+----------+      "
+    "                  "
+    "+----------+      "
+    "|  .bloc4  |      "
+    "+----------+      "    
+}     
+
+@media (min-width:640px){
+  body {
+    grid-kiss:
+    "+----------------------------+      "
+    "|        header              | 120px"
+    "+----------------------------+      "
+    "                                    "
+    "+------------+  +------------+      "
+    "|   .bloc1   |  |   .bloc2   |      "
+    "+------------+  +------------+      "
+    "                                    "
+    "+------------+  +------------+      "
+    "|   .bloc3   |  |   .bloc4   |      "
+    "+------------+  +------------+      "
+  }
+}
+
+@media (min-width: 960px){
+  body {
+    grid-kiss:
+    "+--------------------------------+       "
+    "|             header             | 120px "
+    "+--------------------------------+       "
+    "                                         "
+    "+--------------------------------+       "
+    "|             .bloc1             | <6rem "
+    "+--------------------------------+       "
+    "                                         "
+    "+--------+  +--------+  +--------+       "
+    "| .bloc2 |  | .bloc3 |  | .bloc4 |       "
+    "+--------+  +--------+  +--------+       "
+  }
+}	
+	
+header { background: lightblue }
+aside { background: purple }
+.bloc1 { background: cyan }
+.bloc2 { background: green; }
+.bloc3 { background: orange }
+.bloc4 { background: orangered; }	
+	
+.bloc {
+	text-align:center;
+	color: white;
+	font-size: 48px;
+}	
+`,
+
+		html: `
+<header>Responsive design layout with media queries</header>	
+<div class="bloc bloc1">1</div>
+<div class="bloc bloc2">2</div>
+<div class="bloc bloc3">3</div>
+<div class="bloc bloc4">4</div>
+`
 	}
 
 ]
