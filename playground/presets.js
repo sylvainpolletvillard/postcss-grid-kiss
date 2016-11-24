@@ -212,12 +212,11 @@ body {
   }
 }	
 	
-header { background: lightblue }
-aside { background: purple }
-.bloc1 { background: cyan }
-.bloc2 { background: green; }
-.bloc3 { background: orange }
-.bloc4 { background: orangered; }	
+header { background: yellow }
+.bloc1 { background: blue }
+.bloc2 { background: green }
+.bloc3 { background: purple }
+.bloc4 { background: chocolate }	
 	
 .bloc {
 	text-align:center;
