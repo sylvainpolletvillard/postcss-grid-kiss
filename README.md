@@ -29,6 +29,7 @@ Table of contents
   - [Values accepted for dimensions](#values-accepted-for-dimensions)
   - [Dimensions of columns](#dimensions-of-columns)
   - [Dimensions of rows](#dimensions-of-rows)
+  - [Responsive layouts](#responsive-layouts)
 
 ##Example
 
@@ -671,11 +672,17 @@ Declare the size of a row by writing the dimension **just after the last column 
 
 The `-` separators between dimensions are not mandatory, they are only here to make the grid more readable.
 
+### Responsive layouts
+
+Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
+
+![responsive-layouts](assets/responsive-layout.png)
+
 ---
 
 Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
 
-[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/38cfb2978436784dae29ec61823f1d4225464663/playground/index.html
+[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/55301b72ca7bc922f8cf04e19f791b34cb367d31/playground/index.html
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
