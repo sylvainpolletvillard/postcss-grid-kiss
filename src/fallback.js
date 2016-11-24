@@ -29,16 +29,16 @@ function gridFallback({ rowsDim, colsDim, rule }){
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
 
-	if(rowsDim.some(isDimRelative)){
+	if(colsDim.some(isDimRelative)){
 		grid.props.set("width", "100%");
 	} else {
-		grid.props.set("width",  `calc(${rowsDim.join(" + ")})`);
+		grid.props.set("width", `calc(${colsDim.join(" + ")})`);
 	}
 
-	if(colsDim.some(isDimRelative)){
+	if(rowsDim.some(isDimRelative)){
 		grid.props.set("height", "100%");
 	} else {
-		grid.props.set("height",  `calc(${colsDim.join(" + ")})`);
+		grid.props.set("height",  `calc(${rowsDim.join(" + ")})`);
 	}
 
 	for (let [prop,value] of grid.props) {
