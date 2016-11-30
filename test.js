@@ -74,11 +74,11 @@ test('align-content start', async t => {
 
 	let output = await process(
 	`div {
-		grid-kiss:
-		   "        "
+		grid-kiss:		   
 		   "+------+"
 		   "| test |"
 		   "+------+"
+		   "        "
 	}`);
 
 	t.is(output["div"]["align-content"], "start");
@@ -87,11 +87,11 @@ test('align-content start', async t => {
 test('align-content end', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:	
+		   "        "
 		   "+------+"
 		   "| test |"
-		   "+------+"
-		   "        "
+		   "+------+"		   
 	}`);
 
 	t.is(output["div"]["align-content"], "end");
@@ -169,9 +169,9 @@ test('justify-content start', async t => {
 	let output = await process(
 	`div {
 		grid-kiss:		   
-		   "  +------++------+"
-		   "  | foo  || bar  |"
-		   "  +------++------+"
+		   "+------++------+  "
+		   "| foo  || bar  |  "
+		   "+------++------+  "
 	}`);
 
 	t.is(output["div"]["justify-content"], "start");
@@ -181,9 +181,9 @@ test('justify-content end', async t => {
 	let output = await process(
 	`div {
 		grid-kiss:		   
-		   "+-----++-----+  "
-		   "| foo || bar |  "
-		   "+-----++-----+  "
+		   "  +-----++-----+"
+		   "  | foo || bar |"
+		   "  +-----++-----+"
 	}`)
 
 	t.is(output["div"]["justify-content"], "end");

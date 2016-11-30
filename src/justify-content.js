@@ -39,8 +39,8 @@ exports.getJustifyContent = function({ cols }) {
 	if(hasSpaceColsBeforeContent && hasSpaceRowsAfterContent)
 		return "center"
 	if(hasSpaceColsBeforeContent)
-		return "start"
-	if(hasSpaceRowsAfterContent)
 		return "end"
+	if(hasSpaceRowsAfterContent)
+		return "start"
 
 }

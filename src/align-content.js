@@ -32,9 +32,9 @@ exports.getAlignContent = function({ rows }){
 	if(hasSpaceRowsBeforeContent && hasSpaceRowsAfterContent)
 		return "center"
 	if(hasSpaceRowsBeforeContent)
-		return "start"
-	if(hasSpaceRowsAfterContent)
 		return "end"
+	if(hasSpaceRowsAfterContent)
+		return "start"
 	if(hasSpaceRowsBetweenContent)
 		return "space-between"
 
