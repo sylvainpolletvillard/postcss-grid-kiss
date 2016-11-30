@@ -224,7 +224,7 @@ Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchai
 
 As of November 2016, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation with experimental support on Chrome Canary and Firefox Nightly. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope a decent browser support at mid-2017.
 
-In the meantime, `post-css-grid` proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
+In the meantime, `postcss-grid-kiss` proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
 
 To add the fallback styles to the output, use the `fallback` option:
 
