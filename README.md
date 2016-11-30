@@ -235,7 +235,7 @@ postcss([ gridkiss({ fallback: true }) ])
 or in your PostCSS config file:
 
 ```javascript
-"postcss-css-grid": {
+"postcss-grid-kiss": {
    "fallback": true
 }
 ```
