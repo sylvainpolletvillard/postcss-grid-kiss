@@ -32,7 +32,7 @@ exports.getGridCols = function(input){
 	let lastRow = rows[rowIndexes.slice(-1)[0]+1];
 	if(lastRow){
 		for(let x=0; x<gridCols.length; x++){
-			let content = cleanupDimInput(lastRow.substring(colIndexes[2*x], colIndexes[2*x+1])),
+			let content = cleanupDimInput(lastRow.substring(colIndexes[2*x], colIndexes[2*x+1]+1)),
 			    colDim  = parseDimension(content);
 
 			if (colDim != null) {
