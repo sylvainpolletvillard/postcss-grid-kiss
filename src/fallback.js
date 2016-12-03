@@ -79,7 +79,7 @@ function dimensionFallback(dim, { decl, result }){
 }
 
 function calcSum(...args){
-	let dims = args.filter(arg => arg !== "0");
+	let dims = args.filter(arg => arg && arg !== "0");
 	return dims.length < 2 ? dims[0] : `calc(${dims.join(" + ")})`
 }
 
@@ -128,31 +128,22 @@ function setVerticalPos({
 	fallbackProps, props, rowIndexes, rowsDim, zone, grid
 }){
 	const alignSelf = props.get("align-self") || "stretch";
-	const alignGrid = grid.props.get("align-content") || "stretch";
 
-	const remainingSpace = calcRemaining(calcSum(...rowsDim));
-
+	let gridDelta = getAlignContentFallbackDelta({ zone, grid, rowsDim });
 	let dims = [];
-	let gridDelta = "0";
-
-	if(alignGrid === "end"){
-		gridDelta = remainingSpace;
-	}
-	if(alignGrid === "center"){
-		gridDelta = `calc(${remainingSpace} / 2)`;
-	}
 
 	if(alignSelf === "end"){ // align by bottom
 		for(let y=rowIndexes.length-1; y>zone.bottomIndex; y-=2){
 			dims.push(rowsDim[Math.floor(y/2)]);
 		}
-		let position = calcSum(calcRemaining(gridDelta), calcFraction(dims, rowsDim) || "0");
+		if(gridDelta && gridDelta != "0") gridDelta = calcRemaining(gridDelta);
+		let position = calcSum(gridDelta, calcFraction(dims, rowsDim)) || "0";
 		fallbackProps.set("bottom", position);
 	} else {
 		for(let y=0; y<zone.topIndex; y+=2){
 			dims.push(rowsDim[Math.floor(y/2)]);
 		}
-		let position = calcSum(gridDelta, calcFraction(dims, rowsDim) || "0");
+		let position = calcSum(gridDelta, calcFraction(dims, rowsDim)) || "0";
 		fallbackProps.set("top", position);
 	}
 
@@ -180,31 +171,22 @@ function setHorizontalPos({
 	colIndexes, colsDim, fallbackProps, props, zone, grid
 }){
 	const justifySelf = props.get("justify-self") || "stretch";
-	const justifyGrid = grid.props.get("justify-content") || "stretch";
 
-	const remainingSpace = calcRemaining(calcSum(...colsDim));
-
+	let gridDelta = getJustifyContentFallbackDelta({ zone, grid, colsDim });
 	let dims = [];
-	let gridDelta = "0";
-
-	if(justifyGrid === "end"){
-		gridDelta = remainingSpace;
-	}
-	if(justifyGrid === "center"){
-		gridDelta = `calc(${remainingSpace} / 2)`;
-	}
 
 	if(justifySelf === "end"){ // align by right
 		for(let x=colIndexes.length-1; x>zone.rightIndex; x-=2){
 			dims.push(colsDim[Math.floor(x/2)]);
 		}
-		let position = calcSum(calcRemaining(gridDelta), calcFraction(dims, colsDim) || "0");
+		if(gridDelta && gridDelta != "0") gridDelta = calcRemaining(gridDelta);
+		let position = calcSum(gridDelta, calcFraction(dims, colsDim)) || "0";
 		fallbackProps.set("right", position);
 	} else {
 		for(let x=0; x<zone.leftIndex; x+=2){
 			dims.push(colsDim[Math.floor(x/2)]);
 		}
-		let position = calcSum(gridDelta, calcFraction(dims, colsDim) || "0");
+		let position = calcSum(gridDelta, calcFraction(dims, colsDim)) || "0";
 		fallbackProps.set("left", position);
 	}
 
@@ -236,6 +218,61 @@ function setHorizontalPos({
 			fallbackProps.set("transform", "translateX(-50%)");
 		}
 	}
+}
+
+function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
+
+	if(colsDim.some(isDimRelative)) return "0" // fluid zone will fit all the remaining space
+
+	const justifyGrid = grid.props.get("justify-content") || "stretch";
+
+	if(justifyGrid === "stretch")
+		return "0"
+	if(justifyGrid === "start")
+		return "0"
+
+	const remainingSpace = calcRemaining(calcSum(...colsDim)),
+	      index = Math.floor(zone.leftIndex / 2),
+	      nbCols = colsDim.length;
+
+	if(justifyGrid === "end")
+		return remainingSpace;
+	if(justifyGrid === "center")
+		return `calc(${remainingSpace} / 2)`
+	if(justifyGrid === "space-between")
+		return `calc(${remainingSpace} * ${index} / ${nbCols - 1})`
+	if(justifyGrid === "space-around")
+		return `calc(${remainingSpace} * ${(index * 2) + 1} / ${nbCols * 2})`
+	if(justifyGrid === "space-evenly")
+		return `calc(${remainingSpace} * ${index + 1} / ${nbCols + 1})`
+}
+
+function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
+
+	if(rowsDim.some(isDimRelative)) return "0" // fluid zone will fit all the remaining space
+
+	const alignGrid = grid.props.get("align-content") || "stretch";
+
+	if(alignGrid === "stretch")
+		return "0"
+	if(alignGrid === "start")
+		return "0"
+
+	const remainingSpace = calcRemaining(calcSum(...rowsDim)),
+	      index = Math.floor(zone.topIndex / 2),
+	      nbRows = rowsDim.length;
+
+	if(alignGrid === "end")
+		return remainingSpace
+	if(alignGrid === "center")
+		return `calc(${remainingSpace} / 2)`
+	if(alignGrid === "space-between")
+		return `calc(${remainingSpace} * ${index} / ${nbRows - 1})`
+	if(alignGrid === "space-around")
+		return `calc(${remainingSpace} * ${(index * 2) + 1} / ${nbRows * 2})`
+	if(alignGrid === "space-evenly")
+		return `calc(${remainingSpace} * ${index + 1} / ${nbRows + 1})`
+
 }
 
 module.exports = { getFallback, zoneFallback, gridFallback }
