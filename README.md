@@ -254,8 +254,8 @@ Now, about the fallback itself: you should note that a fallback based on absolut
 
 - Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
 - Zones require the property `box-sizing:border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
-- Of course, other Grid Layout properties such as `grid-gap` are not covered by this fallback
-- New dimensions properties such as `min-content`, `max-content`, `minmax`, `fit-content` also are not supported
+- It is only a fallback for `grid-kiss` declarations. Other Grid Layout properties such as `grid-gap` are not covered by this fallback
+- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
 - The CSS output is significally bigger, almost 3x in size
 
 ## Documentation
@@ -682,7 +682,7 @@ Use different `grid-kiss` declarations in media queries to easily get responsive
 
 Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
 
-[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/55301b72ca7bc922f8cf04e19f791b34cb367d31/playground/index.html
+[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/0.5.0/playground/index.html
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
