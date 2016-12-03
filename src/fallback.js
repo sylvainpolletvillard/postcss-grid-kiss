@@ -1,3 +1,6 @@
+const { isFillingRemainingSpace } = require("./dimension");
+const calc = require("./calc-utils");
+
 function getFallback({
 	zones, grid, decl, result, input
 }){
@@ -7,63 +10,17 @@ function getFallback({
 	const rowsDim = input.rowsDim.map(dim => dimensionFallback(dim, { decl, result }));
 
 	let fallback = {
-		grid: gridFallback({ colsDim, rowsDim, rule: grid.rule, props: grid.props }),
+		grid: getGridFallback({ colsDim, rowsDim, rule: grid.rule, props: grid.props }),
 		zones: new Map
 	};
 
 	for(let zone of zones){
-		fallback.zones.set(zone, zoneFallback({
+		fallback.zones.set(zone, getZoneFallback({
 			zone, grid, colIndexes, rowIndexes, colsDim, rowsDim
 		}))
 	}
 
 	return fallback;
-}
-
-function gridFallback({ rowsDim, colsDim, rule }){
-
-	const grid = {
-		rule: rule.clone({ nodes: [] }),
-		props: new Map
-	};
-	grid.props.set("position", "relative");
-	grid.props.set("display", "block");
-
-	const gridWidth = colsDim.some(isDimRelative) ? "100%" : calcSum(...colsDim);
-	const gridHeight = rowsDim.some(isDimRelative) ? "100%" : calcSum(...rowsDim);
-	grid.props.set("width", gridWidth);
-	grid.props.set("height", gridHeight);
-
-	for (let [prop,value] of grid.props) {
-		if (value != null){
-			grid.rule.append({ prop, value });
-		}
-	}
-
-	return grid;
-}
-
-function zoneFallback({
-	zone: { rule, props, zone },
-	rowIndexes, colIndexes, rowsDim, colsDim, grid
-}) {
-
-	const fallbackRule = rule.clone({ nodes: [] });
-	const fallbackProps = new Map;
-
-	fallbackProps.set("position", "absolute");
-	fallbackProps.set("box-sizing", "border-box");
-
-	setVerticalPos({ fallbackProps, props, rowIndexes, rowsDim, zone, grid });
-	setHorizontalPos({ colIndexes, colsDim, fallbackProps, props, zone, grid });
-
-	for (let [prop,value] of fallbackProps) {
-		if (value != null){
-			fallbackRule.append({ prop, value })
-		}
-	}
-
-	return { props: fallbackProps, rule: fallbackRule }
 }
 
 function dimensionFallback(dim, { decl, result }){
@@ -78,151 +35,180 @@ function dimensionFallback(dim, { decl, result }){
 	return dim;
 }
 
-function calcSum(...args){
-	let dims = args.filter(arg => arg && arg !== "0");
-	return dims.length < 2 ? dims[0] : `calc(${dims.join(" + ")})`
-}
+function getGridFallback({ rowsDim, colsDim, rule }){
 
-function calcRemaining(dim){
-	if(!dim || dim == "0") return "100%";
-	return `calc(100% - ${dim})`
-}
+	const grid = {
+		rule: rule.clone({ nodes: [] }),
+		props: new Map
+	};
 
-function calcFraction(dims, allDims){
-	if(dims.length === 0 || dims.length === allDims.length)
-		return null; // use default value
+	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...colsDim));
+	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...rowsDim));
 
-	if(dims.length === 1 && !isDimRelative(dims[0]))
-		return dims[0];
+	grid.props.set("position", "relative");
+	grid.props.set("display", "block");
+	grid.props.set("width", gridWidth);
+	grid.props.set("height", gridHeight);
 
-	if(dims.every(dim => !isDimRelative(dim))) // all fixed
-		return calcSum(...dims);
-
-	const
-		fr = dims.reduce((total, dim) => isDimRelative(dim) ? total + parseInt(dim) : total, 0),
-	    totalFr = allDims.reduce((total, dim) => isDimRelative(dim) ? total + parseInt(dim) : total, 0),
-	    allFixedDims = allDims.filter(dim => !isDimRelative(dim)),
-		fixedDims = dims.filter(dim => !isDimRelative(dim)),
-	    remaining = calcRemaining(allFixedDims.join(" - "));
-
-	if(fixedDims.length === 0) { // all relative
-		if (fr === totalFr) {
-			return remaining;
+	for (let [prop,value] of grid.props) {
+		if (value != null){
+			grid.rule.append({ prop, value });
 		}
-		return `calc(${remaining} * ${fr} / ${totalFr})`
 	}
 
-	let sumFixed = fixedDims.length == 1 ? fixedDims[0] : calcSum(...fixedDims);
-	if (fr === totalFr) {
-		return calcSum(sumFixed, remaining);
+	return grid;
+}
+
+function getZoneFallback({
+	zone: { rule, props, zone },
+	rowIndexes, colIndexes, rowsDim, colsDim, grid
+}) {
+
+	const fallbackRule = rule.clone({ nodes: [] });
+	const fallbackProps = new Map;
+
+	const {height, isStretchingVertically} = getHeight({ zone, props, rowsDim });
+	const {width, isStretchingHorizontally} = getWidth({ zone, props, colsDim });
+	const {verticalOffset, alignByBottom} = getVerticalOffset({ props, zone, grid, rowsDim, rowIndexes, height });
+	const {horizontalOffset, alignByRight} = getHorizontalOffset({ props, zone, grid, colsDim, colIndexes, width });
+
+	fallbackProps.set("position", "absolute");
+	fallbackProps.set("box-sizing", "border-box");
+	fallbackProps.set("transform", getTransform({ props }));
+	fallbackProps.set(isStretchingVertically ? "height" : "max-height", height);
+	fallbackProps.set(isStretchingHorizontally ? "width" : "max-width", width);
+	fallbackProps.set(alignByBottom ? "bottom" : "top", verticalOffset);
+	fallbackProps.set(alignByRight ? "right" : "left", horizontalOffset);
+
+	for (let [prop,value] of fallbackProps) {
+		if (value != null){
+			fallbackRule.append({ prop, value })
+		}
 	}
-	return calcSum(sumFixed, `calc(${remaining} * ${fr} / ${totalFr})`);
 
+	return { props: fallbackProps, rule: fallbackRule }
 }
 
-function isDimRelative(dim){
-	return dim.endsWith("fr");
-}
-
-function setVerticalPos({
-	fallbackProps, props, rowIndexes, rowsDim, zone, grid
+function getVerticalOffset({
+	props, zone, grid, rowsDim, rowIndexes, height
 }){
+
 	const alignSelf = props.get("align-self") || "stretch";
 
-	let gridDelta = getAlignContentFallbackDelta({ zone, grid, rowsDim });
-	let dims = [];
+	let offsetDims = [],
+	    alignByBottom = false,
+	    gridDelta = getAlignContentFallbackDelta({ zone, grid, rowsDim });
 
-	if(alignSelf === "end"){ // align by bottom
-		for(let y=rowIndexes.length-1; y>zone.bottomIndex; y-=2){
-			dims.push(rowsDim[Math.floor(y/2)]);
+	if(alignSelf === "end") {
+		alignByBottom = true;
+		for (let y = rowIndexes.length - 1; y > zone.bottomIndex; y -= 2) {
+			offsetDims.push(rowsDim[Math.floor(y / 2)]);
 		}
-		if(gridDelta && gridDelta != "0") gridDelta = calcRemaining(gridDelta);
-		let position = calcSum(gridDelta, calcFraction(dims, rowsDim)) || "0";
-		fallbackProps.set("bottom", position);
 	} else {
-		for(let y=0; y<zone.topIndex; y+=2){
-			dims.push(rowsDim[Math.floor(y/2)]);
+		for (let y = 0; y < zone.topIndex; y += 2) {
+			offsetDims.push(rowsDim[Math.floor(y / 2)]);
 		}
-		let position = calcSum(gridDelta, calcFraction(dims, rowsDim)) || "0";
-		fallbackProps.set("top", position);
 	}
 
-	dims = [];
+	if(alignByBottom && gridDelta && gridDelta != "0"){
+		gridDelta = calc.remaining(gridDelta);
+	}
+
+	let offset = calc.sum(
+		gridDelta,
+		calc.fraction(offsetDims, rowsDim),
+		alignSelf === "center" ? `calc(${height} / 2)` : "0"
+	) || "0";
+
+
+	return {
+		verticalOffset: calc.reduce(offset),
+		alignByBottom
+	}
+}
+
+function getHorizontalOffset({
+	props, zone, grid, colsDim, colIndexes, width
+}){
+
+	const justifySelf = props.get("justify-self") || "stretch";
+
+	let offsetDims = [],
+	    alignByRight = false,
+		gridDelta = getJustifyContentFallbackDelta({ zone, grid, colsDim });
+
+	if(justifySelf === "end") {
+		alignByRight = true;
+		for (let x = colIndexes.length - 1; x > zone.rightIndex; x -= 2) {
+			offsetDims.push(colsDim[Math.floor(x / 2)]);
+		}
+	} else {
+		for(let x=0; x<zone.leftIndex; x+=2){
+			offsetDims.push(colsDim[Math.floor(x/2)]);
+		}
+	}
+
+	if(alignByRight && gridDelta && gridDelta != "0"){
+		gridDelta = calc.remaining(gridDelta);
+	}
+
+	let offset = calc.sum(
+		gridDelta,
+		calc.fraction(offsetDims, colsDim),
+		justifySelf === "center" ? `calc(${width} / 2)` : "0"
+	) || "0";
+
+	return {
+		horizontalOffset: calc.reduce(offset),
+		alignByRight
+	}
+}
+
+function getHeight({ zone, props, rowsDim }){
+
+	const alignSelf = props.get("align-self") || "stretch";
+
+	let dims = [];
 	for(let y=zone.topIndex; y<zone.bottomIndex; y+=2){
 		dims.push(rowsDim[Math.floor(y/2)]);
 	}
-	const height = calcFraction(dims, rowsDim) || "100%";
 
-	if(alignSelf === "stretch"){
-		fallbackProps.set("height", height);
-	} else {
-		fallbackProps.set("max-height", height);
-	}
-
-	if(alignSelf === "center"){
-		fallbackProps.set("transform", "translateY(-50%)");
-		let top = fallbackProps.get("top"),
-		    halfHeight = `calc(${height} / 2)`;
-		fallbackProps.set("top", (!top || top === "0") ? halfHeight : calcSum(top, halfHeight));
+	return {
+		height: calc.reduce(calc.fraction(dims, rowsDim) || "100%"),
+		isStretchingVertically: alignSelf === "stretch"
 	}
 }
 
-function setHorizontalPos({
-	colIndexes, colsDim, fallbackProps, props, zone, grid
-}){
+function getWidth({ zone, props, colsDim }){
+
 	const justifySelf = props.get("justify-self") || "stretch";
 
-	let gridDelta = getJustifyContentFallbackDelta({ zone, grid, colsDim });
 	let dims = [];
-
-	if(justifySelf === "end"){ // align by right
-		for(let x=colIndexes.length-1; x>zone.rightIndex; x-=2){
-			dims.push(colsDim[Math.floor(x/2)]);
-		}
-		if(gridDelta && gridDelta != "0") gridDelta = calcRemaining(gridDelta);
-		let position = calcSum(gridDelta, calcFraction(dims, colsDim)) || "0";
-		fallbackProps.set("right", position);
-	} else {
-		for(let x=0; x<zone.leftIndex; x+=2){
-			dims.push(colsDim[Math.floor(x/2)]);
-		}
-		let position = calcSum(gridDelta, calcFraction(dims, colsDim)) || "0";
-		fallbackProps.set("left", position);
-	}
-
-	dims = [];
 	for(let x=zone.leftIndex; x<zone.rightIndex; x+=2){
 		dims.push(colsDim[Math.floor(x/2)]);
 	}
-	const width = calcFraction(dims, colsDim) || "100%";
 
-	if(justifySelf === "stretch"){
-		fallbackProps.set("width", width);
-	} else {
-		fallbackProps.set("max-width", width);
+	return {
+		width: calc.reduce(calc.fraction(dims, colsDim) || "100%"),
+		isStretchingHorizontally: justifySelf === "stretch"
 	}
+}
 
-	if(justifySelf === "center"){
-		dims = [];
-		for(let x=zone.leftIndex; x<zone.rightIndex; x+=2){
-			dims.push(colsDim[Math.floor(x/2)]);
-		}
+function getTransform({ props }){
+	let isCenteredVertically = props.get("align-self") === "center";
+	let isCenteredHorizontally = props.get("justify-self") === "center";
 
-		let left = fallbackProps.get("left"),
-		    halfWidth = `calc(${width} / 2)`;
-		fallbackProps.set("left", (!left || left === "0") ? halfWidth : calcSum(left, halfWidth));
-
-		if(fallbackProps.get("transform") != null){
-			fallbackProps.set("transform", "translate(-50%,-50%)");
-		} else {
-			fallbackProps.set("transform", "translateX(-50%)");
-		}
-	}
+	if(isCenteredVertically && isCenteredHorizontally)
+		return "translate(-50%,-50%)"
+	if(isCenteredVertically)
+		return "translateY(-50%)"
+	if(isCenteredHorizontally)
+		return "translateX(-50%)"
 }
 
 function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
 
-	if(colsDim.some(isDimRelative)) return "0" // fluid zone will fit all the remaining space
+	if(colsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
 
 	const justifyGrid = grid.props.get("justify-content") || "stretch";
 
@@ -231,7 +217,7 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
 	if(justifyGrid === "start")
 		return "0"
 
-	const remainingSpace = calcRemaining(calcSum(...colsDim)),
+	const remainingSpace = calc.remaining(calc.sum(...colsDim)),
 	      index = Math.floor(zone.leftIndex / 2),
 	      nbCols = colsDim.length;
 
@@ -249,7 +235,7 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
 
 function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
 
-	if(rowsDim.some(isDimRelative)) return "0" // fluid zone will fit all the remaining space
+	if(rowsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
 
 	const alignGrid = grid.props.get("align-content") || "stretch";
 
@@ -258,7 +244,7 @@ function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
 	if(alignGrid === "start")
 		return "0"
 
-	const remainingSpace = calcRemaining(calcSum(...rowsDim)),
+	const remainingSpace = calc.remaining(calc.sum(...rowsDim)),
 	      index = Math.floor(zone.topIndex / 2),
 	      nbRows = rowsDim.length;
 
@@ -275,4 +261,4 @@ function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
 
 }
 
-module.exports = { getFallback, zoneFallback, gridFallback }
+module.exports = { getFallback, getZoneFallback, getGridFallback }

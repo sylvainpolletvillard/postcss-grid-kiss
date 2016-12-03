@@ -3,7 +3,7 @@ const
     REGEX_PERCENT = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
     REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/
 
-exports.parseDimension = function parseDimension(str, direction){
+function parseDimension(str, direction){
 
 	str = str.trim();
 
@@ -65,3 +65,9 @@ exports.parseDimension = function parseDimension(str, direction){
 
 	return null;
 }
+
+function isFillingRemainingSpace(dim){
+	return dim.endsWith("fr");
+}
+
+module.exports = { parseDimension, isFillingRemainingSpace }

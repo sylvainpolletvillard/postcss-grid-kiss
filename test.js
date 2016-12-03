@@ -553,7 +553,7 @@ test('fallback properties with mixed relative/fixed', async t => {
 		"box-sizing": "border-box",
 		"bottom":"0",
 		"max-height":"60px",
-		"left":"calc(100% / 2)",
+		"left":"50%",
 		"max-width":"100%",
 		"transform":"translateX(-50%)"
 	})
@@ -588,15 +588,15 @@ test('fallback properties with all fixed', async t => {
 	t.deepEqual(output["supports"]["body"], {
 		"position": "relative",
 		"display": "block",
-		"width": "calc(100px + 100px + 100px)",
-		"height": "calc(100px + 100px + 100px)"
+		"width": "300px",
+		"height": "300px"
 	})
 
 	t.deepEqual(output["supports"]["body > .baz"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
 		"top":"0",
-		"height":"calc(100px + 100px)",
+		"height":"200px",
 		"left":"0",
 		"width": "100px"
 	})
@@ -607,25 +607,25 @@ test('fallback properties with all fixed', async t => {
 		"top":"0",
 		"height":"100px",
 		"left":"100px",
-		"max-width": "calc(100px + 100px)"
+		"max-width": "200px"
 	})
 
 	t.deepEqual(output["supports"]["body > .qux"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
-		"top":"calc(100px + 100px)",
+		"top":"200px",
 		"height":"100px",
-		"left":"calc(calc(100px + 100px) / 2)",
-		"max-width":"calc(100px + 100px)",
+		"left":"100px",
+		"max-width":"200px",
 		"transform": "translateX(-50%)"
 	})
 
 	t.deepEqual(output["supports"]["body > .foo"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
-		"top":"calc(100px + calc(calc(100px + 100px) / 2))",
-		"max-height":"calc(100px + 100px)",
-		"left":"calc(100px + 100px)",
+		"top":"200px",
+		"max-height":"200px",
+		"left":"200px",
 		"transform": "translateY(-50%)",
 		"width":"100px"
 	})
@@ -663,45 +663,45 @@ test('fallback properties with all relative', async t => {
 		"position": "absolute",
 		"box-sizing": "border-box",
 		"top":"0",
-		"height":"calc(100% * 3 / 15)",
-		"right":"calc(100% * 80 / 90)",
-		"max-width":"calc(100% * 10 / 90)",
+		"height":"20%",
+		"right":"88.88889%",
+		"max-width":"11.11111%",
 	})
 
 	t.deepEqual(output["supports"]["body > .b"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
 		"top":"0",
-		"height":"calc(100% * 3 / 15)",
-		"left":"calc(100% * 80 / 90)",
-		"max-width":"calc(100% * 10 / 90)",
+		"height":"20%",
+		"left":"88.88889%",
+		"max-width":"11.11111%",
 	})
 
 	t.deepEqual(output["supports"]["body > .c"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
-		"top":"calc(100% * 3 / 15)",
-		"height":"calc(100% * 5 / 15)",
-		"left":"calc(100% * 10 / 90)",
-		"width":"calc(100% * 20 / 90)",
+		"top":"20%",
+		"height":"33.33333%",
+		"left":"11.11111%",
+		"width":"22.22222%",
 	})
 
 	t.deepEqual(output["supports"]["body > .d"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
-		"top":"calc(100% * 3 / 15)",
-		"height":"calc(100% * 5 / 15)",
-		"left":"calc(100% * 60 / 90)",
-		"width":"calc(100% * 20 / 90)",
+		"top":"20%",
+		"height":"33.33333%",
+		"left":"66.66667%",
+		"width":"22.22222%",
 	})
 
 	t.deepEqual(output["supports"]["body > .e"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
-		"top":"calc(100% * 8 / 15)",
-		"height":"calc(100% * 7 / 15)",
-		"left":"calc(100% * 30 / 90)",
-		"width":"calc(100% * 30 / 90)",
+		"top":"53.33333%",
+		"height":"46.66667%",
+		"left":"33.33333%",
+		"width":"33.33333%",
 	})
 
 })
