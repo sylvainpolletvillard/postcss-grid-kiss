@@ -29,17 +29,10 @@ function gridFallback({ rowsDim, colsDim, rule }){
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
 
-	if(colsDim.some(isDimRelative)){
-		grid.props.set("width", "100%");
-	} else {
-		grid.props.set("width", calcSum(...colsDim));
-	}
-
-	if(rowsDim.some(isDimRelative)){
-		grid.props.set("height", "100%");
-	} else {
-		grid.props.set("height",  calcSum(...rowsDim));
-	}
+	const gridWidth = colsDim.some(isDimRelative) ? "100%" : calcSum(...colsDim);
+	const gridHeight = rowsDim.some(isDimRelative) ? "100%" : calcSum(...rowsDim);
+	grid.props.set("width", gridWidth);
+	grid.props.set("height", gridHeight);
 
 	for (let [prop,value] of grid.props) {
 		if (value != null){
@@ -61,21 +54,16 @@ function zoneFallback({
 	fallbackProps.set("position", "absolute");
 	fallbackProps.set("box-sizing", "border-box");
 
-	setVerticalPos({
-		fallbackProps, props, rowIndexes, rowsDim, zone, grid
-	})
-
-	setHorizontalPos({
-		colIndexes, colsDim, fallbackProps, props, zone, grid
-	})
+	setVerticalPos({ fallbackProps, props, rowIndexes, rowsDim, zone, grid });
+	setHorizontalPos({ colIndexes, colsDim, fallbackProps, props, zone, grid });
 
 	for (let [prop,value] of fallbackProps) {
 		if (value != null){
-			fallbackRule.append({ prop, value });
+			fallbackRule.append({ prop, value })
 		}
 	}
 
-	return { props: fallbackProps, rule: fallbackRule };
+	return { props: fallbackProps, rule: fallbackRule }
 }
 
 function dimensionFallback(dim, { decl, result }){
@@ -95,6 +83,11 @@ function calcSum(...args){
 	return dims.length < 2 ? dims[0] : `calc(${dims.join(" + ")})`
 }
 
+function calcRemaining(dim){
+	if(!dim || dim == "0") return "100%";
+	return `calc(100% - ${dim})`
+}
+
 function calcFraction(dims, allDims){
 	if(dims.length === 0 || dims.length === allDims.length)
 		return null; // use default value
@@ -110,7 +103,7 @@ function calcFraction(dims, allDims){
 	    totalFr = allDims.reduce((total, dim) => isDimRelative(dim) ? total + parseInt(dim) : total, 0),
 	    allFixedDims = allDims.filter(dim => !isDimRelative(dim)),
 		fixedDims = dims.filter(dim => !isDimRelative(dim)),
-	    remaining = allFixedDims.length === 0 ? "100%" : `calc(100% - ${allFixedDims.join(" - ")})`;
+	    remaining = calcRemaining(allFixedDims.join(" - "));
 
 	if(fixedDims.length === 0) { // all relative
 		if (fr === totalFr) {
@@ -136,28 +129,30 @@ function setVerticalPos({
 }){
 	const alignSelf = props.get("align-self") || "stretch";
 	const alignGrid = grid.props.get("align-content") || "stretch";
-	const gridHeight = calcSum(...rowsDim);
 
-	let dims=[];
-	let gridDelta;
+	const remainingSpace = calcRemaining(calcSum(...rowsDim));
+
+	let dims = [];
+	let gridDelta = "0";
 
 	if(alignGrid === "end"){
-		gridDelta = `calc(100% - ${gridHeight})`;
+		gridDelta = remainingSpace;
+	}
+	if(alignGrid === "center"){
+		gridDelta = `calc(${remainingSpace} / 2)`;
 	}
 
 	if(alignSelf === "end"){ // align by bottom
 		for(let y=rowIndexes.length-1; y>zone.bottomIndex; y-=2){
 			dims.push(rowsDim[Math.floor(y/2)]);
 		}
-		let position = calcFraction(dims, rowsDim) || "0";
-		if(gridDelta) position = calcSum(position, `calc(100% - ${gridDelta})`);
+		let position = calcSum(calcRemaining(gridDelta), calcFraction(dims, rowsDim) || "0");
 		fallbackProps.set("bottom", position);
 	} else {
 		for(let y=0; y<zone.topIndex; y+=2){
 			dims.push(rowsDim[Math.floor(y/2)]);
 		}
-		let position = calcFraction(dims, rowsDim) || "0";
-		if(gridDelta) position = calcSum(position, gridDelta);
+		let position = calcSum(gridDelta, calcFraction(dims, rowsDim) || "0");
 		fallbackProps.set("top", position);
 	}
 
@@ -186,28 +181,30 @@ function setHorizontalPos({
 }){
 	const justifySelf = props.get("justify-self") || "stretch";
 	const justifyGrid = grid.props.get("justify-content") || "stretch";
-	const gridWidth = calcSum(...colsDim);
+
+	const remainingSpace = calcRemaining(calcSum(...colsDim));
 
 	let dims = [];
-	let gridDelta;
+	let gridDelta = "0";
 
 	if(justifyGrid === "end"){
-		gridDelta = `calc(100% - ${gridWidth})`;
+		gridDelta = remainingSpace;
+	}
+	if(justifyGrid === "center"){
+		gridDelta = `calc(${remainingSpace} / 2)`;
 	}
 
 	if(justifySelf === "end"){ // align by right
 		for(let x=colIndexes.length-1; x>zone.rightIndex; x-=2){
 			dims.push(colsDim[Math.floor(x/2)]);
 		}
-		let position = calcFraction(dims, colsDim) || "0";
-		if(gridDelta) position = calcSum(position, `calc(100% - ${gridDelta})`);
+		let position = calcSum(calcRemaining(gridDelta), calcFraction(dims, colsDim) || "0");
 		fallbackProps.set("right", position);
 	} else {
 		for(let x=0; x<zone.leftIndex; x+=2){
 			dims.push(colsDim[Math.floor(x/2)]);
 		}
-		let position = calcFraction(dims, colsDim) || "0";
-		if(gridDelta) position = calcSum(position, gridDelta);
+		let position = calcSum(gridDelta, calcFraction(dims, colsDim) || "0");
 		fallbackProps.set("left", position);
 	}
 
@@ -241,4 +238,4 @@ function setHorizontalPos({
 	}
 }
 
-module.exports = { getFallback, zoneFallback, gridFallback}
+module.exports = { getFallback, zoneFallback, gridFallback }
