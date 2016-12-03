@@ -442,7 +442,7 @@ header { background: yellow }
 
 .grid-row {
 	background-color: #CCC;
-	width: 300px;
+	width: 400px;
 	height: 100px;
 	border: 2px dotted black;
 }
@@ -595,7 +595,7 @@ when there is one space row at the beginning and at the end, and two space rows 
 </ul>
 
 <div class="grid-row justify-self">
-<a>a</a><b>b</b><c>c</c><d>d</d>
+<a>← a</a>  <b>→ b ←</b>  <c>c →</c>  <d>← d →</d> 
 </div>
 
 <h3>Vertical alignment inside a zone</h3>
@@ -608,7 +608,7 @@ when there is one space row at the beginning and at the end, and two space rows 
 </ul>
 
 <div class="grid-row align-self">
-<a>a</a><b>b</b><c>c</c><d>d</d>
+<a>↑ a</a>  <b>↓ b ↑</b>  <c>↓ c</c>  <d>↑ d ↓</d>
 </div>
 `
 	}
