@@ -76,7 +76,7 @@ module.exports = function (options = {}) {
 
 				supportsRule.append(fallback.grid.rule);
 				ieHackRule.append(fallback.grid.rule);
-				for(let [zone, zoneFallback] of fallback.zones){
+				for(let zoneFallback of fallback.zones.values()){
 					supportsRule.append(zoneFallback.rule);
 					ieHackRule.append(zoneFallback.rule);
 				}

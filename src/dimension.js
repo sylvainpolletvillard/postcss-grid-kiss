@@ -1,7 +1,7 @@
 const
 	REGEX_LENGTH = /^(\d+(?:\.\d+)?)([a-z]{1,4})$/,
-    REGEX_PERCENT = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
-    REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/
+	REGEX_PERCENT = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
+	REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/
 
 function parseDimension(str, direction){
 

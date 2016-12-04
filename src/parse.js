@@ -90,9 +90,9 @@ function getZoneName({ zone, zones }){
 
 	const zoneNames = new Set(zones.map(z => z.name)),
 	      zoneSelectors = new Set(zones.map(z => z.selector)),
-		  zoneNamesBySelector = new Map([...zoneSelectors].map(
-		  	selector => [selector, zones.find(z => z.selector === selector).name]
-		  ));
+	      zoneNamesBySelector = new Map([...zoneSelectors].map(
+		      selector => [selector, zones.find(z => z.selector === selector).name]
+	      ));
 
 	if(zoneNamesBySelector.has(zone.selector)) {
 		return zoneNamesBySelector.get(zone.selector)
