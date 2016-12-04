@@ -1,0 +1,14 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [ "error", "tab", { "SwitchCase": 1 } ],
+        "linebreak-style": [ "warn", "windows" ],
+        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
+    }
+}
