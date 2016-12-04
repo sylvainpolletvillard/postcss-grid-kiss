@@ -1,10 +1,9 @@
-const {range} = require("./utils");
 const {parseDimension} = require("./dimension");
 
 exports.getGridCols = function(input){
 
 	const { decl, rows, zones, colIndexes, rowIndexes } = input;
-	const gridCols = range(0, Math.floor(colIndexes.length / 2)).fill("1fr"); // autofill by default
+	const gridCols = new Array(Math.floor(colIndexes.length / 2)).fill("1fr"); // autofill by default
 
 	// match border content
 	for(let zone of zones) {
