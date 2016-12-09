@@ -226,11 +226,42 @@ header { background: yellow }
 `,
 
 		html: format`
-<header>Responsive design layout with media queries</header>	
+<header> Responsive design layout with media queries
+  <br> Try to resize your browser !
+</header>	
 <div class="bloc bloc1">1</div>
 <div class="bloc bloc2">2</div>
 <div class="bloc bloc3">3</div>
 <div class="bloc bloc4">4</div>
+`
+	},
+
+	{
+		name: "Layout with gaps",
+		css: format`
+body {	
+	grid-kiss:		   
+	   "+-----+       +-----+  ----"
+	   "| .nw |       | .ne | 100px"
+	   "+-----+       +-----+  ----"		   
+	   "                      200px"		   
+	   "+-----+       +-----+  ----"
+	   "| .sw |       | .se | 100px"
+	   "+-----+       +-----+  ----"
+	   "|100px| 200px |100px|      "
+}
+
+div {
+	background: #ccc;
+	border: 1px dashed black;
+}
+`,
+
+		html: format`
+<div class="se">SE</div>
+<div class="nw">NW</div>
+<div class="sw">SW</div>
+<div class="ne">NE</div>
 `
 	},
 

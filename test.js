@@ -417,6 +417,58 @@ test('zone align-self', async t => {
 
 });
 
+test('gaps', async t => {
+	let output = await process(
+	`div {
+		grid-kiss:		   
+		   "+--------------------+        +-----+"
+		   "|  .bigzone          |        |.foo |"
+		   "+--------------------+        +-----+"
+		   "+-----+        +--------------------+"
+		   "|.bar |        |  .bigzone2         |"
+		   "+-----+        +--------------------+"
+		   "| 20% | 10px   | 60% |  auto  | 10% |"
+	}`);
+
+	t.is(output["div"]["grid-template-columns"], "20% 10px 60% 1fr 10%");
+
+	output = await process(
+	`div {
+		grid-kiss:		   
+		   "+------+  +------+         "
+		   "|      |  |  ^   |         "
+		   "|      |  | bar >|    1    "
+		   "|  v   |  +------+         "
+		   "| baz  |              2    "
+		   "|  ^   |  +------+         "
+		   "|      |  |  ^   |   3     "
+		   "+------+  |      |         "
+		   "          | foo  |   4     "
+		   "+------+  |      |         "
+		   "| < qux|  |  v   |   5     "
+		   "|  v   |  |      |         "
+		   "+------+  +------+         "
+	}`);
+	t.is(output["div"]["grid-template-rows"], "1fr 2fr 3fr 4fr 5fr");
+
+	output = await process(
+	`body {
+		grid-kiss:		   
+		   "+-----+       +-----+  ----"
+		   "| .nw |       | .ne | 100px"
+		   "+-----+       +-----+  ----"		   
+		   "                      200px"		   
+		   "+-----+       +-----+  ----"
+		   "| .sw |       | .se | 100px"
+		   "+-----+       +-----+  ----"
+		   "|100px| 200px |100px|      "
+	}`);
+
+	t.is(output["body"]["grid-template-columns"], "100px 200px 100px");
+	t.is(output["body"]["grid-template-rows"], "100px 200px 100px");
+	t.is(output["body"]["grid-template-areas"], `\n\t\t"nw  ... ne "\n\t\t"... ... ..."\n\t\t"sw  ... se "`);
+})
+
 test('other ascii formats: simple segments', async t => {
 	let output = await process(
 	`div {
