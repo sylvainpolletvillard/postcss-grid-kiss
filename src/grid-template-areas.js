@@ -1,4 +1,4 @@
-exports.getGridAreas = function({ decl, zones, rowIndexes, colIndexes }){
+exports.getGridAreas = function({ zones, rowIndexes, colIndexes }){
 
 	const areaNames = [];
 
@@ -11,11 +11,13 @@ exports.getGridAreas = function({ decl, zones, rowIndexes, colIndexes }){
 			);
 			if(currentZone){
 				areaNames[y][x] = currentZone.name || "...";
-			} else {
-				throw decl.error(
-					`Zone has not been found for indexes x:${2*x} y:${2*y}`,
-					{ plugin: 'postcss-grid-kiss' }
-				);
+			} else { // gap
+				areaNames[y][x] = "...";
+				zones.push({
+					isGap: true,
+					top: rowIndexes[2*y], bottom: rowIndexes[2*y+1],
+					left: colIndexes[2*x], right: colIndexes[2*x+1]
+				})
 			}
 		}
 	}

@@ -67,8 +67,8 @@ function getZoneFallback({
 	const fallbackRule = rule.clone({ nodes: [] });
 	const fallbackProps = new Map;
 
-	const {height, isStretchingVertically} = getHeight({ zone, props, rowsDim });
-	const {width, isStretchingHorizontally} = getWidth({ zone, props, colsDim });
+	const {height, isStretchingVertically} = getHeight({ zone, props, rowsDim, rowIndexes });
+	const {width, isStretchingHorizontally} = getWidth({ zone, props, colsDim, colIndexes });
 	const {verticalOffset, alignByBottom} = getVerticalOffset({ props, zone, grid, rowsDim, rowIndexes, height });
 	const {horizontalOffset, alignByRight} = getHorizontalOffset({ props, zone, grid, colsDim, colIndexes, width });
 
@@ -97,15 +97,17 @@ function getVerticalOffset({
 
 	let offsetDims = [],
 	    alignByBottom = false,
-	    gridDelta = getAlignContentFallbackDelta({ zone, grid, rowsDim });
+	    gridDelta = getAlignContentFallbackDelta({ zone, grid, rowsDim, rowIndexes });
 
 	if(alignSelf === "end") {
 		alignByBottom = true;
-		for (let y = rowIndexes.length - 1; y > zone.bottomIndex; y -= 2) {
+		let bottomIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.bottom);
+		for (let y = rowIndexes.length - 1; y > bottomIndex; y -= 2) {
 			offsetDims.push(rowsDim[Math.floor(y / 2)]);
 		}
 	} else {
-		for (let y = 0; y < zone.topIndex; y += 2) {
+		let topIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.top);
+		for (let y = 0; y < topIndex; y += 2) {
 			offsetDims.push(rowsDim[Math.floor(y / 2)]);
 		}
 	}
@@ -135,15 +137,17 @@ function getHorizontalOffset({
 
 	let offsetDims = [],
 	    alignByRight = false,
-		gridDelta = getJustifyContentFallbackDelta({ zone, grid, colsDim });
+		gridDelta = getJustifyContentFallbackDelta({ zone, grid, colsDim, colIndexes });
 
 	if(justifySelf === "end") {
 		alignByRight = true;
-		for (let x = colIndexes.length - 1; x > zone.rightIndex; x -= 2) {
+		let rightIndex = colIndexes.findIndex(colIndex => colIndex === zone.right);
+		for (let x = colIndexes.length - 1; x > rightIndex; x -= 2) {
 			offsetDims.push(colsDim[Math.floor(x / 2)]);
 		}
 	} else {
-		for(let x=0; x<zone.leftIndex; x+=2){
+		let leftIndex = colIndexes.findIndex(colIndex => colIndex === zone.left);
+		for(let x=0; x<leftIndex; x+=2){
 			offsetDims.push(colsDim[Math.floor(x/2)]);
 		}
 	}
@@ -164,12 +168,15 @@ function getHorizontalOffset({
 	}
 }
 
-function getHeight({ zone, props, rowsDim }){
+function getHeight({ zone, props, rowsDim, rowIndexes }){
 
 	const alignSelf = props.get("align-self") || "stretch";
 
-	let dims = [];
-	for(let y=zone.topIndex; y<zone.bottomIndex; y+=2){
+	let dims = [],
+	    topIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.top),
+	    bottomIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.bottom);
+
+	for(let y=topIndex; y<bottomIndex; y+=2){
 		dims.push(rowsDim[Math.floor(y/2)]);
 	}
 
@@ -179,12 +186,14 @@ function getHeight({ zone, props, rowsDim }){
 	}
 }
 
-function getWidth({ zone, props, colsDim }){
+function getWidth({ zone, props, colsDim, colIndexes }){
 
 	const justifySelf = props.get("justify-self") || "stretch";
 
-	let dims = [];
-	for(let x=zone.leftIndex; x<zone.rightIndex; x+=2){
+	let dims = [],
+	    leftIndex = colIndexes.findIndex(colIndex => colIndex === zone.left),
+	    rightIndex = colIndexes.findIndex(colIndex => colIndex === zone.right);
+	for(let x=leftIndex; x<rightIndex; x+=2){
 		dims.push(colsDim[Math.floor(x/2)]);
 	}
 
@@ -206,7 +215,7 @@ function getTransform({ props }){
 		return "translateX(-50%)"
 }
 
-function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
+function getJustifyContentFallbackDelta({ zone, grid, colsDim, colIndexes }){
 
 	if(colsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
 
@@ -218,7 +227,8 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
 		return "0"
 
 	const remainingSpace = calc.remaining(calc.sum(...colsDim)),
-	      index = Math.floor(zone.leftIndex / 2),
+	      leftIndex = colIndexes.findIndex(colIndex => colIndex === zone.left),
+	      index = Math.floor(leftIndex / 2),
 	      nbCols = colsDim.length;
 
 	if(justifyGrid === "end")
@@ -233,7 +243,7 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim }){
 		return `calc(${remainingSpace} * ${index + 1} / ${nbCols + 1})`
 }
 
-function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
+function getAlignContentFallbackDelta({ zone, grid, rowsDim, rowIndexes }){
 
 	if(rowsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
 
@@ -245,7 +255,8 @@ function getAlignContentFallbackDelta({ zone, grid, rowsDim }){
 		return "0"
 
 	const remainingSpace = calc.remaining(calc.sum(...rowsDim)),
-	      index = Math.floor(zone.topIndex / 2),
+	      topIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.top),
+	      index = Math.floor(topIndex / 2),
 	      nbRows = rowsDim.length;
 
 	if(alignGrid === "end")

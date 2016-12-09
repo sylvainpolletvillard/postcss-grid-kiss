@@ -47,7 +47,8 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 	for(let y=0; y<rowIndexes.length; y+=2){
 		for(let x=0; x<colIndexes.length; x+=2){
 			let top = rowIndexes[y],
-			    left = colIndexes[x];
+			    left = colIndexes[x],
+			    zone = { top, left };
 
 			if(!isInZone({ zones, x:left, y:top }) && (x+1) in colIndexes && (y+1) in rowIndexes){
 
@@ -55,21 +56,16 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 
 				if(CORNERS_CHARS.test(rows[top][left])) {
 					// a zone starts here, see how far if goes
-					bottom = cols[left].slice(top+1).search(CORNERS_CHARS)+top+1,
+					bottom = cols[left].slice(top+1).search(CORNERS_CHARS)+top+1;
 					right = rows[top].slice(left+1).search(CORNERS_CHARS)+left+1;
 				} else {
-					// no zone found, presumed as hole
+					zone.isHole = true; // no zone found, presumed as hole
 					bottom = rowIndexes[y+1];
 					right = colIndexes[x+1];
 				}
 
-				let zone = {
-					top, bottom, left, right,
-					topIndex: y,
-					leftIndex: x,
-					bottomIndex: rowIndexes.findIndex(rowIndex => rowIndex === bottom),
-					rightIndex: colIndexes.findIndex(colIndex => colIndex === right)
-				};
+				zone.bottom = bottom;
+				zone.right = right;
 				zone.content = rows
 					.slice(top+1, bottom)
 					.map(row => row.substring(left+1, right))

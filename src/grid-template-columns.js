@@ -1,3 +1,4 @@
+const {isInZone}       = require("./parse");
 const {parseDimension} = require("./dimension");
 
 exports.getGridCols = function(input){
@@ -38,6 +39,22 @@ exports.getGridCols = function(input){
 				gridCols[x] = colDim;
 			}
 		}
+
+		// check horizontal gaps
+		for(let x=0; x<colIndexes.length-2; x+=2){
+			let left = colIndexes[x+1]+1,
+			    right = colIndexes[x+2]-1;
+
+			let gapDimensionInfo = cleanupDimInput(lastRow.substring(left, right)),
+			    gapDim = parseDimension(gapDimensionInfo);
+
+			if(gapDim != null){ // horizontal gap detected
+				gridCols.splice(Math.floor(x/2)+1, 0, gapDim);
+				colIndexes.splice(x+2, 0, left, right);
+				x+=2;
+			}
+		}
+
 	}
 
 	input.colsDim = gridCols;
