@@ -672,6 +672,27 @@ Declare the size of a row by writing the dimension **just after the last column 
 
 The `-` separators between dimensions are not mandatory, they are only here to make the grid more readable.
 
+### Gaps dimensions
+
+You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and acts like empty zones.
+
+```
++-----+      +-----+      +-----+  ----
+| .nw |      | .n  |      | .ne | 100px
++-----+      +-----+      +-----+  ----		   
+                                   50px	<- gap	   
++-----+      +-----+      +-----+  ----
+| .w  |      |     |      | .e  | 100px
++-----+      +-----+      +-----+  ----
+                                  50px	<- gap   
++-----+      +-----+      +-----+  ----
+| .sw |      | .s  |      | .se | 100px
++-----+      +-----+      +-----+  ----
+|100px| 50px |100px| 50px |100px|  
+         ^            ^
+        gap          gap
+```
+
 ### Responsive layouts
 
 Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
