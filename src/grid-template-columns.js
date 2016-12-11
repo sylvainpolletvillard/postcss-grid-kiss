@@ -1,4 +1,3 @@
-const {isInZone}       = require("./parse");
 const {parseDimension} = require("./dimension");
 
 exports.getGridCols = function(input){

@@ -1,10 +1,9 @@
-const {isInZone}       = require("./parse")
 const {parseDimension} = require("./dimension");
 
 exports.getGridRows = function(input){
 
 	const
-		{ zones, rows, colIndexes, rowIndexes } = input,
+		{ rows, colIndexes, rowIndexes } = input,
 	    gridRows = [];
 
 	for(let y=0; y<rowIndexes.length; y+=2) {
