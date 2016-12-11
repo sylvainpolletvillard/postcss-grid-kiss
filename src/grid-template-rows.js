@@ -10,7 +10,8 @@ exports.getGridRows = function(input){
 	for(let y=0; y<rowIndexes.length; y+=2) {
 		let dimension = parseDimension(getRowDimInfo({
 			rows, colIndexes,
-			from: rowIndexes[y] + 1, to: rowIndexes[y + 1]
+			from: rowIndexes[y] + 1,
+			to: rowIndexes[y+1]
 		}), "vertical");
 
 		if (dimension === null) dimension = "1fr";
@@ -20,7 +21,7 @@ exports.getGridRows = function(input){
 	// check vertical gaps
 	for(let y=0; y<rowIndexes.length-2; y+=2) {
 		let top = rowIndexes[y+1]+1,
-		    bottom = rowIndexes[y+2],
+		    bottom = rowIndexes[y+2]-1,
 		    gapDimension = parseDimension(getRowDimInfo({ rows, colIndexes, from: top, to: bottom }), "vertical");
 
 		if(gapDimension != null){ // vertical gap detected
@@ -37,7 +38,7 @@ exports.getGridRows = function(input){
 function getRowDimInfo({ rows, colIndexes, from, to }){
 	const lastContentColIndex = colIndexes.slice(-1)[0];
 	return rows
-		.slice(from, to)
+		.slice(from, to+1)
 		.map(row => row.substring(lastContentColIndex + 1))
 		.join(" ");
 }
