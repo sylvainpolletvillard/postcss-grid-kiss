@@ -241,27 +241,37 @@ header { background: yellow }
 		css: format`
 body {	
 	grid-kiss:		   
-	   "+-----+       +-----+  ----"
-	   "| .nw |       | .ne | 100px"
-	   "+-----+       +-----+  ----"		   
-	   "                      200px"		   
-	   "+-----+       +-----+  ----"
-	   "| .sw |       | .se | 100px"
-	   "+-----+       +-----+  ----"
-	   "|100px| 200px |100px|      "
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .nw |      | .n  |      | .ne | 100px"
+		   "+-----+      +-----+      +-----+  ----"		   
+		   "                                   50px"		   
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .w  |      |     |      | .e  | 100px"
+		   "+-----+      +-----+      +-----+  ----"
+		    "                                  50px"		   
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .sw |      | .s  |      | .se | 100px"
+		   "+-----+      +-----+      +-----+  ----"
+		   "|100px| 50px |100px| 50px |100px|      "
 }
 
 div {
 	background: #ccc;
 	border: 1px dashed black;
+	text-align: center;
+	line-height: 100px;
 }
 `,
 
 		html: format`
+<div class="n">N</div>
+<div class="e">E</div>
+<div class="s">S</div>
+<div class="w">W</div>
+<div class="ne">NE</div>
 <div class="se">SE</div>
 <div class="nw">NW</div>
 <div class="sw">SW</div>
-<div class="ne">NE</div>
 `
 	},
 
