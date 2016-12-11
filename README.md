@@ -684,7 +684,7 @@ You can also declare the dimension of spacing between zones the same way you do 
 +-----+      +-----+      +-----+  ----
 | .w  |      |     |      | .e  | 100px
 +-----+      +-----+      +-----+  ----
-                                  50px	<- gap   
+                                   50px	<- gap   
 +-----+      +-----+      +-----+  ----
 | .sw |      | .s  |      | .se | 100px
 +-----+      +-----+      +-----+  ----
