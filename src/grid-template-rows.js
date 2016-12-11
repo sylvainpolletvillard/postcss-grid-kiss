@@ -11,7 +11,7 @@ exports.getGridRows = function(input){
 		let dimension = parseDimension(getRowDimInfo({
 			rows, colIndexes,
 			from: rowIndexes[y] + 1,
-			to: rowIndexes[y+1]
+			to: rowIndexes[y+1] - 1
 		}), "vertical");
 
 		if (dimension === null) dimension = "1fr";
