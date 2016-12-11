@@ -454,19 +454,25 @@ test('gaps', async t => {
 	output = await process(
 	`body {
 		grid-kiss:		   
-		   "+-----+       +-----+  ----"
-		   "| .nw |       | .ne | 100px"
-		   "+-----+       +-----+  ----"		   
-		   "                      200px"		   
-		   "+-----+       +-----+  ----"
-		   "| .sw |       | .se | 100px"
-		   "+-----+       +-----+  ----"
-		   "|100px| 200px |100px|      "
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .nw |      | .n  |      | .ne | 100px"
+		   "+-----+      +-----+      +-----+  ----"		   
+		   "                                   50px"		   
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .w  |      |     |      | .e  | 100px"
+		   "+-----+      +-----+      +-----+  ----"
+		    "                                  50px"		   
+		   "+-----+      +-----+      +-----+  ----"
+		   "| .sw |      | .s  |      | .se | 100px"
+		   "+-----+      +-----+      +-----+  ----"
+		   "|100px| 50px |100px| 50px |100px|      "
 	}`);
 
-	t.is(output["body"]["grid-template-columns"], "100px 200px 100px");
-	t.is(output["body"]["grid-template-rows"], "100px 200px 100px");
-	t.is(output["body"]["grid-template-areas"], `\n\t\t"nw  ... ne "\n\t\t"... ... ..."\n\t\t"sw  ... se "`);
+	t.is(output["body"]["grid-template-columns"], "100px 50px 100px 50px 100px");
+	t.is(output["body"]["grid-template-rows"], "100px 50px 100px 50px 100px");
+	t.is(output["body"]["grid-template-areas"],
+		`\n\t\t"nw  ... n   ... ne "\n\t\t"... ... ... ... ..."\n\t\t"w   ... ... ... e  "`
+		+`\n\t\t"... ... ... ... ..."\n\t\t"sw  ... s   ... se "`);
 })
 
 test('other ascii formats: simple segments', async t => {
