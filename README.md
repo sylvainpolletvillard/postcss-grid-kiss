@@ -21,15 +21,17 @@ Table of contents
 * [Usage](#usage)
 * [Properties supported](#properties-supported)
 * [Fallback for browsers not supporting CSS Grid Layout](#fallback-for-browsers-not-supporting-css-grid-layout)
+* [Responsive layouts](#responsive-layouts)
 * [Documentation](#documentation)
+  - [Dimensions of rows](#dimensions-of-rows)
+  - [Dimensions of columns](#dimensions-of-columns)  
+  - [Gaps dimensions](#gaps-dimensions)
+  - [Values accepted for dimensions](#values-accepted-for-dimensions)
   - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
   - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
   - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
   - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
-  - [Values accepted for dimensions](#values-accepted-for-dimensions)
-  - [Dimensions of columns](#dimensions-of-columns)
-  - [Dimensions of rows](#dimensions-of-rows)
-  - [Responsive layouts](#responsive-layouts)
+  
 
 ##Example
 
@@ -232,14 +234,6 @@ To add the fallback styles to the output, use the `fallback` option:
 postcss([ gridkiss({ fallback: true }) ])
 ```
 
-or in your PostCSS config file:
-
-```javascript
-"postcss-grid-kiss": {
-   "fallback": true
-}
-```
-
 **With this option, grid layouts are supported on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** 
 
 Internet Explorer does not support `@supports` 🙄 , so grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11**.
@@ -258,7 +252,110 @@ Now, about the fallback itself: you should note that a fallback based on absolut
 - New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
 - The CSS output is significally bigger, almost 3x in size
 
+## Responsive layouts
+
+Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
+
+![responsive-layouts](assets/responsive-layout.png)
+
 ## Documentation
+
+### Dimensions of rows
+
+Declare the size of a row by writing the dimension **just after the last column of the grid**
+```
++------+  +------+ --- 
+|  ^   |  | .bar | 40em
+|      |  +------+ --- 
+| .baz |               
+|      |  +------+ --- 
+|  v   |  |  ^   | 38em
++------+  |      | --- 
+          | .foo |     
++------+  |      | --- 
+| .qux |  |  v   | 40em
++------+  +------+ --- 
+```
+
+The `-` separators between dimensions are not mandatory, they are only here to make the grid more readable.
+
+### Dimensions of columns
+
+Declare the size of a column by writing the dimension **inside the top or bottom border of a zone**:
+
+```
++-- 640px --+      +----------+
+|  selector |  or  | selector |
++-----------+      +---30%----+
+```
+
+You cannot set the width of a zone occupying more than one column. This would imply some calculations that may or may not have a solution. As an alternative, you can declare the size of a column **just after the last row of the grid**:
+
+```
++-------------+ +-----+        +-------------+ +-20%-+
+|  .bigzone   | |     |        |  .bigzone   | |     |
++-------------+ +-----+        +-------------+ +-----+            
++-----+ +-------------+   or   +-----+ +-------------+
+|     | |  .bigzone2  |        |     | |  .bigzone2  |
++-----+ +-------------+        +-20%-+ +-------------+
+| 20% | | 60% | | 20% |                | 60% |                 
+```
+
+The `|` separators between dimensions are not mandatory, they are only here to make the grid more readable.
+
+### Gaps dimensions
+
+You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and acts like empty zones. The example below defines gaps of *50px*.
+
+```
++-----+      +-----+      +-----+  ----
+| .nw |      | .n  |      | .ne | 100px
++-----+      +-----+      +-----+  ----		   
+                                   50px	   
++-----+      +-----+      +-----+  ----
+| .w  |      |     |      | .e  | 100px
++-----+      +-----+      +-----+  ----
+                                   50px   
++-----+      +-----+      +-----+  ----
+| .sw |      | .s  |      | .se | 100px
++-----+      +-----+      +-----+  ----
+|100px| 50px |100px| 50px |100px|           
+```
+
+### Values accepted for dimensions
+
+Dimensions can be any of the specified values:
+
+- a non-negative length. 
+  - `15px`
+  - `4rem`
+
+- a non-negative percentage value, optionally with a context keyword
+  - `20%`
+  - `25% free` => `25fr`
+  - `30% grid` => `30%`
+  - `5% view` => `5vw` or `5vh`
+  
+- a non-negative number representing a fraction of the free space in the grid container.
+  - `5` => `5fr`
+  
+- `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
+
+- `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
+
+- a range between a minimum and a maximum or `minmax(min, max)`
+  - `100px - 200px` => `minmax(100px, 200px)`
+
+- `> *length*` or `< *length*`: a minimum or maximum value
+  - `> 100px` => `minmax(100px, auto)`
+  - `< 50%` => `minmax(auto, 50%)`
+  
+- `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
+  - `fit 100px` => `fit-content(100px)`
+
+- `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
+
+When no value is specified, row and column sizes are set as `auto`
 
 ### Horizontal alignment of the grid
 
@@ -594,110 +691,6 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
 
-
-### Values accepted for dimensions
-Dimensions can be any of the specified values:
-
-- a non-negative length. 
-  - `15px`
-  - `4rem`
-
-- a non-negative percentage value, optionally with a context keyword
-  - `20%`
-  - `25% free` => `25fr`
-  - `30% grid` => `30%`
-  - `5% view` => `5vw` or `5vh`
-  
-- a non-negative number representing a fraction of the free space in the grid container.
-  - `5` => `5fr`
-  
-- `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
-
-- `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
-
-- a range between a minimum and a maximum or `minmax(min, max)`
-  - `100px - 200px` => `minmax(100px, 200px)`
-
-- `> *length*` or `< *length*`: a minimum or maximum value
-  - `> 100px` => `minmax(100px, auto)`
-  - `< 50%` => `minmax(auto, 50%)`
-  
-- `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
-  - `fit 100px` => `fit-content(100px)`
-
-- `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
-
-When no value is specified, row and column sizes are set as `auto`
-
-### Dimensions of columns
-
-Declare the size of a column by writing the dimension **inside the top or bottom border of a zone**:
-
-```
-+-- 640px --+      +----------+
-|  selector |  or  | selector |
-+-----------+      +---30%----+
-```
-
-You cannot set the width of a zone occupying more than one column. This would imply some calculations that may or may not have a solution. As an alternative, you can declare the size of a column **just after the last row of the grid**:
-
-```
-+-------------+ +-----+        +-------------+ +-20%-+
-|  .bigzone   | |     |        |  .bigzone   | |     |
-+-------------+ +-----+        +-------------+ +-----+            
-+-----+ +-------------+   or   +-----+ +-------------+
-|     | |  .bigzone2  |        |     | |  .bigzone2  |
-+-----+ +-------------+        +-20%-+ +-------------+
-| 20% | | 60% | | 20% |                | 60% |                 
-```
-
-The `|` separators between dimensions are not mandatory, they are only here to make the grid more readable.
-
-### Dimensions of rows
-
-Declare the size of a row by writing the dimension **just after the last column of the grid**
-```
-+------+  +------+ --- 
-|  ^   |  | .bar | 40em
-|      |  +------+ --- 
-| .baz |               
-|      |  +------+ --- 
-|  v   |  |  ^   | 38em
-+------+  |      | --- 
-          | .foo |     
-+------+  |      | --- 
-| .qux |  |  v   | 40em
-+------+  +------+ --- 
-```
-
-The `-` separators between dimensions are not mandatory, they are only here to make the grid more readable.
-
-### Gaps dimensions
-
-You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and acts like empty zones.
-
-```
-+-----+      +-----+      +-----+  ----
-| .nw |      | .n  |      | .ne | 100px
-+-----+      +-----+      +-----+  ----		   
-                                   50px	<- gap	   
-+-----+      +-----+      +-----+  ----
-| .w  |      |     |      | .e  | 100px
-+-----+      +-----+      +-----+  ----
-                                   50px	<- gap   
-+-----+      +-----+      +-----+  ----
-| .sw |      | .s  |      | .se | 100px
-+-----+      +-----+      +-----+  ----
-|100px| 50px |100px| 50px |100px|  
-         ^            ^
-        gap          gap
-```
-
-### Responsive layouts
-
-Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
-
-![responsive-layouts](assets/responsive-layout.png)
 
 ---
 
