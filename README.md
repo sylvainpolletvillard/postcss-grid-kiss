@@ -620,7 +620,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 - `justify-self: start` with `<` or `←`
 ```
 +-------------+    +-------------+  
-| <  .item-a  | or | ←  .item-a  |
+| .item-a  <  | or | .item-a  ←  |
 +-------------+    +-------------+
 ``` 
 ![justify-self-start](assets/grid-justify-self-start.png)
@@ -628,7 +628,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 - `justify-self: end` with `>` or `→`
 ```
 +-------------+    +-------------+
-| .item-a   > | or | .item-a   → |
+|  >  .item-a | or |  →  .item-a |
 +-------------+    +-------------+
 ``` 
 ![justify-self-end](assets/grid-justify-self-end.png)
@@ -654,8 +654,8 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 - `align-self: start` with `^` or `↑`
 ```
 +-------------+    +-------------+
-|      ^      | or |      ↑      |
-|   .item-a   |    |   .item-a   |
+|   .item-a   | or |   .item-a   |
+|      ^      |    |      ↑      |
 +-------------+    +-------------+
 ``` 
 ![align-self-start](assets/grid-align-self-start.png)
@@ -663,8 +663,8 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 - `align-self: end` with ` v ` or `↓`
 ```
 +-------------+    +-------------+
-|   .item-a   | or |   .item-a   |
-|      v      |    |      ↓      |
+|      v      | or |      ↓      |
+|   .item-a   |    |   .item-a   |
 +-------------+    +-------------+
 ``` 
 ![align-self-end](assets/grid-align-self-end.png)
