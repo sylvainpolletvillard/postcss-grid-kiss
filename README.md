@@ -200,7 +200,7 @@ Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchai
 - `grid-auto-flow` ❌ [3]
 - `grid` ❌ [4]
 
-[1]: gaps are actually faked as empty zones, so you can draw these zones explicitely
+[1]: gaps are actually faked as empty zones, so you can define the gap dimension specifically by row/column. See [Gaps Dimensions](#gaps-dimensions)
 
 [2]: `justify-items` and `align-items` are not used on the container level, instead use alignment helpers for each zone
 
