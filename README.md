@@ -305,7 +305,7 @@ The `|` separators between dimensions are not mandatory, they are only here to m
 
 ### Gaps dimensions
 
-You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and acts like empty zones. The example below defines gaps of *50px*.
+You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and act like empty zones. The example below defines gaps of *50px*.
 
 ```
 +-----+      +-----+      +-----+  ----
