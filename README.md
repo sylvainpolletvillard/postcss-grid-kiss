@@ -180,7 +180,7 @@ postcss([ gridkiss ])
 
 Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchains.
 
-## Properties supported
+## Properties used in the Grid Layout specification
 
 ### on the grid
 
