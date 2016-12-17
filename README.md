@@ -15,14 +15,14 @@ Table of contents
 
 * [Example](#example)
 * [Try it online](#try-it-online)
-* [How to draw a grid ?](#how-to-draw-a-grid)
+* [Responsive layouts](#responsive-layouts)
 * [Alternative styles](#alternative-styles)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Options] (#options)
 * [Properties supported](#properties-supported)
-* [Fallback for browsers not supporting CSS Grid Layout](#fallback-for-browsers-not-supporting-css-grid-layout)
-* [Responsive layouts](#responsive-layouts)
 * [Documentation](#documentation)
+  - [How to draw a grid](#how-to-draw-a-grid)  
   - [Dimensions of rows](#dimensions-of-rows)
   - [Dimensions of columns](#dimensions-of-columns)  
   - [Gaps dimensions](#gaps-dimensions)
@@ -95,16 +95,11 @@ which displays this kind of grid layout:
 
 You can play with the plugin on the [playground][playground]. Edit the CSS and HTML on the left and the grid will be updated instantly.
 
-## How to draw a grid
+## Responsive layouts
 
-- Draw the different zones of your grid as shown in the example. You can use some tools like [AsciiFlow](http://asciiflow.com/).
-- Inside every zone, write a CSS selector that matches the corresponding element. It can be a `tag` name, a `.class`, an `#id`, or `any.other[valid]#selector`
-- The elements matched have to be **direct descendants** of the grid element
-- Separate each row by a newline (`\n`) and give the same indentation level to every row
-- Make sure each row starts and end by a double quote `"`
-- Make sure the zone corners (`+`) are correctly aligned. Every index in the rows where a corner character is found creates a new column.
-- Do not hesitate to make large zones with unused space, it may be useful for future modifications
-- Use Insert. key and Multi-cursor if supported by your editor to draw and edit your grids easily
+Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
+
+![responsive-layouts](assets/responsive-layout.png)
 
 ## Alternative styles
 
@@ -178,7 +173,48 @@ postcss([ gridkiss ])
     });
 ```
 
-Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchains.
+Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other build systems.
+
+## Options
+
+Grid-kiss comes with a few options you can pass to PostCSS: 
+```javascript
+postcss([ gridkiss({ ...options }) ])
+```
+
+### `fallback` : Fallback for browsers not supporting CSS Grid Layout (default: `false`)
+
+As of December 2016, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Firefox 52 and  Chrome Nightly (and probably in Chrome 57). Maybe March 2017 for Safari (maybe). See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope a decent browser support at mid-2017.
+
+In the meantime, Grid-kiss proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
+
+To add the fallback styles to the output, use the `fallback` option:
+
+```javascript
+postcss([ gridkiss({ fallback: true }) ])
+```
+
+**With this option, grid layouts are supported on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** 
+
+Note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. **It comes with a few caveats that you have to be aware:**
+
+- Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
+- Zones require the property `box-sizing: border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
+- It is only a fallback for `grid-kiss` declarations. Other Grid Layout properties such as `grid-gap` are not covered by this fallback
+- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
+- The CSS output is significally bigger, almost 3x in size
+
+### `screwIE` - ignore fallback for Internet Explorer (default: `false`)
+
+This option is only used when `fallback` option is set to `true`.
+
+Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11**.
+ 
+If you don't care about Internet Explorer support and want to reduce the output size, you can add the `screwIE` option to skip the IE hack: 
+
+```javascript
+postcss([ gridkiss({ fallback: true, screwIE: true }) ])
+```
 
 ## Properties used in the Grid Layout specification
 
@@ -222,43 +258,18 @@ Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other toolchai
 
 [5] named areas are used instead of indexes
 
-## Fallback for browsers not supporting CSS Grid Layout
-
-As of December 2016, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Firefox 52 and  Chrome Nightly (and probably in Chrome 57). Maybe March 2017 for Safari (maybe). See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope a decent browser support at mid-2017.
-
-In the meantime, `postcss-grid-kiss` proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
-
-To add the fallback styles to the output, use the `fallback` option:
-
-```javascript
-postcss([ gridkiss({ fallback: true }) ])
-```
-
-**With this option, grid layouts are supported on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** 
-
-Internet Explorer does not support `@supports` 🙄 , so grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11**.
- 
-If you don't care about Internet Explorer support and want to reduce the output size, you can add the `screwIE` option to skip the IE hack: 
-
-```javascript
-postcss([ gridkiss({ fallback: true, screwIE: true }) ])
-```
-
-Now, about the fallback itself: you should note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. **It comes with a few caveats that you have to be aware:**
-
-- Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
-- Zones require the property `box-sizing:border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
-- It is only a fallback for `grid-kiss` declarations. Other Grid Layout properties such as `grid-gap` are not covered by this fallback
-- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
-- The CSS output is significally bigger, almost 3x in size
-
-## Responsive layouts
-
-Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
-
-![responsive-layouts](assets/responsive-layout.png)
-
 ## Documentation
+
+### How to draw a grid
+
+- Draw the different zones of your grid as shown in the example. You can use some tools like [AsciiFlow](http://asciiflow.com/).
+- Inside every zone, write a CSS selector that matches the corresponding element. It can be a `tag` name, a `.class`, an `#id`, or `any.other[valid]#selector`
+- The elements matched have to be **direct descendants** of the grid element
+- Separate each row by a newline (`\n`) and give the same indentation level to every row
+- Make sure each row starts and end by a double quote `"`
+- Make sure the zone corners (`+`) are correctly aligned. Every index in the rows where a corner character is found creates a new column.
+- Do not hesitate to make large zones with unused space, it may be useful for future modifications
+- Use Insert. key and Multi-cursor if supported by your editor to draw and edit your grids easily
 
 ### Dimensions of rows
 
