@@ -216,6 +216,10 @@ If you don't care about Internet Explorer support and want to reduce the output 
 postcss([ gridkiss({ fallback: true, screwIE: true }) ])
 ```
 
+### `optimizeCalc` - simplify `calc()` expressions in fallback code when possible (default: `true`)
+
+Set this option to `false` if you want to debug how Grid-kiss is computing some fallback dimensions.
+
 ## Properties used in the Grid Layout specification
 
 ### on the grid
@@ -707,7 +711,7 @@ New lines and position of alignement characters do not matter. Just make it visu
 
 Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
 
-[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/0.6.0/playground/index.html
+[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/0.6.1/playground/index.html
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
