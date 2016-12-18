@@ -5,5 +5,3 @@ exports.range = function(start, end){
 exports.indentMultiline = function(lines, indent){
 	return "\n" + lines.map(line => indent + line).join("\n");
 }
-
-exports.identity = arg => arg;
