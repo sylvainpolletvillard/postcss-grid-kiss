@@ -216,7 +216,9 @@ If you don't care about Internet Explorer support and want to reduce the output 
 postcss([ gridkiss({ fallback: true, screwIE: true }) ])
 ```
 
-### `optimizeCalc` - simplify `calc()` expressions in fallback code when possible (default: `true`)
+### `optimizeCalc` - simplify `calc()` expressions when possible (default: `true`)
+
+This option is only used when `fallback` option is set to `true`.
 
 Set this option to `false` if you want to debug how Grid-kiss is computing some fallback dimensions.
 
