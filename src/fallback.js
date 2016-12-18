@@ -1,9 +1,12 @@
 const { isFillingRemainingSpace } = require("./dimension");
 const calc = require("./calc-utils");
+const { identity } = require("./utils");
+let calcReducer;
 
 function getFallback({
-	zones, grid, decl, result, input
+	zones, grid, decl, result, input, options
 }){
+	calcReducer = options.optimizeCalc ? calc.reduce : identity;
 
 	const { colIndexes, rowIndexes } = input;
 	const colsDim = input.colsDim.map(dim => dimensionFallback(dim, { decl, result }));
@@ -42,8 +45,8 @@ function getGridFallback({ rowsDim, colsDim, rule }){
 		props: new Map
 	};
 
-	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...colsDim));
-	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...rowsDim));
+	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calcReducer(calc.sum(...colsDim));
+	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calcReducer(calc.sum(...rowsDim));
 
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
@@ -124,7 +127,7 @@ function getVerticalOffset({
 
 
 	return {
-		verticalOffset: calc.reduce(offset),
+		verticalOffset: calcReducer(offset),
 		alignByBottom
 	}
 }
@@ -163,7 +166,7 @@ function getHorizontalOffset({
 	) || "0";
 
 	return {
-		horizontalOffset: calc.reduce(offset),
+		horizontalOffset: calcReducer(offset),
 		alignByRight
 	}
 }
@@ -181,7 +184,7 @@ function getHeight({ zone, props, rowsDim, rowIndexes }){
 	}
 
 	return {
-		height: calc.reduce(calc.fraction(dims, rowsDim) || "100%"),
+		height: calcReducer(calc.fraction(dims, rowsDim) || "100%"),
 		isStretchingVertically: alignSelf === "stretch"
 	}
 }
@@ -198,7 +201,7 @@ function getWidth({ zone, props, colsDim, colIndexes }){
 	}
 
 	return {
-		width: calc.reduce(calc.fraction(dims, colsDim) || "100%"),
+		width: calcReducer(calc.fraction(dims, colsDim) || "100%"),
 		isStretchingHorizontally: justifySelf === "stretch"
 	}
 }

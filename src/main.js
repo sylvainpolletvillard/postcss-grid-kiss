@@ -11,8 +11,15 @@ const {getGridCols}       = require("./grid-template-columns");
 const {getGridAreas}      = require("./grid-template-areas");
 const {getFallback}       = require("./fallback");
 
+const DEFAULTS_OPTIONS = {
+	fallback: false,
+	screwIE: false,
+	optimizeCalc: true
+}
 
-module.exports = function (options = {}) {
+module.exports = function (options) {
+	options = Object.assign({}, DEFAULTS_OPTIONS, options);
+
 	return function (css, result) {
 		css.walkDecls('grid-kiss', function (decl) {
 
@@ -61,7 +68,7 @@ module.exports = function (options = {}) {
 
 			if(options.fallback){
 				const fallback = getFallback({
-					zones, grid, input, decl, result
+					zones, grid, input, decl, result, options
 				});
 
 				const supportsRule = postcss.atRule({
