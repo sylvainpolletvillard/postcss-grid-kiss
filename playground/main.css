@@ -9,11 +9,11 @@ html, body {
 body {
 	display: grid;
 	grid-template-areas:
-		"header header"
-		"input  output  "
-		"html demo  "
-		"footer footer"
-		"hidden hidden";
+		"header options"
+		"input  output "
+		"html   demo   "
+		"footer footer "
+		"hidden hidden ";
 	grid-template-rows: 6em 40vh 1fr 48px 0;
 	grid-template-columns: minmax(640px, max-content) 1fr;
 }
@@ -24,17 +24,29 @@ header {
 	margin: 0;
 }
 
-h1 {
-	display: inline-block;
+h1, h2 {
+	font-weight: normal;
+	margin: 0.25em;
 }
 
 aside.options {
-	float: right;
+	grid-area: options;
+	text-align: right;
+	padding: 0 1em;
 }
 
 aside.options ul {
 	list-style: none;
-	padding: 0;
+	padding: 0.5em;
+	margin: 0;
+}
+
+aside.options li {
+	display: inline-block;
+}
+
+aside.options label {
+	cursor: help;
 }
 
 #cssgridssupport {
@@ -130,6 +142,15 @@ pre {
 	header {
 		position: absolute;
 		left: 0;
+		right: 50%;
+		top: 0;
+		box-sizing: border-box;
+		height: 6rem;
+	}
+
+	aside.options {
+		position: absolute;
+		left: 50%;
 		right: 0;
 		top: 0;
 		box-sizing: border-box;

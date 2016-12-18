@@ -12,24 +12,35 @@
 		<p>Try with Chrome Canary or Firefox Nightly</p>
 	</div>
 </div>
+
 <header>
 	<h1>grid-kiss playground</h1>
-	<aside class="options">
-		<ul>
-			<li>
-				<label>
-					<input type="checkbox" checked>	Add fallback for browsers not supporting Grid Layout
-				</label>
-			</li>
-			<li>
-				<label>
-					Preset examples:
-					<select name="presets" class="presets"></select>
-				</label>
-			</li>
-		</ul>
-	</aside>
+	<label>
+		Preset examples:
+		<select name="presets" class="presets"></select>
+	</label>
 </header>
+
+<aside class="options">
+	<h2>Options</h2>
+	<ul>
+		<li>
+			<label title="Add fallback for browsers not supporting Grid Layout">
+				<input type="checkbox" checked>fallback
+			</label>
+		</li>
+		<li>
+			<label title="Ignore Internet Explorer support in fallback code">
+				<input type="checkbox" checked>screwIE
+			</label>
+		</li>
+		<li>
+			<label title="Optimize calc() expressions in fallback code">
+				<input type="checkbox" checked>optimizeCalc
+			</label>
+		</li>
+	</ul>
+</aside>
 
 <textarea id="input"></textarea>
 <pre id="output"></pre>

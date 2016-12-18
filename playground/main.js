@@ -3,7 +3,7 @@ const
 	gridkiss =  require('../index'),
 	presets = require('./presets');
 
-let processor = postcss([ gridkiss ]);
+let processor;
 
 window.onload = function() {
 
@@ -12,16 +12,15 @@ window.onload = function() {
 		output = document.querySelector("#output"),
 		demo   = document.querySelector("#demo"),
 		html   = document.querySelector("#html"),
-		fallbackCheckbox = document.querySelector(".options input[type='checkbox']"),
+		optionsInputs = [...document.querySelectorAll(".options input[type='checkbox']")],
 		presetSelector = document.querySelector("select.presets");
 
 	input.addEventListener("input", update);
 	html.addEventListener("input", update);
 
-	fallbackCheckbox.addEventListener("change", () => {
-		updateProcessor();
-		update();
-	});
+	for(let option of optionsInputs){
+		option.addEventListener("change", updateOptions);
+	}
 
 	presetSelector.innerHTML = presets.map((preset, index) => `<option value=${index}>${preset.name}</option>`);
 	presetSelector.addEventListener("change", () => {
@@ -46,8 +45,22 @@ window.onload = function() {
 		html.value = preset.html;
 	}
 
+	function updateOptions(){
+		const options = {};
+		for(let checkbox of optionsInputs){
+			options[checkbox.parentElement.textContent.trim()] = checkbox;
+		}
+		options["screwIE"].disabled = !options["fallback"].checked;
+		options["optimizeCalc"].disabled = !options["fallback"].checked;
+		updateProcessor();
+	}
+
 	function updateProcessor(){
-		processor = postcss([ gridkiss({ fallback: fallbackCheckbox.checked }) ]);
+		const options = {};
+		for(let checkbox of optionsInputs){
+			options[checkbox.parentElement.textContent.trim()] = checkbox.checked;
+		}
+		processor = postcss([ gridkiss(options) ]);
 		update();
 	}
 
