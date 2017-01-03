@@ -12,7 +12,7 @@ exports.getGridCols = function(input){
 				borderContent = cleanupDimInput(rows[zone[side]].substring(zone.left, zone.right)),
 				colIndexLeft  = colIndexes.indexOf(zone.left),
 				colIndexRight = colIndexes.indexOf(zone.right),
-				colDim        = parseDimension(borderContent);
+				colDim        = parseDimension(borderContent, "horizontal");
 
 			if (colDim != null) {
 				if (colIndexRight === colIndexLeft + 1) {
@@ -32,7 +32,7 @@ exports.getGridCols = function(input){
 	if(lastRow){
 		for(let x=0; x<gridCols.length; x++){
 			let content = cleanupDimInput(lastRow.substring(colIndexes[2*x], colIndexes[2*x+1]+1)),
-			    colDim  = parseDimension(content);
+			    colDim  = parseDimension(content, "horizontal");
 
 			if (colDim != null) {
 				gridCols[x] = colDim;
@@ -45,7 +45,7 @@ exports.getGridCols = function(input){
 			    right = colIndexes[x+2]-1;
 
 			let gapDimensionInfo = cleanupDimInput(lastRow.substring(left, right)),
-			    gapDim = parseDimension(gapDimensionInfo);
+			    gapDim = parseDimension(gapDimensionInfo, "horizontal");
 
 			if(gapDim != null){ // horizontal gap detected
 				gridCols.splice(Math.floor(x/2)+1, 0, gapDim);

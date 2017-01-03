@@ -1,7 +1,8 @@
 const
 	REGEX_LENGTH = /^(\d+(?:\.\d+)?)([a-z]{1,4})$/,
 	REGEX_PERCENT = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
-	REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/
+	REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/,
+	REGEX_CALC = /^calc\((.*)\)$/
 
 function parseDimension(str, direction){
 
@@ -18,8 +19,11 @@ function parseDimension(str, direction){
 	if(!isNaN(str))
 		return `${parseFloat(str)}fr`
 
-
 	if(REGEX_LENGTH.test(str))
+		return str;
+
+	// calc() expression
+	if(REGEX_CALC.test(str))
 		return str;
 
 	if(REGEX_PERCENT.test(str)){
@@ -37,15 +41,15 @@ function parseDimension(str, direction){
 
 	// `> *length*` or `< *length*`: a minimum or maximum value
 	if(str.startsWith("<"))
-		return `minmax(auto, ${parseDimension(str.substring(1))})`
+		return `minmax(auto, ${parseDimension(str.substring(1), direction)})`
 
 	if(str.startsWith(">"))
-		return `minmax(${parseDimension(str.substring(1))}, auto)`
+		return `minmax(${parseDimension(str.substring(1), direction)}, auto)`
 
 	// a range between a minimum and a maximum or `minmax(min, max)`
 	let [min, max] = str.split("-")
 	if([min, max].every(dim => REGEX_DIMENSION.test(dim))){
-		return `minmax(${parseDimension(min)}, ${parseDimension(max)})`
+		return `minmax(${parseDimension(min, direction)}, ${parseDimension(max, direction)})`
 	}
 
 	// a keyword representing the largest maximal content contribution of the grid items occupying the grid track

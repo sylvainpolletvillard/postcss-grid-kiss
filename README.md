@@ -369,6 +369,8 @@ Dimensions can be any of the specified values:
   
 - `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
   - `fit 100px` => `fit-content(100px)`
+  
+- `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function  
 
 - `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
 

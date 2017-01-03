@@ -43,6 +43,8 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("5.55% free"), "5.55fr")
 	t.is(parseDimension("50% view", "horizontal"), "50vw")
 	t.is(parseDimension("50% view", "vertical"), "50vh")
+	t.is(parseDimension("calc(20% + 10px)"), "calc(20% + 10px)")
+	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
 })
 
 test('display grid', async t => {
