@@ -93,7 +93,9 @@ which displays this kind of grid layout:
 
 ## [Try it online][playground]
 
-You can play with the plugin on the [playground][playground]. Edit the CSS and HTML on the left and the grid will be updated instantly.
+Try the different examples and play with the plugin on the [playground][playground]. Edit the CSS and HTML on the left and the grid will be updated instantly.
+
+You can also try the plugin [on Codepen with this template](codepen) thanks to [@jonathanneal](https://github.com/jonathantneal)
 
 ## Responsive layouts
 
@@ -713,9 +715,10 @@ New lines and position of alignement characters do not matter. Just make it visu
 
 ---
 
-Credits for images : CSS Tricks - https://css-tricks.com/snippets/css/complete-guide-grid/
+Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
 [playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/0.6.1/playground/index.html
+[codepen]:http://codepen.io/sylvainpv/pen/oBxKWg
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
