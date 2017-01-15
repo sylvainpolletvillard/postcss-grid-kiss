@@ -19,7 +19,7 @@ Table of contents
 * [Alternative styles](#alternative-styles)
 * [Installation](#installation)
 * [Usage](#usage)
-* [Options] (#options)
+* [Options](#options)
 * [Properties supported](#properties-supported)
 * [Documentation](#documentation)
   - [How to draw a grid](#how-to-draw-a-grid)  
