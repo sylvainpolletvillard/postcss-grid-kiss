@@ -8,7 +8,6 @@
     "extends": "eslint:recommended",
     "rules": {
         "indent": [ "error", "tab", { "SwitchCase": 1 } ],
-        "linebreak-style": [ "warn", "windows" ],
         "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
     }
 }
