@@ -1,5 +1,5 @@
 const
 	postcss = require('postcss'),
-	main    = require('./src/main');
+	main    = require('./main');
 
 module.exports = postcss.plugin('postcss-grid-kiss', main);
