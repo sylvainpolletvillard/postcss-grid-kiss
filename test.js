@@ -1,15 +1,8 @@
 const postcss = require('postcss'),
-	  gridkiss = require('./dist/index.es5.js'),
+	  gridkiss = require('./dist/index'),
 	  test = require('ava');
 
-async function parseDimension(input){
-	return process(`
-	div { grid-kiss:
-	"+----+"
-	"|    | ${input}"
-    "+----+"
-	}`).then(res => res["div"]["grid-template-rows"])
-}
+const {parseDimension} = require("./dist/dimension");
 
 async function process(input, options){
 	return postcss(gridkiss(options)).process(input).then(res => {
