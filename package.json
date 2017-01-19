@@ -1,6 +1,6 @@
 {
 	"name": "postcss-grid-kiss",
-	"version": "0.19.1",
+	"version": "0.6.1",
 	"description": "A PostCSS plugin to keep CSS grids stupidly simple",
 	"main": "dist/index.js",
 	"author": "Sylvain Pollet-Villard",
