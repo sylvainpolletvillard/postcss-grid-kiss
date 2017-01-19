@@ -1,6 +1,6 @@
 const
 	postcss = require('postcss'),
-	gridkiss =  require('../index'),
+	gridkiss =  require('../dist/index'),
 	presets = require('./presets');
 
 let processor;
