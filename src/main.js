@@ -1,5 +1,5 @@
 const postcss = require("postcss");
-const optimizeRule = require("postcss-merge-grid-template/src/optimize");
+const optimizeRule = require("postcss-merge-grid-template/dist/optimize");
 
 const {parse}             = require("./parse");
 const {indentMultiline}   = require("./utils");
