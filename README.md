@@ -218,11 +218,11 @@ If you don't care about Internet Explorer support and want to reduce the output 
 postcss([ gridkiss({ fallback: true, screwIE: true }) ])
 ```
 
-### `optimizeCalc` - simplify `calc()` expressions when possible (default: `true`)
+### `optimize` - reduce output size (default: `true`)
 
-This option is only used when `fallback` option is set to `true`.
+This option (enabled by default) reduces the size of the output while keeping it readable. It does so by merging grid properties, renaming zone identifiers and reducing `calc()` expressions. For complete minification, use it with [cssnano](http://cssnano.co/).
 
-Set this option to `false` if you want to debug how Grid-kiss is computing some fallback dimensions.
+Set this option to `false` if you prefer a more verbose and descriptive output.
 
 ## Properties used in the Grid Layout specification
 

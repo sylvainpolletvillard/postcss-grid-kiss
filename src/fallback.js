@@ -4,7 +4,7 @@ const calc = require("./calc-utils");
 function getFallback({
 	zones, grid, decl, result, input, options
 }){
-	calc.enableOptimization(options.optimizeCalc);
+	calc.enableOptimization(options.optimize);
 
 	const { colIndexes, rowIndexes } = input;
 	const colsDim = input.colsDim.map(dim => dimensionFallback(dim, { decl, result }));

@@ -1,4 +1,5 @@
 const postcss = require("postcss");
+const optimizeRule = require("postcss-merge-grid-template/src/optimize");
 
 const {parse}             = require("./parse");
 const {indentMultiline}   = require("./utils");
@@ -14,7 +15,7 @@ const {getFallback}       = require("./fallback");
 const DEFAULTS_OPTIONS = {
 	fallback: false,
 	screwIE: false,
-	optimizeCalc: true
+	optimize: true
 }
 
 module.exports = function (options) {
@@ -27,6 +28,7 @@ module.exports = function (options) {
 			const grid   = { props: new Map, rule: decl.parent };
 			const zones  = [];
 			const indent = decl.raws.before.match(/.*$/)[0];
+			const nameMapping = new Map();
 
 			grid.props.set("display", "grid");
 			grid.props.set("align-content", getAlignContent(input));
@@ -37,16 +39,25 @@ module.exports = function (options) {
 
 			// grid properties
 			for (let [prop,value] of grid.props) {
-				if (value != null){
+				if (value){
 					decl.cloneBefore({ prop, value });
 				}
 			}
 
-			// zone declarations
-			for(let zone of input.zones.filter(zone => zone.selector != null)){
-				let props = new Map;
+			if(options.optimize) {
+				optimizeRule(grid.rule, nameMapping);
+			}
 
-				props.set("grid-area", zone.name);
+			// zone declarations
+			for(let zone of input.zones.filter(zone => zone.selector)){
+				let props = new Map;
+				let name = zone.name;
+
+				if(options.optimize && nameMapping.has(zone.name)) {
+					name = nameMapping.get(zone.name);
+				}
+
+				props.set("grid-area", name);
 				props.set("justify-self", getJustifySelf(zone));
 				props.set("align-self", getAlignSelf(zone));
 
@@ -56,7 +67,7 @@ module.exports = function (options) {
 				});
 
 				for (let [prop,value] of props) {
-					if (value != null){
+					if (value){
 						rule.append({prop, value});
 					}
 				}

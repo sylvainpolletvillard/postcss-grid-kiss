@@ -1,6 +1,7 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var postcss = require("postcss");
+var optimizeRule = require("postcss-merge-grid-template/src/optimize");
 
 var _require = require("./parse"),
     parse = _require.parse;
@@ -35,7 +36,7 @@ var _require10 = require("./fallback"),
 var DEFAULTS_OPTIONS = {
 	fallback: false,
 	screwIE: false,
-	optimizeCalc: true
+	optimize: true
 };
 
 module.exports = function (options) {
@@ -48,6 +49,7 @@ module.exports = function (options) {
 			var grid = { props: new Map(), rule: decl.parent };
 			var zones = [];
 			var indent = decl.raws.before.match(/.*$/)[0];
+			var nameMapping = new Map();
 
 			grid.props.set("display", "grid");
 			grid.props.set("align-content", getAlignContent(input));
@@ -70,12 +72,10 @@ module.exports = function (options) {
 					var prop = _ref2[0];
 					var value = _ref2[1];
 
-					if (value != null) {
+					if (value) {
 						decl.cloneBefore({ prop, value });
 					}
 				}
-
-				// zone declarations
 			} catch (err) {
 				_didIteratorError = true;
 				_iteratorError = err;
@@ -91,19 +91,29 @@ module.exports = function (options) {
 				}
 			}
 
+			if (options.optimize) {
+				optimizeRule(grid.rule, nameMapping);
+			}
+
+			// zone declarations
 			var _iteratorNormalCompletion2 = true;
 			var _didIteratorError2 = false;
 			var _iteratorError2 = undefined;
 
 			try {
 				for (var _iterator2 = input.zones.filter(function (zone) {
-					return zone.selector != null;
+					return zone.selector;
 				})[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var zone = _step2.value;
 
 					var props = new Map();
+					var name = zone.name;
 
-					props.set("grid-area", zone.name);
+					if (options.optimize && nameMapping.has(zone.name)) {
+						name = nameMapping.get(zone.name);
+					}
+
+					props.set("grid-area", name);
 					props.set("justify-self", getJustifySelf(zone));
 					props.set("align-self", getAlignSelf(zone));
 
@@ -125,7 +135,7 @@ module.exports = function (options) {
 							var _prop = _ref4[0];
 							var _value = _ref4[1];
 
-							if (_value != null) {
+							if (_value) {
 								rule.append({ prop: _prop, value: _value });
 							}
 						}

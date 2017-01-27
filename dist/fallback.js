@@ -15,7 +15,7 @@ function getFallback(_ref) {
 	    input = _ref.input,
 	    options = _ref.options;
 
-	calc.enableOptimization(options.optimizeCalc);
+	calc.enableOptimization(options.optimize);
 
 	var colIndexes = input.colIndexes,
 	    rowIndexes = input.rowIndexes;

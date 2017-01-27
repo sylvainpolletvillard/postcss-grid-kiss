@@ -249,7 +249,7 @@ test('grid template rows', async t => {
 		   "  +------+  +------+        "
 		   "  | bar  |  | foo  |    15% "
 		   "  +------+  +------+        "
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-rows"], "40px 15%");
 
@@ -267,7 +267,7 @@ test('grid template rows', async t => {
 		   "+------+  +------+         "
 		   "| bar  |  | foo  |   > 20fr"
 		   "+------+  +------+         "
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-rows"], "1fr 50fr minmax(20fr, auto)");
 
@@ -287,7 +287,7 @@ test('grid template rows', async t => {
 		   "| < qux|  |  v   |   > 20fr"
 		   "|  v   |  |      |         "
 		   "+------+  +------+     -   "
-	}`);
+	}`, { optimize: false });
 
 	t.is(output["div"]["grid-template-rows"], "minmax(auto, 10%) 50fr minmax(20fr, auto)");
 
@@ -303,7 +303,7 @@ test('grid template columns', async t => {
 		   "  +------+  +-25%--+        "
 		   "  | bar  |  | foo  |    15% "
 		   "  +------+  +------+        "
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "50px 25%");
 
@@ -316,7 +316,7 @@ test('grid template columns', async t => {
 		   "+-------+ +-20% -+ +-----+"
 		   "| bar   | | foo  | | qux |"
 		   "+ > 4em + +------+ +-----+"
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "minmax(4em, auto) 20% 100px");
 
@@ -330,7 +330,7 @@ test('grid template columns', async t => {
 		   "|     | |  .bigzone2  |"
 		   "+-----+ +-------------+"
 		   "| 20% | | 60% | | 20% |"
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
 
@@ -344,7 +344,7 @@ test('grid template columns', async t => {
 		   "|     | |  .bigzone2  |"
 		   "+-20%-+ +-------------+"
 		   "        | 60% |        "		   
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
 
@@ -365,7 +365,7 @@ test('grid template areas', async t => {
 		   "+------+  +------+         "
 		   "| bar  |  | foo  |   > 20fr"
 		   "+------+  +------+         "
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-areas"], `\n\t\t"baz bar"\n\t\t"baz foo"\n\t\t"bar foo"`);
 	t.is(output["div > bar"]["grid-area"], "bar" );
@@ -381,7 +381,7 @@ test('grid template areas', async t => {
 		   "+------+  +-20% -+ +-----+"
 		   "| .bar |  | #foo | | qux |"
 		   "+ > 4em+  +------+ +-----+"
-	}`)
+	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-areas"],
 		`\n\t\t"foo_bar_baz_qux foo_bar_baz_qux baz"\n\t\t"bar             foo             qux"`);
@@ -430,7 +430,7 @@ test('gaps', async t => {
 		   "|.bar |        |  .bigzone2         |"
 		   "+-----+        +--------------------+"
 		   "| 20% | 10px   | 60% |  auto  | 10% |"
-	}`);
+	}`, { optimize: false });
 
 	t.is(output["div"]["grid-template-columns"], "20% 10px 60% 1fr 10%");
 
@@ -450,7 +450,7 @@ test('gaps', async t => {
 		   "| < qux|  |  v   |   5     "
 		   "|  v   |  |      |         "
 		   "+------+  +------+         "
-	}`);
+	}`, { optimize: false });
 	t.is(output["div"]["grid-template-rows"], "1fr 2fr 3fr 4fr 5fr");
 
 	output = await process(
@@ -468,7 +468,7 @@ test('gaps', async t => {
 		   "| .sw |      | .s  |      | .se | 100px"
 		   "+-----+      +-----+      +-----+  ----"
 		   "|100px| 50px |100px| 50px |100px|      "
-	}`);
+	}`, { optimize: false });
 
 	t.is(output["body"]["grid-template-columns"], "100px 50px 100px 50px 100px");
 	t.is(output["body"]["grid-template-rows"], "100px 50px 100px 50px 100px");
@@ -493,7 +493,7 @@ test('other ascii formats: simple segments', async t => {
 		     "│ ← qux│  │  ↓   │ 200px"
 		     "│  ↓   │  │      │      "
 		     "└─20em─┘  └──────┘      "
-	}`);
+	}`, { optimize: false });
 
 	t.deepEqual(output["div > baz"], {
 		"grid-area":"baz",
@@ -532,7 +532,7 @@ test('other ascii formats: double segments', async t => {
 		"║  nav  ║  ╔════╗  ╔════════╗      "
 		"║       ║  ║    ║  ║ aside  ║ 320px"
 		"╚═200px═╝  ╚════╝  ╚════════╝      "
-	}`);
+	}`, { optimize: false });
 
 	t.deepEqual(output["main > nav"], {
 		"grid-area":"nav"
@@ -706,7 +706,7 @@ test('fallback properties with all relative', async t => {
 	   "            ║ .e ║             7fr"
 	   "            ╚════╝                "	   
 	   ;	    
-	}`, { fallback: true, screwIE: true, optimizeCalc: false });
+	}`, { fallback: true, screwIE: true, optimize: false });
 
 	t.is("supports" in output, true);
 	t.is(output["supports"].params, 'not (grid-template-areas:"test")');
@@ -764,4 +764,24 @@ test('fallback properties with all relative', async t => {
 		"width":"calc(100% * 30 / 90)",
 	})
 
+})
+
+test("optimize option", async t => {
+	let output = await process(
+	`div {
+	grid-kiss:		   
+	   "+----------------+ +-----+"
+	   "|foo#bar.baz[qux]| | baz |"
+	   "+----------------+ +100px+"
+	   "+------+  +-20% -+ +-----+"
+	   "| .bar |  | #foo | | qux |"
+	   "+ > 4em+  +------+ +-----+"
+}`, { optimize: true })
+
+	t.is(output["div"]["grid-template"], `"a a b" 1fr "c d e" 1fr / minmax(4em, auto) 20% 100px`);
+	t.is(output["div > .bar"]["grid-area"], "c" );
+	t.is(output["div > baz"]["grid-area"], "b" );
+	t.is(output["div > #foo"]["grid-area"], "d" );
+	t.is(output["div > qux"]["grid-area"], "e" );
+	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "a" );
 })

@@ -51,7 +51,6 @@ window.onload = function() {
 			options[checkbox.parentElement.textContent.trim()] = checkbox;
 		}
 		options["screwIE"].disabled = !options["fallback"].checked;
-		options["optimizeCalc"].disabled = !options["fallback"].checked;
 		updateProcessor();
 	}
 

@@ -2,7 +2,7 @@
 	"presets": [
 		["env", {
 			"targets": {
-				"node": 4.2
+				"node": 4.3
 			},
 			"modules": false
 		}]
