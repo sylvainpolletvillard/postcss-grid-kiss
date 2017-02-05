@@ -1,5 +1,5 @@
 function format([str]){
-	return str.replace(/\n\t/g, "\n").trim();
+	return str.trim();
 }
 
 module.exports = [

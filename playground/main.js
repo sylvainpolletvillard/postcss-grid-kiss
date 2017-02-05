@@ -50,7 +50,6 @@ window.onload = function() {
 		for(let checkbox of optionsInputs){
 			options[checkbox.parentElement.textContent.trim()] = checkbox;
 		}
-		options["screwIE"].disabled = !options["fallback"].checked;
 		updateProcessor();
 	}
 
