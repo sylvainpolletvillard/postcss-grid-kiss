@@ -241,7 +241,7 @@ function getVerticalOffset(_ref9) {
 		gridDelta = calc.remaining(gridDelta);
 	}
 
-	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, rowsDim), alignSelf === "center" ? `calc(${ height } / 2)` : "0") || "0";
+	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, rowsDim), alignSelf === "center" ? `calc(${height} / 2)` : "0") || "0";
 
 	return {
 		verticalOffset: calc.optimize(offset),
@@ -285,7 +285,7 @@ function getHorizontalOffset(_ref10) {
 		gridDelta = calc.remaining(gridDelta);
 	}
 
-	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, colsDim), justifySelf === "center" ? `calc(${ width } / 2)` : "0") || "0";
+	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, colsDim), justifySelf === "center" ? `calc(${width} / 2)` : "0") || "0";
 
 	return {
 		horizontalOffset: calc.optimize(offset),
@@ -379,10 +379,10 @@ function getJustifyContentFallbackDelta(_ref14) {
 	    nbCols = colsDim.length;
 
 	if (justifyGrid === "end") return remainingSpace;
-	if (justifyGrid === "center") return `calc(${ remainingSpace } / 2)`;
-	if (justifyGrid === "space-between") return `calc(${ remainingSpace } * ${ index } / ${ nbCols - 1 })`;
-	if (justifyGrid === "space-around") return `calc(${ remainingSpace } * ${ index * 2 + 1 } / ${ nbCols * 2 })`;
-	if (justifyGrid === "space-evenly") return `calc(${ remainingSpace } * ${ index + 1 } / ${ nbCols + 1 })`;
+	if (justifyGrid === "center") return `calc(${remainingSpace} / 2)`;
+	if (justifyGrid === "space-between") return `calc(${remainingSpace} * ${index} / ${nbCols - 1})`;
+	if (justifyGrid === "space-around") return `calc(${remainingSpace} * ${index * 2 + 1} / ${nbCols * 2})`;
+	if (justifyGrid === "space-evenly") return `calc(${remainingSpace} * ${index + 1} / ${nbCols + 1})`;
 }
 
 function getAlignContentFallbackDelta(_ref15) {
@@ -407,10 +407,10 @@ function getAlignContentFallbackDelta(_ref15) {
 	    nbRows = rowsDim.length;
 
 	if (alignGrid === "end") return remainingSpace;
-	if (alignGrid === "center") return `calc(${ remainingSpace } / 2)`;
-	if (alignGrid === "space-between") return `calc(${ remainingSpace } * ${ index } / ${ nbRows - 1 })`;
-	if (alignGrid === "space-around") return `calc(${ remainingSpace } * ${ index * 2 + 1 } / ${ nbRows * 2 })`;
-	if (alignGrid === "space-evenly") return `calc(${ remainingSpace } * ${ index + 1 } / ${ nbRows + 1 })`;
+	if (alignGrid === "center") return `calc(${remainingSpace} / 2)`;
+	if (alignGrid === "space-between") return `calc(${remainingSpace} * ${index} / ${nbRows - 1})`;
+	if (alignGrid === "space-around") return `calc(${remainingSpace} * ${index * 2 + 1} / ${nbRows * 2})`;
+	if (alignGrid === "space-evenly") return `calc(${remainingSpace} * ${index + 1} / ${nbRows + 1})`;
 }
 
 module.exports = { getFallback, getZoneFallback, getGridFallback };

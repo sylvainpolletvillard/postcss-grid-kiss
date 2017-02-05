@@ -15,7 +15,7 @@ function parseDimension(str, direction) {
 	if (str === "auto") return "1fr";
 
 	// non-negative number representing a fraction of the free space in the grid container
-	if (!isNaN(str)) return `${ parseFloat(str) }fr`;
+	if (!isNaN(str)) return `${parseFloat(str)}fr`;
 
 	if (REGEX_LENGTH.test(str)) return str;
 
@@ -30,19 +30,19 @@ function parseDimension(str, direction) {
 
 		switch (referential) {
 			case "free":
-				return `${ percentage }fr`;
+				return `${percentage}fr`;
 			case "view":
-				return `${ percentage }${ direction === "vertical" ? "vh" : "vw" }`;
+				return `${percentage}${direction === "vertical" ? "vh" : "vw"}`;
 			case "grid":
 			default:
-				return `${ percentage }%`;
+				return `${percentage}%`;
 		}
 	}
 
 	// `> *length*` or `< *length*`: a minimum or maximum value
-	if (str.startsWith("<")) return `minmax(auto, ${ parseDimension(str.substring(1), direction) })`;
+	if (str.startsWith("<")) return `minmax(auto, ${parseDimension(str.substring(1), direction)})`;
 
-	if (str.startsWith(">")) return `minmax(${ parseDimension(str.substring(1), direction) }, auto)`;
+	if (str.startsWith(">")) return `minmax(${parseDimension(str.substring(1), direction)}, auto)`;
 
 	// a range between a minimum and a maximum or `minmax(min, max)`
 
@@ -54,7 +54,7 @@ function parseDimension(str, direction) {
 	if ([min, max].every(function (dim) {
 		return REGEX_DIMENSION.test(dim);
 	})) {
-		return `minmax(${ parseDimension(min, direction) }, ${ parseDimension(max, direction) })`;
+		return `minmax(${parseDimension(min, direction)}, ${parseDimension(max, direction)})`;
 	}
 
 	// a keyword representing the largest maximal content contribution of the grid items occupying the grid track

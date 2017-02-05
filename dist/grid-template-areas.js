@@ -47,8 +47,8 @@ exports.getGridAreas = function (_ref) {
 	}
 
 	return areaNames.map(function (row) {
-		return `"${ row.map(function (name, x) {
+		return `"${row.map(function (name, x) {
 			return (name + " ".repeat(longestNameLengthByCol[x])).slice(0, longestNameLengthByCol[x]);
-		}).join(" ") }"`;
+		}).join(" ")}"`;
 	});
 };

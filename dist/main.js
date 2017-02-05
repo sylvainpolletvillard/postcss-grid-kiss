@@ -1,6 +1,8 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var postcss = require("postcss");
+var browserslist = require("browserslist");
+var caniuse = require("caniuse-api");
 var optimizeRule = require("postcss-merge-grid-template/dist/optimize");
 
 var _require = require("./parse"),
@@ -34,13 +36,20 @@ var _require10 = require("./fallback"),
     getFallback = _require10.getFallback;
 
 var DEFAULTS_OPTIONS = {
-	fallback: false,
-	screwIE: false,
 	optimize: true
 };
 
 module.exports = function (options) {
 	options = Object.assign({}, DEFAULTS_OPTIONS, options);
+
+	var browsers = browserslist(options.browsers);
+	var isFallbackNeeded = !caniuse.isSupported("css-grid", browsers);
+	var isIEHackNeeded = !caniuse.isSupported("css-supports-api", browsers);
+
+	if (options.hasOwnProperty("fallback")) {
+		isFallbackNeeded = options.fallback;
+		isIEHackNeeded = options.fallback;
+	}
 
 	return function (css, result) {
 		css.walkDecls('grid-kiss', function (decl) {
@@ -118,7 +127,7 @@ module.exports = function (options) {
 					props.set("align-self", getAlignSelf(zone));
 
 					var rule = postcss.rule({
-						selector: `${ grid.rule.selector } > ${ zone.selector }`,
+						selector: `${grid.rule.selector} > ${zone.selector}`,
 						source: decl.source
 					});
 
@@ -173,7 +182,7 @@ module.exports = function (options) {
 				}
 			}
 
-			if (options.fallback) {
+			if (isFallbackNeeded) {
 				var fallback = getFallback({
 					zones, grid, input, decl, result, options
 				});
@@ -217,9 +226,11 @@ module.exports = function (options) {
 				}
 
 				var lastRule = zones.length > 0 ? zones[zones.length - 1].rule : grid.rule;
-				if (!options.screwIE) {
+
+				if (isIEHackNeeded) {
 					grid.rule.parent.insertAfter(lastRule, ieHackRule);
 				}
+
 				grid.rule.parent.insertAfter(lastRule, supportsRule);
 			}
 

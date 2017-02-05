@@ -21,12 +21,12 @@ function sum() {
 	var dims = args.filter(function (arg) {
 		return arg && arg !== "0";
 	});
-	return dims.length < 2 ? dims[0] : optimize(`calc(${ dims.join(" + ") })`);
+	return dims.length < 2 ? dims[0] : optimize(`calc(${dims.join(" + ")})`);
 }
 
 function remaining(dim) {
 	if (!dim || dim == "0") return "100%";
-	return optimize(`calc(100% - ${ dim })`);
+	return optimize(`calc(100% - ${dim})`);
 }
 
 function fraction(dims, allDims) {
@@ -58,7 +58,7 @@ function fraction(dims, allDims) {
 		if (fr === totalFr) {
 			return remainingSpace;
 		}
-		return optimize(`calc(${ remainingSpace } * ${ fr } / ${ totalFr })`);
+		return optimize(`calc(${remainingSpace} * ${fr} / ${totalFr})`);
 	}
 
 	var sumFixed = fixedDims.length == 1 ? fixedDims[0] : sum.apply(undefined, _toConsumableArray(fixedDims));
@@ -66,7 +66,7 @@ function fraction(dims, allDims) {
 		return sum(sumFixed, remainingSpace);
 	}
 
-	return sum(sumFixed, `calc(${ remainingSpace } * ${ fr } / ${ totalFr })`);
+	return sum(sumFixed, `calc(${remainingSpace} * ${fr} / ${totalFr})`);
 }
 
 module.exports = { sum, remaining, fraction, optimize, enableOptimization };
