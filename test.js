@@ -8,10 +8,12 @@ async function process(input, options){
 	return postcss(gridkiss(options)).process(input).then(res => {
 		const output = {};
 		res.root.walkRules((rule) => {
-			output[rule.selector] = {};
-			rule.walkDecls((decl) => {
-				output[rule.selector][decl.prop] = decl.value;
-			})
+			if(rule.parent === res.root){
+				output[rule.selector] = {};
+				rule.walkDecls((decl) => {
+					output[rule.selector][decl.prop] = decl.value;
+				})
+			}
 		});
 		res.root.walkAtRules((atrule) => {
 			output[atrule.name] = { params: atrule.params };
@@ -54,7 +56,7 @@ test('display grid', async t => {
 		   "+------+"
 		   "| test |"
 		   "+------+"
-	}`);
+	}`, { fallback: true });
 
 	t.is(output["div"]["display"], "grid");
 });
@@ -638,7 +640,7 @@ test('fallback properties with all fixed', async t => {
 	    "└────────────────┘ └──────┘         "
 	    "  100px |  100px  |  100px          "
 	    ;
-	}`, { fallback: true });
+	}`, { browsers: ["ie 11"] });
 
 	t.is("supports" in output, true);
 	t.is(output["supports"].params, 'not (grid-template-areas:"test")');
@@ -706,7 +708,7 @@ test('fallback properties with all relative', async t => {
 	   "            ║ .e ║             7fr"
 	   "            ╚════╝                "	   
 	   ;	    
-	}`, { fallback: true, screwIE: true, optimize: false });
+	}`, { browsers: ["chrome 50"], optimize: false });
 
 	t.is("supports" in output, true);
 	t.is(output["supports"].params, 'not (grid-template-areas:"test")');

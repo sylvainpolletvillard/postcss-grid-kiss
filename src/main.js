@@ -1,4 +1,6 @@
-const postcss = require("postcss");
+const postcss      = require("postcss");
+const browserslist = require("browserslist");
+const caniuse      = require("caniuse-api");
 const optimizeRule = require("postcss-merge-grid-template/dist/optimize");
 
 const {parse}             = require("./parse");
@@ -13,13 +15,20 @@ const {getGridAreas}      = require("./grid-template-areas");
 const {getFallback}       = require("./fallback");
 
 const DEFAULTS_OPTIONS = {
-	fallback: false,
-	screwIE: false,
 	optimize: true
 }
 
 module.exports = function (options) {
 	options = Object.assign({}, DEFAULTS_OPTIONS, options);
+
+	const browsers = browserslist(options.browsers);
+	let isFallbackNeeded = !caniuse.isSupported("css-grid", browsers);
+	let isIEHackNeeded = !caniuse.isSupported("css-supports-api", browsers);
+
+	if(options.hasOwnProperty("fallback")){
+		isFallbackNeeded = options.fallback;
+		isIEHackNeeded   = options.fallback;
+	}
 
 	return function (css, result) {
 		css.walkDecls('grid-kiss', function (decl) {
@@ -77,7 +86,7 @@ module.exports = function (options) {
 				zones.push({ props, rule, zone })
 			}
 
-			if(options.fallback){
+			if(isFallbackNeeded){
 				const fallback = getFallback({
 					zones, grid, input, decl, result, options
 				});
@@ -100,9 +109,11 @@ module.exports = function (options) {
 				}
 
 				let lastRule = zones.length > 0 ? zones[zones.length-1].rule : grid.rule;
-				if(!options.screwIE){
+
+				if(isIEHackNeeded){
 					grid.rule.parent.insertAfter(lastRule, ieHackRule);
 				}
+
 				grid.rule.parent.insertAfter(lastRule, supportsRule);
 			}
 

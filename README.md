@@ -20,6 +20,7 @@ Table of contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [Options](#options)
+* [Fallback](#fallback-for-older-browsers)
 * [Properties supported](#properties-supported)
 * [Documentation](#documentation)
   - [How to draw a grid](#how-to-draw-a-grid)  
@@ -184,45 +185,53 @@ Grid-kiss comes with a few options you can pass to PostCSS:
 postcss([ gridkiss({ ...options }) ])
 ```
 
-### `fallback` : Fallback for browsers not supporting CSS Grid Layout (default: `false`)
+### `browsers` : specify the list of browsers to support
 
-As of December 2016, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Firefox 52 and  Chrome Nightly (and probably in Chrome 57). Maybe March 2017 for Safari (maybe). See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope a decent browser support at mid-2017.
-
-In the meantime, Grid-kiss proposes a `fallback` option that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
-
-To add the fallback styles to the output, use the `fallback` option:
+**Note: it is recommended to declare browserslist config in `package.json` instead of using this option, so that other plugins can reuse the configuration. See [browserslist docs][browserslist].**
 
 ```javascript
-postcss([ gridkiss({ fallback: true }) ])
+postcss([ gridkiss({ browsers: ["last 2 versions", "> 1%"] }) ])
 ```
 
-**With this option, grid layouts are supported on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** 
+### `fallback` : add fallback for browsers not supporting CSS Grid Layout 
 
-Note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. **It comes with a few caveats that you have to be aware:**
+**Note: it is recommended to use automatic detection through browserslist instead of using this option. See [Fallback](#fallback-for-older-browsers) section.**
+
+By default, Grid-kiss is looking for your list of supported browsers (see `browsers` option) and automatically deduce what fallbacks are needed, using [Can I Use][can-i-use] data. If this option is provided, it overrides automatic detection and tells explicitely whether to add or not the fallback styles to the output. 
+
+```javascript
+postcss([ gridkiss({ fallback: true }) ]) // always add all fallbacks
+postcss([ gridkiss({ fallback: false }) ]) // never add any fallback
+```
+
+### `optimize` - reduce output size
+
+This option *(enabled by default)* reduces the size of the output while keeping it readable. It does so by merging grid properties, renaming zone identifiers and reducing `calc()` expressions. For complete minification, use it with [cssnano](http://cssnano.co/).
+
+Set this option to `false` if you prefer a more verbose and descriptive output. Try to toggle the option in the [playground][playground] to compare.
+
+```javascript
+postcss([ gridkiss({ optimize: false }) ])
+```
+
+
+## Fallback for older browsers
+
+As of February 2017, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Chrome 57, Firefox 52, Safari 10.1 and Opera 43. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope for a decent browser support at mid-2017.
+
+In the meantime, Grid-kiss proposes a fallback that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
+
+By default, Grid-kiss is looking in your [browserslist][browserslist] config for the list of supported browsers and automatically deduce what fallbacks are needed for your project by using [Can I Use data][can-i-use]. You can override this automatic detection with the `browsers` and `fallback` options.
+
+**With this fallback, Grid-kiss layouts will work on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** But you should note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. It comes with a few caveats that you have to be aware:
 
 - Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
-- Zones require the property `box-sizing: border-box` ; otherwise they may overlap because of their padding or border size. Grid-kiss takes care of it, but it may change a bit the dimensions of your zones compared to the grid layout version.
+- Grid-kiss adds the property `box-sizing: border-box` to each zone so that they don't overlap because of their padding or border size. If you don't already use this property, it may change a bit the zones dimensions.
 - It is only a fallback for `grid-kiss` declarations. Other Grid Layout properties such as `grid-gap` are not covered by this fallback
 - New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
-- The CSS output is significally bigger, almost 3x in size
+- The CSS output is significally bigger, between 2x and 3x in size depending on the targeted browsers
 
-### `screwIE` - ignore fallback for Internet Explorer (default: `false`)
-
-This option is only used when `fallback` option is set to `true`.
-
-Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11**.
- 
-If you don't care about Internet Explorer support and want to reduce the output size, you can add the `screwIE` option to skip the IE hack: 
-
-```javascript
-postcss([ gridkiss({ fallback: true, screwIE: true }) ])
-```
-
-### `optimize` - reduce output size (default: `true`)
-
-This option (enabled by default) reduces the size of the output while keeping it readable. It does so by merging grid properties, renaming zone identifiers and reducing `calc()` expressions. For complete minification, use it with [cssnano](http://cssnano.co/).
-
-Set this option to `false` if you prefer a more verbose and descriptive output.
+Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11** at the cost of a bigger output size. If you don't care about Internet Explorer support and want to reduce the output size, you should omit IE in your [browserslist][browserslist].
 
 ## Properties used in the Grid Layout specification
 
@@ -722,3 +731,4 @@ Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-g
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
 [can-i-use]:http://caniuse.com/#feat=css-grid
+[browserslist]:https://github.com/ai/browserslist
