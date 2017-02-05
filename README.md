@@ -726,7 +726,7 @@ New lines and position of alignement characters do not matter. Just make it visu
 
 Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
-[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/f069e13/playground/index.html
+[playground]:https://cdn.rawgit.com/sylvainpolletvillard/postcss-grid-kiss/1.0.0/playground/index.html
 [codepen]:http://codepen.io/sylvainpv/pen/oBxKWg
 [postcss-website]:http://postcss.org/
 [w3c-spec]:https://www.w3.org/TR/css-grid-1/
