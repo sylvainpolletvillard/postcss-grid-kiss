@@ -131,6 +131,7 @@ pre {
 	border: 1px solid #f0f0f0;
 	padding: 0.5em;
 	margin: 0;
+	font-family: "Source Code Pro", "Consolas", "Courier New", Courier, monospace !important;
 }
 
 @supports not (grid-template-areas:"test") {
