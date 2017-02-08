@@ -651,6 +651,46 @@ when there is one space row at the beginning and at the end, and two space rows 
 <a>↑ a</a>  <b>↓ b ↑</b>  <c>↓ c</c>  <d>↑ d ↓</d>
 </div>
 `
+	},
+
+	{
+		name: "Preserve aspect ratio",
+
+		css: format`
+body {
+    grid-kiss:
+    "+---------------------+ +-------------------+                         "
+    "|                     | |     .green        | calc(3/6 * 70vw * 3 / 4)"
+    "|                     | +-------------------+                         "
+    "|                     | +-----+ +-----------+                         "
+    "|        .pink        | |     | |  .brown   | calc(2/6 * 70vw * 3 / 4)"
+    "|                     | |.blue| +-----------+                         "    
+    "|                     | |     | +-----------+                         "
+    "|                     | |     | |  .black   | calc(1/6 * 70vw * 3 / 4)"
+    "+---------------------+ +-----+ +-----------+                         "
+    "          70vw            1          2                                "  
+  }
+	
+.pink { background: fuchsia }
+.green { background: green }
+.blue { background: blue }
+.brown { background: brown }
+.black { background: black }	
+	
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}		
+`,
+
+		html: format`
+<div class="bloc pink"><h1>My aspect ratio is always 4/3</h1></div>
+<div class="bloc green"></div>
+<div class="bloc blue"></div>
+<div class="bloc brown"></div>
+<div class="bloc black"></div>		
+		`
 	}
 
 ]
