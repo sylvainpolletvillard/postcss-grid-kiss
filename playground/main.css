@@ -2,7 +2,7 @@ html, body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
-	font-family: "Source Code Pro", "Consolas", "Courier New", Courier, monospace;
+	font-family: "Source Code Pro", "Monaco", "Menlo", "Consolas", "Courier New", Courier, monospace;
 	tab-size: 2;
 }
 
@@ -131,7 +131,7 @@ pre {
 	border: 1px solid #f0f0f0;
 	padding: 0.5em;
 	margin: 0;
-	font-family: "Source Code Pro", "Consolas", "Courier New", Courier, monospace !important;
+	font-family: "Source Code Pro", "Monaco", "Menlo", "Consolas", "Courier New", Courier, monospace !important;
 }
 
 @supports not (grid-template-areas:"test") {
