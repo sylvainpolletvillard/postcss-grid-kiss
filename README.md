@@ -90,7 +90,7 @@ body {
 
 which displays this kind of grid layout:
 
-![example-result](assets/example-result.png)
+![example-result](https://cloud.githubusercontent.com/assets/566536/23096165/41d569d4-f617-11e6-92b3-532b20e750c8.png)
 
 ## [Try it online][playground]
 
@@ -102,7 +102,7 @@ You can also try the plugin [on Codepen with this template][codepen] thanks to [
 
 Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
 
-![responsive-layouts](assets/responsive-layout.png)
+![responsive-layout](https://cloud.githubusercontent.com/assets/566536/23096187/4217359e-f617-11e6-8917-4edb017c3cda.png)
 
 ## Alternative styles
 
@@ -405,7 +405,7 @@ when there are no two consecutive spaces at the beginning or the end of the rows
 "+---+ +---+ +---+"
 ``` 
 
-![justify-content-stretch](assets/grid-justify-content-stretch.png)
+![grid-justify-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096183/4211e616-f617-11e6-9819-701ef3958093.png)
 
 - `justify-content: start`
 when there are two consecutive spaces or more at the end of the rows
@@ -422,7 +422,7 @@ when there are two consecutive spaces or more at the end of the rows
 ``` 
 
 
-![justify-content-start](assets/grid-justify-content-start.png)
+![grid-justify-content-start](https://cloud.githubusercontent.com/assets/566536/23096182/4203ebd8-f617-11e6-8972-1ee145bb8359.png)
 
 - `justify-content: end`
 
@@ -438,7 +438,7 @@ when there are two consecutive spaces or more at the beginning of the rows
 "    | g | | h | | i |"
 "    +---+ +---+ +---+"
 ``` 
-![justify-content-end](assets/grid-justify-content-end.png)
+![grid-justify-content-end](https://cloud.githubusercontent.com/assets/566536/23096179/41fefe70-f617-11e6-9340-c53943440a44.png)
 
 - `justify-content: center`
 when there are two consecutive spaces or more at the beginning and the end of the rows
@@ -454,7 +454,7 @@ when there are two consecutive spaces or more at the beginning and the end of th
 "    +---+ +---+ +---+    "
 ```
 
-![justify-content-center](assets/grid-justify-content-center.png)
+![grid-justify-content-center](https://cloud.githubusercontent.com/assets/566536/23096177/41fe1078-f617-11e6-94b3-446296152dfc.png)
 
 - `justify-content: space-between`
 when there are two consecutive spaces or more between zones
@@ -470,7 +470,7 @@ when there are two consecutive spaces or more between zones
 "+---+    +---+    +---+"
 ```
 
-![justify-content-space-between](assets/grid-justify-content-space-between.png)
+![grid-justify-content-space-between](https://cloud.githubusercontent.com/assets/566536/23096180/41ffe254-f617-11e6-8caf-2a4cc2ca467b.png)
 
 - `justify-content: space-evenly`
 when there are two consecutive spaces or more at the beginning and the end of the rows, and exactly two consecutive spaces between zones
@@ -486,7 +486,7 @@ when there are two consecutive spaces or more at the beginning and the end of th
 "    +---+  +---+  +---+    "
 ```
 
-![justify-content-space-evenly](assets/grid-justify-content-space-evenly.png)
+![grid-justify-content-space-evenly](https://cloud.githubusercontent.com/assets/566536/23096181/4201ba70-f617-11e6-8b9a-5f86ca80b423.png)
 
 - `justify-content: space-around`
 when there are two consecutive spaces or more at the beginning and the end of the rows, and four consecutive spaces or more between zones
@@ -502,7 +502,7 @@ when there are two consecutive spaces or more at the beginning and the end of th
 "  +---+    +---+    +---+  "
 ```
 
-![justify-content-space-around](assets/grid-justify-content-space-around.png)
+![grid-justify-content-space-around](https://cloud.githubusercontent.com/assets/566536/23096178/41febbea-f617-11e6-92aa-e68ef32e7d54.png)
 
 ### Vertical alignment of the grid
 
@@ -522,7 +522,7 @@ when no space rows
 "+---+ +---+ +---+"
 ``` 
 
-![align-content-stretch](assets/grid-align-content-stretch.png)
+![grid-align-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096172/41e9bc04-f617-11e6-9de4-a0906fa68a7e.png)
 
 -  `align-content: start`
 when at least one space row at the end
@@ -540,7 +540,7 @@ when at least one space row at the end
 "                 "
 ``` 
 
-![align-content-start](assets/grid-align-content-start.png)
+![grid-align-content-start](https://cloud.githubusercontent.com/assets/566536/23096171/41e983f6-f617-11e6-8e8c-89425ca2c76c.png)
 
 - `align-content: end`
 when at least one space row at the beginning
@@ -558,7 +558,7 @@ when at least one space row at the beginning
 "+---+ +---+ +---+"
 ``` 
 
-![align-content-end](assets/grid-align-content-end.png)
+![grid-align-content-end](https://cloud.githubusercontent.com/assets/566536/23096167/41d703e8-f617-11e6-928b-ef29645c132a.png)
 
 - `align-content: center`
 when at least one space row at the beginning and one space row at the end
@@ -577,7 +577,7 @@ when at least one space row at the beginning and one space row at the end
 "                 "
 ```
 
-![align-content-center](assets/grid-align-content-center.png)
+![grid-align-content-center](https://cloud.githubusercontent.com/assets/566536/23096166/41d67752-f617-11e6-96c7-61f8ba81f4a9.png)
 
 - `align-content: space-between`
 when there is one space row between zones
@@ -596,7 +596,7 @@ when there is one space row between zones
 "+---+ +---+ +---+"
 ```
 
-![align-content-space-between](assets/grid-align-content-space-between.png)
+![grid-align-content-space-between](https://cloud.githubusercontent.com/assets/566536/23096168/41d7ea74-f617-11e6-861a-963f87debf74.png)
 
 - `align-content: space-evenly`
 when there is one space row at the beginning, at the end and between zones
@@ -617,7 +617,7 @@ when there is one space row at the beginning, at the end and between zones
 "                 "
 ```
 
-![align-content-space-evenly](assets/grid-align-content-space-evenly.png)
+![grid-align-content-space-evenly](https://cloud.githubusercontent.com/assets/566536/23096169/41d855cc-f617-11e6-883d-712654b4d4b8.png)
 
 - `align-content: space-around`
 when there is one space row at the beginning and at the end, and two space rows between zones
@@ -640,7 +640,7 @@ when there is one space row at the beginning and at the end, and two space rows 
 "                 "
 ```
 
-![align-content-space-around](assets/grid-align-content-space-around.png)
+![grid-align-content-space-around](https://cloud.githubusercontent.com/assets/566536/23096170/41dc894e-f617-11e6-836f-ec22738413fd.png)
 
 ### Horizontal alignment inside a zone
 
@@ -653,7 +653,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 | .item-a  <  | or | .item-a  ←  |
 +-------------+    +-------------+
 ``` 
-![justify-self-start](assets/grid-justify-self-start.png)
+![grid-justify-self-start](https://cloud.githubusercontent.com/assets/566536/23096186/4213332c-f617-11e6-9fb1-13e46b932364.png)
 
 - `justify-self: end` with `>` or `→`
 ```
@@ -661,7 +661,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |  >  .item-a | or |  →  .item-a |
 +-------------+    +-------------+
 ``` 
-![justify-self-end](assets/grid-justify-self-end.png)
+![grid-justify-self-end](https://cloud.githubusercontent.com/assets/566536/23096185/42121c8a-f617-11e6-830d-2be797b6c71a.png)
 
 - `justify-self: stretch` with `<` and `>` or `←` and `→` in this order
 ```
@@ -669,7 +669,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 | < .item-a  > | or | ← .item-a  → |
 +--------------+    +--------------+
 ``` 
-![justify-self-stretch](assets/grid-justify-self-stretch.png)
+![grid-justify-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096188/42182026-f617-11e6-9ee0-8f43f2065562.png)
 
 - `justify-self: center` with `>` and `<` or `→` and `←` in this order
 ```
@@ -677,7 +677,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 | > .item-a  < | or | → .item-a  ← |
 +--------------+    +--------------+
 ``` 
-![justify-self-center](assets/grid-justify-self-center.png)
+![grid-justify-self-center](https://cloud.githubusercontent.com/assets/566536/23096184/4211f75a-f617-11e6-9f7c-0e2a5dc959e7.png)
 
 ### Vertical alignment inside a zone
 
@@ -688,7 +688,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      ^      |    |      ↑      |
 +-------------+    +-------------+
 ``` 
-![align-self-start](assets/grid-align-self-start.png)
+![grid-align-self-start](https://cloud.githubusercontent.com/assets/566536/23096175/41ecd68c-f617-11e6-91bb-37789cd16c32.png)
 
 - `align-self: end` with ` v ` or `↓`
 ```
@@ -697,7 +697,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |   .item-a   |    |   .item-a   |
 +-------------+    +-------------+
 ``` 
-![align-self-end](assets/grid-align-self-end.png)
+![grid-align-self-end](https://cloud.githubusercontent.com/assets/566536/23096174/41ebf460-f617-11e6-9f6a-70c7ea8e4c1f.png)
 
 - `align-self: stretch` with `^` and ` v ` or `↑` and `↓` in this order
 ```
@@ -707,7 +707,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      v      |    |      ↓      |
 +-------------+    +-------------+
 ``` 
-![align-self-stretch](assets/grid-align-self-stretch.png)
+![grid-align-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096176/41f05fa0-f617-11e6-8841-f353256e0b3a.png)
 
 - `align-self: center` with ` v ` and `^` or `↓` and `↑` in this order
 ```
@@ -717,7 +717,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      ^      |    |      ↑      |
 +-------------+    +-------------+
 ```
-![align-self-center](assets/grid-align-self-center.png)
+![grid-align-self-center](https://cloud.githubusercontent.com/assets/566536/23096173/41eaf966-f617-11e6-91c1-251888ee903b.png)
 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
 
