@@ -70,7 +70,7 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 					.slice(top+1, bottom)
 					.map(row => row.substring(left+1, right))
 					.join(" ");
-				zone.selector = zone.content.replace(/[^\w]v[^\w]|[^\w#.\[\]]/g, "") || null;
+				zone.selector = getZoneSelector(zone) || null;
 				zone.name = getZoneName({ zone, zones });
 
 				zones.push(zone);
@@ -79,6 +79,10 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 	}
 
 	return zones;
+}
+
+function getZoneSelector(zone){
+	return zone.content.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "");
 }
 
 function getZoneName({ zone, zones }){
