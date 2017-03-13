@@ -77,31 +77,29 @@ function getZones(_ref3) {
 			    zone = { top, left };
 
 			if (!isInZone({ zones, x: left, y: top }) && x + 1 in colIndexes && y + 1 in rowIndexes) {
-				(function () {
 
-					var bottom = void 0,
-					    right = void 0;
+				var bottom = void 0,
+				    right = void 0;
 
-					if (CORNERS_CHARS.test(rows[top][left])) {
-						// a zone starts here, see how far if goes
-						bottom = cols[left].slice(top + 1).search(CORNERS_CHARS) + top + 1;
-						right = rows[top].slice(left + 1).search(CORNERS_CHARS) + left + 1;
-					} else {
-						zone.isHole = true; // no zone found, presumed as hole
-						bottom = rowIndexes[y + 1];
-						right = colIndexes[x + 1];
-					}
+				if (CORNERS_CHARS.test(rows[top][left])) {
+					// a zone starts here, see how far if goes
+					bottom = cols[left].slice(top + 1).search(CORNERS_CHARS) + top + 1;
+					right = rows[top].slice(left + 1).search(CORNERS_CHARS) + left + 1;
+				} else {
+					zone.isHole = true; // no zone found, presumed as hole
+					bottom = rowIndexes[y + 1];
+					right = colIndexes[x + 1];
+				}
 
-					zone.bottom = bottom;
-					zone.right = right;
-					zone.content = rows.slice(top + 1, bottom).map(function (row) {
-						return row.substring(left + 1, right);
-					}).join(" ");
-					zone.selector = zone.content.replace(/[^\w]v[^\w]|[^\w#.\[\]]/g, "") || null;
-					zone.name = getZoneName({ zone, zones });
+				zone.bottom = bottom;
+				zone.right = right;
+				zone.content = rows.slice(top + 1, bottom).map(function (row) {
+					return row.substring(left + 1, right);
+				}).join(" ");
+				zone.selector = getZoneSelector(zone) || null;
+				zone.name = getZoneName({ zone, zones });
 
-					zones.push(zone);
-				})();
+				zones.push(zone);
 			}
 		};
 
@@ -111,6 +109,10 @@ function getZones(_ref3) {
 	}
 
 	return zones;
+}
+
+function getZoneSelector(zone) {
+	return zone.content.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "");
 }
 
 function getZoneName(_ref4) {

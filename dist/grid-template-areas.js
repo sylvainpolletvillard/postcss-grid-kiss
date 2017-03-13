@@ -36,10 +36,10 @@ exports.getGridAreas = function (_ref) {
 	}
 
 	var longestNameLengthByCol = [];
-	for (var _y = 0; _y < areaNames.length; _y++) {
-		for (var x = 0; x < areaNames[_y].length; x++) {
+	for (var y = 0; y < areaNames.length; y++) {
+		for (var x = 0; x < areaNames[y].length; x++) {
 			if (!(x in longestNameLengthByCol)) longestNameLengthByCol[x] = 0;
-			var nameLength = areaNames[_y][x].length;
+			var nameLength = areaNames[y][x].length;
 			if (nameLength > longestNameLengthByCol[x]) {
 				longestNameLengthByCol[x] = nameLength;
 			}
