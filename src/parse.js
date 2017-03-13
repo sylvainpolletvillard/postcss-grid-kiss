@@ -82,7 +82,10 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 }
 
 function getZoneSelector(zone){
-	return zone.content.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "");
+	return zone.content
+		.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "")
+		.replace(/^:(\d+)$/, "*:nth-child($1)") // :2 => *:nth-child(2)
+		.replace(/(^[\w-]+):(\d+)$/, "$1:nth-of-type($2)") // button:1 => button:nth-of-type(1)
 }
 
 function getZoneName({ zone, zones }){

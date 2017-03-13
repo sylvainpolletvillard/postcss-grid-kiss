@@ -28,6 +28,7 @@ Table of contents
   - [Dimensions of columns](#dimensions-of-columns)  
   - [Gaps dimensions](#gaps-dimensions)
   - [Values accepted for dimensions](#values-accepted-for-dimensions)
+  - [Selector helpers](#selector-helpers)
   - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
   - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
   - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
@@ -360,32 +361,39 @@ Dimensions can be any of the specified values:
 
 - a non-negative percentage value, optionally with a context keyword
   - `20%`
-  - `25% free` => `25fr`
-  - `30% grid` => `30%`
-  - `5% view` => `5vw` or `5vh`
+  - `25% free` ⇒ `25fr`
+  - `30% grid` ⇒ `30%`
+  - `5% view` ⇒ `5vw` or `5vh` depending on the direction
   
 - a non-negative number representing a fraction of the free space in the grid container.
-  - `5` => `5fr`
+  - `5` ⇒ `5fr`
   
 - `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
 
 - `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
 
 - a range between a minimum and a maximum or `minmax(min, max)`
-  - `100px - 200px` => `minmax(100px, 200px)`
+  - `100px - 200px` ⇒ `minmax(100px, 200px)`
 
 - `> *length*` or `< *length*`: a minimum or maximum value
-  - `> 100px` => `minmax(100px, auto)`
-  - `< 50%` => `minmax(auto, 50%)`
+  - `> 100px` ⇒ `minmax(100px, auto)`
+  - `< 50%` ⇒ `minmax(auto, 50%)`
   
 - `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
-  - `fit 100px` => `fit-content(100px)`
+  - `fit 100px` ⇒ `fit-content(100px)`
   
 - `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function  
 
 - `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
 
 When no value is specified, row and column sizes are set as `auto`
+
+### Selector helpers
+
+Since 1.2.0, selectors in zones may use some shortened notations specific to grid-kiss, although using a class is still the recommended method.
+
+- `:1` ⇒ `*:nth-child(1)`
+- `button:2` ⇒ `button:nth-of-type(2)`
 
 ### Horizontal alignment of the grid
 
