@@ -1,4 +1,4 @@
-#grid-kiss: Keep CSS Grids simple, stupid
+# grid-kiss: Keep CSS Grids simple, stupid
 
 This is a [PostCSS][postcss-website] plugin aiming to replace the 24 new properties brought by [CSS Grids][w3c-spec] with a single one that you immediately understand when you see it.
 
@@ -34,7 +34,7 @@ Table of contents
   - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
   
 
-##Example
+## Example
 
 ```css
 body {
