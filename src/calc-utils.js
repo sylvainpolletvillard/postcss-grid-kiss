@@ -1,22 +1,14 @@
 const reduce = require('reduce-css-calc');
 const { isFillingRemainingSpace } = require("./dimension");
 
-let shouldOptimizeCalc;
-function enableOptimization(bool){
-	shouldOptimizeCalc = bool;
-}
-function optimize(expr){
-	return shouldOptimizeCalc ? reduce(expr) : expr;
-}
-
 function sum(...args){
 	let dims = args.filter(arg => arg && arg !== "0");
-	return dims.length < 2 ? dims[0] : optimize(`calc(${dims.join(" + ")})`)
+	return dims.length < 2 ? dims[0] : reduce(`calc(${dims.join(" + ")})`)
 }
 
 function remaining(dim){
-	if(!dim || dim == "0") return "100%";
-	return optimize(`calc(100% - ${dim})`)
+	if(!dim || dim === "0") return "100%";
+	return reduce(`calc(100% - ${dim})`)
 }
 
 function fraction(dims, allDims){
@@ -40,10 +32,10 @@ function fraction(dims, allDims){
 		if (fr === totalFr) {
 			return remainingSpace;
 		}
-		return optimize(`calc(${remainingSpace} * ${fr} / ${totalFr})`)
+		return reduce(`calc(${remainingSpace} * ${fr} / ${totalFr})`)
 	}
 
-	let sumFixed = fixedDims.length == 1 ? fixedDims[0] : sum(...fixedDims);
+	let sumFixed = fixedDims.length === 1 ? fixedDims[0] : sum(...fixedDims);
 	if (fr === totalFr) {
 		return sum(sumFixed, remainingSpace);
 	}
@@ -52,4 +44,4 @@ function fraction(dims, allDims){
 
 }
 
-module.exports = { sum, remaining, fraction, optimize, enableOptimization }
+module.exports = { sum, remaining, fraction, reduce }

@@ -181,7 +181,7 @@ Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other build sy
 
 ## Options
 
-Grid-kiss comes with a few options you can pass to PostCSS: 
+Grid-kiss comes with a few options: 
 ```javascript
 postcss([ gridkiss({ ...options }) ])
 ```
@@ -207,7 +207,7 @@ postcss([ gridkiss({ fallback: false }) ]) // never add any fallback
 
 ### `optimize` - reduce output size
 
-This option *(enabled by default)* reduces the size of the output while keeping it readable. It does so by merging grid properties, renaming zone identifiers and reducing `calc()` expressions. For complete minification, use it with [cssnano](http://cssnano.co/).
+This option *(enabled by default)* reduces the size of the output while keeping it readable. It does so by merging grid properties and renaming zone identifiers. For complete minification, use it with [cssnano](http://cssnano.co/).
 
 Set this option to `false` if you prefer a more verbose and descriptive output. Try to toggle the option in the [playground][playground] to compare.
 

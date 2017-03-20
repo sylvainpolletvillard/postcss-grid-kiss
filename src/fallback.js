@@ -2,10 +2,8 @@ const { isFillingRemainingSpace } = require("./dimension");
 const calc = require("./calc-utils");
 
 function getFallback({
-	zones, grid, decl, result, input, options
+	zones, grid, decl, result, input
 }){
-	calc.enableOptimization(options.optimize);
-
 	const { colIndexes, rowIndexes } = input;
 	const colsDim = input.colsDim.map(dim => dimensionFallback(dim, { decl, result }));
 	const rowsDim = input.rowsDim.map(dim => dimensionFallback(dim, { decl, result }));
@@ -43,8 +41,8 @@ function getGridFallback({ rowsDim, colsDim, rule }){
 		props: new Map
 	};
 
-	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.optimize(calc.sum(...colsDim));
-	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.optimize(calc.sum(...rowsDim));
+	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...colsDim));
+	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum(...rowsDim));
 
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
@@ -113,7 +111,7 @@ function getVerticalOffset({
 		}
 	}
 
-	if(alignByBottom && gridDelta && gridDelta != "0"){
+	if(alignByBottom && gridDelta && gridDelta !== "0"){
 		gridDelta = calc.remaining(gridDelta);
 	}
 
@@ -125,7 +123,7 @@ function getVerticalOffset({
 
 
 	return {
-		verticalOffset: calc.optimize(offset),
+		verticalOffset: calc.reduce(offset),
 		alignByBottom
 	}
 }
@@ -164,7 +162,7 @@ function getHorizontalOffset({
 	) || "0";
 
 	return {
-		horizontalOffset: calc.optimize(offset),
+		horizontalOffset: calc.reduce(offset),
 		alignByRight
 	}
 }
@@ -182,7 +180,7 @@ function getHeight({ zone, props, rowsDim, rowIndexes }){
 	}
 
 	return {
-		height: calc.optimize(calc.fraction(dims, rowsDim) || "100%"),
+		height: calc.reduce(calc.fraction(dims, rowsDim) || "100%"),
 		isStretchingVertically: alignSelf === "stretch"
 	}
 }
@@ -199,7 +197,7 @@ function getWidth({ zone, props, colsDim, colIndexes }){
 	}
 
 	return {
-		width: calc.optimize(calc.fraction(dims, colsDim) || "100%"),
+		width: calc.reduce(calc.fraction(dims, colsDim) || "100%"),
 		isStretchingHorizontally: justifySelf === "stretch"
 	}
 }
