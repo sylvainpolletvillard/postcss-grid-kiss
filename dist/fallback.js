@@ -12,11 +12,7 @@ function getFallback(_ref) {
 	    grid = _ref.grid,
 	    decl = _ref.decl,
 	    result = _ref.result,
-	    input = _ref.input,
-	    options = _ref.options;
-
-	calc.enableOptimization(options.optimize);
-
+	    input = _ref.input;
 	var colIndexes = input.colIndexes,
 	    rowIndexes = input.rowIndexes;
 
@@ -88,8 +84,8 @@ function getGridFallback(_ref3) {
 		props: new Map()
 	};
 
-	var gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.optimize(calc.sum.apply(calc, _toConsumableArray(colsDim)));
-	var gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.optimize(calc.sum.apply(calc, _toConsumableArray(rowsDim)));
+	var gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum.apply(calc, _toConsumableArray(colsDim)));
+	var gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum.apply(calc, _toConsumableArray(rowsDim)));
 
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
@@ -237,14 +233,14 @@ function getVerticalOffset(_ref9) {
 		}
 	}
 
-	if (alignByBottom && gridDelta && gridDelta != "0") {
+	if (alignByBottom && gridDelta && gridDelta !== "0") {
 		gridDelta = calc.remaining(gridDelta);
 	}
 
 	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, rowsDim), alignSelf === "center" ? `calc(${height} / 2)` : "0") || "0";
 
 	return {
-		verticalOffset: calc.optimize(offset),
+		verticalOffset: calc.reduce(offset),
 		alignByBottom
 	};
 }
@@ -288,7 +284,7 @@ function getHorizontalOffset(_ref10) {
 	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, colsDim), justifySelf === "center" ? `calc(${width} / 2)` : "0") || "0";
 
 	return {
-		horizontalOffset: calc.optimize(offset),
+		horizontalOffset: calc.reduce(offset),
 		alignByRight
 	};
 }
@@ -315,7 +311,7 @@ function getHeight(_ref11) {
 	}
 
 	return {
-		height: calc.optimize(calc.fraction(dims, rowsDim) || "100%"),
+		height: calc.reduce(calc.fraction(dims, rowsDim) || "100%"),
 		isStretchingVertically: alignSelf === "stretch"
 	};
 }
@@ -341,7 +337,7 @@ function getWidth(_ref12) {
 	}
 
 	return {
-		width: calc.optimize(calc.fraction(dims, colsDim) || "100%"),
+		width: calc.reduce(calc.fraction(dims, colsDim) || "100%"),
 		isStretchingHorizontally: justifySelf === "stretch"
 	};
 }
