@@ -6,12 +6,11 @@ root = true
 # Unix-style newlines
 [*]
 end_of_line = lf
-
+indent_style = tab
+indent_size = 4
 
 # Matches multiple files with brace expansion notation
 # Set default charset
 [*.{js,html,css}]
 charset = utf-8
-indent_style = tab
-indent_size = 4
 trim_trailing_whitespace = true
