@@ -583,9 +583,12 @@ test('fallback properties with mixed relative/fixed', async t => {
 		"height": "100%"
 	})
 
-	t.deepEqual(output["supports"]["body > header"], {
-		"position":"absolute",
+	t.deepEqual(output["supports"]["body > *"], {
+		"position": "absolute",
 		"box-sizing": "border-box",
+	})
+
+	t.deepEqual(output["supports"]["body > header"], {
 		"top":"0",
 		"max-height":"120px",
 		"left": "0",
@@ -593,8 +596,6 @@ test('fallback properties with mixed relative/fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .sidebar"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"120px",
 		"height":"calc(100% - 120px - 60px)",
 		"left":"0",
@@ -602,8 +603,6 @@ test('fallback properties with mixed relative/fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > main"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"120px",
 		"height":"calc(100% - 120px - 60px)",
 		"left":"150px",
@@ -611,8 +610,6 @@ test('fallback properties with mixed relative/fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > footer"], {
-		"position":"absolute",
-		"box-sizing": "border-box",
 		"bottom":"0",
 		"max-height":"60px",
 		"left":"50%",
@@ -654,9 +651,12 @@ test('fallback properties with all fixed', async t => {
 		"height": "300px"
 	})
 
-	t.deepEqual(output["supports"]["body > .baz"], {
+	t.deepEqual(output["supports"]["body > *"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
+	})
+
+	t.deepEqual(output["supports"]["body > .baz"], {
 		"top":"0",
 		"height":"200px",
 		"left":"0",
@@ -664,8 +664,6 @@ test('fallback properties with all fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .bar"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"0",
 		"height":"100px",
 		"left":"100px",
@@ -673,8 +671,6 @@ test('fallback properties with all fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .qux"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"200px",
 		"height":"100px",
 		"left":"100px",
@@ -683,8 +679,6 @@ test('fallback properties with all fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .foo"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"200px",
 		"max-height":"200px",
 		"left":"200px",
@@ -721,9 +715,12 @@ test('fallback properties with all relative', async t => {
 		"height": "100%"
 	})
 
-	t.deepEqual(output["supports"]["body > .a"], {
+	t.deepEqual(output["supports"]["body > *"], {
 		"position": "absolute",
 		"box-sizing": "border-box",
+	})
+
+	t.deepEqual(output["supports"]["body > .a"], {
 		"top":"0",
 		"height":"20%",
 		"right":"88.88889%",
@@ -731,8 +728,6 @@ test('fallback properties with all relative', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .b"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"0",
 		"height":"20%",
 		"left":"88.88889%",
@@ -740,8 +735,6 @@ test('fallback properties with all relative', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .c"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"20%",
 		"height":"33.33333%",
 		"left":"11.11111%",
@@ -749,8 +742,6 @@ test('fallback properties with all relative', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .d"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"20%",
 		"height":"33.33333%",
 		"left":"66.66667%",
@@ -758,8 +749,6 @@ test('fallback properties with all relative', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .e"], {
-		"position": "absolute",
-		"box-sizing": "border-box",
 		"top":"53.33333%",
 		"height":"46.66667%",
 		"left":"33.33333%",
