@@ -28,6 +28,14 @@ function getFallback(_ref) {
 		zones: new Map()
 	};
 
+	var zonesCommonRule = grid.rule.clone({
+		selector: grid.rule.selector + ' > *',
+		nodes: []
+	});
+	zonesCommonRule.append({ prop: "position", value: "absolute" });
+	zonesCommonRule.append({ prop: "box-sizing", value: "border-box" });
+	fallback.zones.set('*', { rule: zonesCommonRule });
+
 	var _iteratorNormalCompletion = true;
 	var _didIteratorError = false;
 	var _iteratorError = undefined;
@@ -158,8 +166,6 @@ function getZoneFallback(_ref6) {
 	    horizontalOffset = _getHorizontalOffset.horizontalOffset,
 	    alignByRight = _getHorizontalOffset.alignByRight;
 
-	fallbackProps.set("position", "absolute");
-	fallbackProps.set("box-sizing", "border-box");
 	fallbackProps.set("transform", getTransform({ props }));
 	fallbackProps.set(isStretchingVertically ? "height" : "max-height", height);
 	fallbackProps.set(isStretchingHorizontally ? "width" : "max-width", width);
