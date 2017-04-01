@@ -13,6 +13,14 @@ function getFallback({
 		zones: new Map
 	};
 
+	const zonesCommonRule = grid.rule.clone({
+		selector: grid.rule.selector + ' > *',
+		nodes: []
+	});
+	zonesCommonRule.append({ prop: "position", value: "absolute" });
+	zonesCommonRule.append({ prop: "box-sizing", value: "border-box" });
+	fallback.zones.set('*', { rule: zonesCommonRule })
+
 	for(let zone of zones){
 		fallback.zones.set(zone, getZoneFallback({
 			zone, grid, colIndexes, rowIndexes, colsDim, rowsDim
@@ -71,8 +79,6 @@ function getZoneFallback({
 	const {verticalOffset, alignByBottom} = getVerticalOffset({ props, zone, grid, rowsDim, rowIndexes, height });
 	const {horizontalOffset, alignByRight} = getHorizontalOffset({ props, zone, grid, colsDim, colIndexes, width });
 
-	fallbackProps.set("position", "absolute");
-	fallbackProps.set("box-sizing", "border-box");
 	fallbackProps.set("transform", getTransform({ props }));
 	fallbackProps.set(isStretchingVertically ? "height" : "max-height", height);
 	fallbackProps.set(isStretchingHorizontally ? "width" : "max-width", width);

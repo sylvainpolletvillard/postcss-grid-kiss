@@ -117,7 +117,7 @@ module.exports = function (options) {
 				grid.rule.parent.insertAfter(lastRule, supportsRule);
 			}
 
-			decl.remove();
+			decl.remove(); // remove grid-kiss rule in output
 
 		})
 	}
