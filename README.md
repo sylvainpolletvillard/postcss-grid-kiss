@@ -220,16 +220,19 @@ postcss([ gridkiss({ optimize: false }) ])
 
 As of February 2017, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Chrome 57, Firefox 52, Safari 10.1 and Opera 43. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope for a decent browser support at mid-2017.
 
-In the meantime, Grid-kiss proposes a fallback that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This is a CSS-only fallback that applies only on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
+Lots of people are looking for a polyfill for Grid layout but unfortunately, **it is impossible to make a pure CSS polyfill that is fully compliant with the Grid spec, because it let you do things that were not possible before**.
+
+What Grid-kiss proposes is not a polyfill, but a fallback that tries to simulate CSS Grid Layout with absolute positionning and `calc()` operator. This does not require JavaScript and only applies on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
 
 By default, Grid-kiss is looking in your [browserslist][browserslist] config for the list of supported browsers and automatically deduce what fallbacks are needed for your project by using [Can I Use data][can-i-use]. You can override this automatic detection with the `browsers` and `fallback` options.
 
-**With this fallback, Grid-kiss layouts will work on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** But you should note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. It comes with a few caveats that you have to be aware:
+**With this fallback, Grid-kiss layouts will work on any browser supporting `calc()`, which is like [90% of browsers](http://caniuse.com/#search=calc).** But you should note that a fallback based on absolute positionning is very far from the awesomeness of CSS Grid Layout. You have to be aware of these limitations:
 
+- It is only a fallback for `grid-kiss` declarations. The reason this fallback works is because of the constraints I have set for grid-kiss layouts. Implicit grid definition would not work for example, without JavaScript and DOM knowledge.
+- Other Grid Layout properties such as `grid-gap` are not covered by this fallback.
+- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
 - Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
 - Grid-kiss adds the property `box-sizing: border-box` to each zone so that they don't overlap because of their padding or border size. If you don't already use this property, it may change a bit the zones dimensions.
-- It is only a fallback for `grid-kiss` declarations. Other Grid Layout properties such as `grid-gap` are not covered by this fallback
-- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
 - The CSS output is significally bigger, between 2x and 3x in size depending on the targeted browsers
 
 Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11** at the cost of a bigger output size. If you don't care about Internet Explorer support and want to reduce the output size, you should omit IE in your [browserslist][browserslist].
