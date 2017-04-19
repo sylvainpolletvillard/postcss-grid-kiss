@@ -218,7 +218,7 @@ postcss([ gridkiss({ optimize: false }) ])
 
 ## Fallback for older browsers
 
-As of February 2017, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Chrome 57, Firefox 52, Safari 10.1 and Opera 43. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope for a decent browser support at mid-2017.
+As of February 2017, [CSS Grid Layout][w3c-spec] specification is a Candidate Recommandation and is not widely supported. It is available in Chrome 57, Firefox 52, Safari 10.1 and Opera 44. See [Can I Use][can-i-use] for more information on browser support. Microsoft Edge implements an older and unusable version of this specification. All the major browser editors are currently working on it and we can hope for a decent browser support at mid-2017.
 
 Lots of people are looking for a polyfill for Grid layout but unfortunately, **it is impossible to make a pure CSS polyfill that is fully compliant with the Grid spec, because it let you do things that were not possible before**.
 
