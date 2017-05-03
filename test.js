@@ -62,7 +62,6 @@ test('display grid', async t => {
 });
 
 test('align-content stretch', async t => {
-
 	let output = await process(
 	`div {
 		grid-kiss:
@@ -75,7 +74,6 @@ test('align-content stretch', async t => {
 })
 
 test('align-content start', async t => {
-
 	let output = await process(
 	`div {
 		grid-kiss:		   
@@ -169,7 +167,6 @@ test('align-content space-around', async t => {
 })
 
 test('justify-content start', async t => {
-
 	let output = await process(
 	`div {
 		grid-kiss:		   
@@ -620,7 +617,6 @@ test('fallback properties with mixed relative/fixed', async t => {
 })
 
 test('fallback properties with all fixed', async t => {
-
 	let output = await process(
 	`body {
 		grid-kiss:        
