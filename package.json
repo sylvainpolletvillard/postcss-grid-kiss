@@ -21,7 +21,7 @@
 		"lint": "eslint src --fix"
 	},
 	"engines": {
-		"node": ">=4.3.0"
+		"node": ">=4.5.0"
 	},
 	"dependencies": {
 		"browserslist": "^2.1.1",
