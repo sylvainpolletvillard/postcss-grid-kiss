@@ -197,8 +197,8 @@ module.exports = function (options) {
 					params: 'screen and (min-width:0\\0)'
 				});
 
-				supportsRule.append(fallback.grid.rule);
-				ieHackRule.append(fallback.grid.rule);
+				supportsRule.append(fallback.grid.rule.clone());
+				ieHackRule.append(fallback.grid.rule.clone());
 				var _iteratorNormalCompletion3 = true;
 				var _didIteratorError3 = false;
 				var _iteratorError3 = undefined;
@@ -207,8 +207,8 @@ module.exports = function (options) {
 					for (var _iterator3 = fallback.zones.values()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 						var zoneFallback = _step3.value;
 
-						supportsRule.append(zoneFallback.rule);
-						ieHackRule.append(zoneFallback.rule);
+						supportsRule.append(zoneFallback.rule.clone());
+						ieHackRule.append(zoneFallback.rule.clone());
 					}
 				} catch (err) {
 					_didIteratorError3 = true;

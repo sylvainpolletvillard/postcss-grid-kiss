@@ -101,11 +101,11 @@ module.exports = function (options) {
 					params: 'screen and (min-width:0\\0)'
 				});
 
-				supportsRule.append(fallback.grid.rule);
-				ieHackRule.append(fallback.grid.rule);
+				supportsRule.append(fallback.grid.rule.clone());
+				ieHackRule.append(fallback.grid.rule.clone());
 				for(let zoneFallback of fallback.zones.values()){
-					supportsRule.append(zoneFallback.rule);
-					ieHackRule.append(zoneFallback.rule);
+					supportsRule.append(zoneFallback.rule.clone());
+					ieHackRule.append(zoneFallback.rule.clone());
 				}
 
 				let lastRule = zones.length > 0 ? zones[zones.length-1].rule : grid.rule;
