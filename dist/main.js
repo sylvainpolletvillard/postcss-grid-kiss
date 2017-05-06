@@ -82,7 +82,7 @@ module.exports = function (options) {
 					var value = _ref2[1];
 
 					if (value) {
-						decl.cloneBefore({ prop, value });
+						decl.cloneBefore({ prop, value, raws: { before: '\n\t', after: '' } });
 					}
 				}
 			} catch (err) {
@@ -128,7 +128,8 @@ module.exports = function (options) {
 
 					var rule = postcss.rule({
 						selector: `${grid.rule.selector} > ${zone.selector}`,
-						source: decl.source
+						source: decl.source,
+						raws: { before: '\n\n', after: '\n' }
 					});
 
 					var _iteratorNormalCompletion4 = true;
@@ -145,7 +146,7 @@ module.exports = function (options) {
 							var _value = _ref4[1];
 
 							if (_value) {
-								rule.append({ prop: _prop, value: _value });
+								rule.append({ prop: _prop, value: _value, raws: { before: '\n\t', after: '' } });
 							}
 						}
 					} catch (err) {
@@ -197,8 +198,8 @@ module.exports = function (options) {
 					params: 'screen and (min-width:0\\0)'
 				});
 
-				supportsRule.append(fallback.grid.rule.clone());
-				ieHackRule.append(fallback.grid.rule.clone());
+				supportsRule.append(fallback.grid.rule.clone({ raws: { before: '\n\t', after: '\n\t' } }));
+				ieHackRule.append(fallback.grid.rule.clone({ raws: { before: '\n\t', after: '\n\t' } }));
 				var _iteratorNormalCompletion3 = true;
 				var _didIteratorError3 = false;
 				var _iteratorError3 = undefined;
@@ -207,8 +208,8 @@ module.exports = function (options) {
 					for (var _iterator3 = fallback.zones.values()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 						var zoneFallback = _step3.value;
 
-						supportsRule.append(zoneFallback.rule.clone());
-						ieHackRule.append(zoneFallback.rule.clone());
+						supportsRule.append(zoneFallback.rule.clone({ raws: { before: '\n\n\t', after: '\n\t' } }));
+						ieHackRule.append(zoneFallback.rule.clone({ raws: { before: '\n\n\t', after: '\n\t' } }));
 					}
 				} catch (err) {
 					_didIteratorError3 = true;
