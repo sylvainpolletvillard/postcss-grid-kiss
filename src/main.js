@@ -49,7 +49,7 @@ module.exports = function (options) {
 			// grid properties
 			for (let [prop,value] of grid.props) {
 				if (value){
-					decl.cloneBefore({ prop, value });
+					decl.cloneBefore({ prop, value, raws: { before: '\n\t', after: '' } });
 				}
 			}
 
@@ -72,12 +72,13 @@ module.exports = function (options) {
 
 				let rule = postcss.rule({
 					selector: `${grid.rule.selector} > ${zone.selector}`,
-					source: decl.source
+					source: decl.source,
+					raws: { before: '\n\n', after: '\n' }
 				});
 
 				for (let [prop,value] of props) {
 					if (value){
-						rule.append({prop, value});
+						rule.append({prop, value, raws: { before: '\n\t', after: '' } });
 					}
 				}
 
@@ -101,11 +102,11 @@ module.exports = function (options) {
 					params: 'screen and (min-width:0\\0)'
 				});
 
-				supportsRule.append(fallback.grid.rule.clone());
-				ieHackRule.append(fallback.grid.rule.clone());
+				supportsRule.append(fallback.grid.rule.clone({ raws: { before: '\n\t', after: '\n\t' } }));
+				ieHackRule.append(fallback.grid.rule.clone({ raws: { before: '\n\t', after: '\n\t' } }));
 				for(let zoneFallback of fallback.zones.values()){
-					supportsRule.append(zoneFallback.rule.clone());
-					ieHackRule.append(zoneFallback.rule.clone());
+					supportsRule.append(zoneFallback.rule.clone({ raws: { before: '\n\n\t', after: '\n\t' } }));
+					ieHackRule.append(zoneFallback.rule.clone({ raws: { before: '\n\n\t', after: '\n\t' } }));
 				}
 
 				let lastRule = zones.length > 0 ? zones[zones.length-1].rule : grid.rule;
