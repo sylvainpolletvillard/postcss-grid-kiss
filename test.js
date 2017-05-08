@@ -76,7 +76,7 @@ test('align-content stretch', async t => {
 test('align-content start', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+"
 		   "| test |"
 		   "+------+"
@@ -89,11 +89,11 @@ test('align-content start', async t => {
 test('align-content end', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:	
+		grid-kiss:
 		   "        "
 		   "+------+"
 		   "| test |"
-		   "+------+"		   
+		   "+------+"
 	}`);
 
 	t.is(output["div"]["align-content"], "end");
@@ -103,7 +103,7 @@ test('align-content center', async t => {
 	let output = await process(
 	`div {
 		grid-kiss:
-		   "        "	   
+		   "        "
 		   "+------+"
 		   "| test |"
 		   "+------+"
@@ -116,7 +116,7 @@ test('align-content center', async t => {
 test('align-content space-between', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:   
+		grid-kiss:
 		   "+------+"
 		   "| foo  |"
 		   "+------+"
@@ -133,7 +133,7 @@ test('align-content space-evenly', async t => {
 	let output = await process(
 	`div {
 		grid-kiss:
-		   "        "	   
+		   "        "
 		   "+------+"
 		   "| foo  |"
 		   "+------+"
@@ -169,7 +169,7 @@ test('align-content space-around', async t => {
 test('justify-content start', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------++------+  "
 		   "| foo  || bar  |  "
 		   "+------++------+  "
@@ -181,7 +181,7 @@ test('justify-content start', async t => {
 test('justify-content end', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "  +-----++-----+"
 		   "  | foo || bar |"
 		   "  +-----++-----+"
@@ -217,7 +217,7 @@ test('justify-content space-between', async t => {
 test('justify-content space-evenly', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "  +------+  +------+  "
 		   "  | foo  |  | bar  |  "
 		   "  +------+  +------+  "
@@ -229,7 +229,7 @@ test('justify-content space-evenly', async t => {
 test('justify-content space-around', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "  +------+    +------+  "
 		   "  | foo  |    | bar  |  "
 		   "  +------+    +------+  "
@@ -241,7 +241,7 @@ test('justify-content space-around', async t => {
 test('grid template rows', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "  +------+  +------+        "
 		   "  | foo  |  | bar  |   40px "
 		   "  +------+  +------+        "
@@ -254,7 +254,7 @@ test('grid template rows', async t => {
 
 	output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  | bar  |         "
 		   "|      |  +------+         "
@@ -272,7 +272,7 @@ test('grid template rows', async t => {
 
 	output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+  +------+     -   "
 		   "|      |  |  ^   |   <10%  "
 		   "|      |  | bar >|         "
@@ -295,7 +295,7 @@ test('grid template rows', async t => {
 test('grid template columns', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "  +-50px-+  +------+        "
 		   "  | foo  |  | bar  |   40px "
 		   "  +------+  +------+        "
@@ -308,7 +308,7 @@ test('grid template columns', async t => {
 
 	output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+----------------+ +-----+"
 		   "| foobar         | | baz |"
 		   "+----------------+ +100px+"
@@ -321,7 +321,7 @@ test('grid template columns', async t => {
 
 	output = await process(
 		`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+-------------+ +-----+"
 		   "|  .bigzone   | |     |"
 		   "+-------------+ +-----+"
@@ -335,14 +335,14 @@ test('grid template columns', async t => {
 
 	output = await process(
 		`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+-------------+ +-20%-+"
 		   "|  .bigzone   | |     |"
 		   "+-------------+ +-----+"
 		   "+-----+ +-------------+"
 		   "|     | |  .bigzone2  |"
 		   "+-20%-+ +-------------+"
-		   "        | 60% |        "		   
+		   "        | 60% |        "
 	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
@@ -352,7 +352,7 @@ test('grid template columns', async t => {
 test('grid template areas', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  | bar  |         "
 		   "|      |  +------+         "
@@ -373,7 +373,7 @@ test('grid template areas', async t => {
 
 	output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+----------------+ +-----+"
 		   "|foo#bar.baz[qux]| | baz |"
 		   "+----------------+ +100px+"
@@ -395,7 +395,7 @@ test('grid template areas', async t => {
 test('zone align-self', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  |  ^   |         "
 		   "|      |  | bar >|         "
@@ -421,7 +421,7 @@ test('zone align-self', async t => {
 test('gaps', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+--------------------+        +-----+"
 		   "|  .bigzone          |        |.foo |"
 		   "+--------------------+        +-----+"
@@ -435,7 +435,7 @@ test('gaps', async t => {
 
 	output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  |  ^   |         "
 		   "|      |  | bar >|    1    "
@@ -454,15 +454,15 @@ test('gaps', async t => {
 
 	output = await process(
 	`body {
-		grid-kiss:		   
+		grid-kiss:
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .nw |      | .n  |      | .ne | 100px"
-		   "+-----+      +-----+      +-----+  ----"		   
-		   "                                   50px"		   
+		   "+-----+      +-----+      +-----+  ----"
+		   "                                   50px"
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .w  |      |     |      | .e  | 100px"
 		   "+-----+      +-----+      +-----+  ----"
-		    "                                  50px"		   
+		    "                                  50px"
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .sw |      | .s  |      | .se | 100px"
 		   "+-----+      +-----+      +-----+  ----"
@@ -479,7 +479,7 @@ test('gaps', async t => {
 test('other ascii formats: simple segments', async t => {
 	let output = await process(
 	`div {
-		grid-kiss:		   
+		grid-kiss:
 		     "┌──────┐  ┌──────┐      "
 		     "│      │  │ bar →│ 200px"
 		     "│  ↓   │  └──────┘      "
@@ -619,14 +619,14 @@ test('fallback properties with mixed relative/fixed', async t => {
 test('fallback properties with all fixed', async t => {
 	let output = await process(
 	`body {
-		grid-kiss:        
+		grid-kiss:
 	    "┌──────┐ ┌────────────────┐         "
 	    "│      │ │                │  100px  "
 	    "│   ↑  │ │    < .bar      │         "
-	    "│ .baz │ └────────────────┘    -    "    
+	    "│ .baz │ └────────────────┘    -    "
 	    "│   ↓  │ ┌───────┐ ┌──────┐         "
 	    "│      │ |       | │      │  100px  "
-	    "└──────┘ └───────┘ │  ↓   │         "    
+	    "└──────┘ └───────┘ │  ↓   │         "
 	    "┌────────────────┐ │ .foo │    -    "
 	    "│     .qux       │ │  ↑   │         "
 	    "│    >     <     │ │      │  100px  "
@@ -687,7 +687,7 @@ test('fallback properties with all fixed', async t => {
 test('fallback properties with all relative', async t => {
 	let output = await process(
 	`body {
-		grid-kiss:        
+		grid-kiss:
 	   "╔═10═╗                  ╔═10═╗    "
 	   "║ .a>║                  ║<.b ║ 3fr"
 	   "╚════╝                  ╚════╝    "
@@ -696,8 +696,8 @@ test('fallback properties with all relative', async t => {
 	   "      ╚════╝      ╚════╝          "
 	   "            ╔═30═╗                "
 	   "            ║ .e ║             7fr"
-	   "            ╚════╝                "	   
-	   ;	    
+	   "            ╚════╝                "
+	   ;
 	}`, { browsers: ["chrome 50"], optimize: false });
 
 	t.is("supports" in output, true);
@@ -756,7 +756,7 @@ test('fallback properties with all relative', async t => {
 test("optimize option", async t => {
 	let output = await process(
 	`div {
-	grid-kiss:		   
+	grid-kiss:
 	   "+----------------+ +-----+"
 	   "|foo#bar.baz[qux]| | baz |"
 	   "+----------------+ +100px+"
