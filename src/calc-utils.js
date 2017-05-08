@@ -1,14 +1,16 @@
-const reduce = require('reduce-css-calc');
+const reduceCSSCalc = require('reduce-css-calc');
 const { isFillingRemainingSpace } = require("./dimension");
 
 function sum(...args){
 	let dims = args.filter(arg => arg && arg !== "0");
-	return dims.length < 2 ? dims[0] : reduce(`calc(${dims.join(" + ")})`)
+	if(dims.length === 0) return '0'
+	if(dims.length === 1) return dims[0]
+	return reduceCSSCalc(`calc(${dims.join(" + ")})`)
 }
 
 function remaining(dim){
 	if(!dim || dim === "0") return "100%";
-	return reduce(`calc(100% - ${dim})`)
+	return reduceCSSCalc(`calc(100% - ${dim})`)
 }
 
 function fraction(dims, allDims){
@@ -32,7 +34,7 @@ function fraction(dims, allDims){
 		if (fr === totalFr) {
 			return remainingSpace;
 		}
-		return reduce(`calc(${remainingSpace} * ${fr} / ${totalFr})`)
+		return reduceCSSCalc(`calc(${remainingSpace} * ${fr} / ${totalFr})`)
 	}
 
 	let sumFixed = fixedDims.length === 1 ? fixedDims[0] : sum(...fixedDims);
@@ -44,4 +46,4 @@ function fraction(dims, allDims){
 
 }
 
-module.exports = { sum, remaining, fraction, reduce }
+module.exports = { sum, remaining, fraction }

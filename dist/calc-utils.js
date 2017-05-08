@@ -1,6 +1,6 @@
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var reduce = require('reduce-css-calc');
+var reduceCSSCalc = require('reduce-css-calc');
 
 var _require = require("./dimension"),
     isFillingRemainingSpace = _require.isFillingRemainingSpace;
@@ -13,12 +13,14 @@ function sum() {
 	var dims = args.filter(function (arg) {
 		return arg && arg !== "0";
 	});
-	return dims.length < 2 ? dims[0] : reduce(`calc(${dims.join(" + ")})`);
+	if (dims.length === 0) return '0';
+	if (dims.length === 1) return dims[0];
+	return reduceCSSCalc(`calc(${dims.join(" + ")})`);
 }
 
 function remaining(dim) {
 	if (!dim || dim === "0") return "100%";
-	return reduce(`calc(100% - ${dim})`);
+	return reduceCSSCalc(`calc(100% - ${dim})`);
 }
 
 function fraction(dims, allDims) {
@@ -50,7 +52,7 @@ function fraction(dims, allDims) {
 		if (fr === totalFr) {
 			return remainingSpace;
 		}
-		return reduce(`calc(${remainingSpace} * ${fr} / ${totalFr})`);
+		return reduceCSSCalc(`calc(${remainingSpace} * ${fr} / ${totalFr})`);
 	}
 
 	var sumFixed = fixedDims.length === 1 ? fixedDims[0] : sum.apply(undefined, _toConsumableArray(fixedDims));
@@ -61,4 +63,4 @@ function fraction(dims, allDims) {
 	return sum(sumFixed, `calc(${remainingSpace} * ${fr} / ${totalFr})`);
 }
 
-module.exports = { sum, remaining, fraction, reduce };
+module.exports = { sum, remaining, fraction };

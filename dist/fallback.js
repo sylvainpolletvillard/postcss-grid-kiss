@@ -2,6 +2,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+var reduceCSSCalc = require('reduce-css-calc');
+
 var _require = require("./dimension"),
     isFillingRemainingSpace = _require.isFillingRemainingSpace;
 
@@ -92,8 +94,8 @@ function getGridFallback(_ref3) {
 		props: new Map()
 	};
 
-	var gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum.apply(calc, _toConsumableArray(colsDim)));
-	var gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : calc.reduce(calc.sum.apply(calc, _toConsumableArray(rowsDim)));
+	var gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : reduceCSSCalc(calc.sum.apply(calc, _toConsumableArray(colsDim)));
+	var gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : reduceCSSCalc(calc.sum.apply(calc, _toConsumableArray(rowsDim)));
 
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
@@ -246,7 +248,7 @@ function getVerticalOffset(_ref9) {
 	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, rowsDim), alignSelf === "center" ? `calc(${height} / 2)` : "0") || "0";
 
 	return {
-		verticalOffset: calc.reduce(offset),
+		verticalOffset: reduceCSSCalc(offset),
 		alignByBottom
 	};
 }
@@ -290,7 +292,7 @@ function getHorizontalOffset(_ref10) {
 	var offset = calc.sum(gridDelta, calc.fraction(offsetDims, colsDim), justifySelf === "center" ? `calc(${width} / 2)` : "0") || "0";
 
 	return {
-		horizontalOffset: calc.reduce(offset),
+		horizontalOffset: reduceCSSCalc(offset),
 		alignByRight
 	};
 }
@@ -317,7 +319,7 @@ function getHeight(_ref11) {
 	}
 
 	return {
-		height: calc.reduce(calc.fraction(dims, rowsDim) || "100%"),
+		height: reduceCSSCalc(calc.fraction(dims, rowsDim) || "100%"),
 		isStretchingVertically: alignSelf === "stretch"
 	};
 }
@@ -343,7 +345,7 @@ function getWidth(_ref12) {
 	}
 
 	return {
-		width: calc.reduce(calc.fraction(dims, colsDim) || "100%"),
+		width: reduceCSSCalc(calc.fraction(dims, colsDim) || "100%"),
 		isStretchingHorizontally: justifySelf === "stretch"
 	};
 }

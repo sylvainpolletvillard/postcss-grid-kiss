@@ -594,14 +594,14 @@ test('fallback properties with mixed relative/fixed', async t => {
 
 	t.deepEqual(output["supports"]["body > .sidebar"], {
 		"top":"120px",
-		"height":"calc(100% - 120px - 60px)",
+		"height":"calc(100% - 180px)",
 		"left":"0",
 		"width":"150px"
 	})
 
 	t.deepEqual(output["supports"]["body > main"], {
 		"top":"120px",
-		"height":"calc(100% - 120px - 60px)",
+		"height":"calc(100% - 180px)",
 		"left":"150px",
 		"width":"calc(100% - 150px)"
 	})
