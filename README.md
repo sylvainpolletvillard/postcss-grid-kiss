@@ -1,5 +1,7 @@
 # grid-kiss: Keep CSS Grids simple, stupid
 
+[![Join the chat at https://gitter.im/sylvainpolletvillard/postcss-grid-kiss](https://badges.gitter.im/sylvainpolletvillard/postcss-grid-kiss.svg)](https://gitter.im/sylvainpolletvillard/postcss-grid-kiss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a [PostCSS][postcss-website] plugin aiming to replace the 24 new properties brought by [CSS Grids][w3c-spec] with a single one that you immediately understand when you see it.
 
 <p align="center">
