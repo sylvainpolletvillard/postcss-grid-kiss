@@ -97,8 +97,6 @@ which displays this kind of grid layout:
 
 Try the different examples and play with the plugin on the [playground][playground]. Edit the CSS and HTML on the left and the grid will be updated instantly.
 
-You can also try the plugin [on Codepen with this template][codepen] thanks to [@jonathanneal](https://github.com/jonathantneal)
-
 ## Responsive layouts
 
 Use different `grid-kiss` declarations in media queries to easily get responsive layouts. It is recommended to start by the grid on small screens, then use media queries to progressively enhance your layouts on wider screens.
