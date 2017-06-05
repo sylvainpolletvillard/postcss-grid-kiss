@@ -36,7 +36,10 @@ var _require10 = require("./fallback"),
     getFallback = _require10.getFallback;
 
 var DEFAULTS_OPTIONS = {
-	optimize: true
+	optimize: true,
+	selectorParser: function selectorParser(x) {
+		return x;
+	}
 };
 
 module.exports = function (options) {
@@ -54,7 +57,7 @@ module.exports = function (options) {
 	return function (css, result) {
 		css.walkDecls('grid-kiss', function (decl) {
 
-			var input = parse(decl);
+			var input = parse(decl, options);
 			var grid = { props: new Map(), rule: decl.parent };
 			var zones = [];
 			var indent = decl.raws.before.match(/.*$/)[0];

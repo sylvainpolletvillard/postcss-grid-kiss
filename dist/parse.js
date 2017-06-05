@@ -5,13 +5,13 @@ var _require = require("./utils"),
 
 var CORNERS_CHARS = /[+┌┐└┘╔╗╚╝]/;
 
-function parse(decl) {
+function parse(decl, options) {
 	var rows = getRows(decl.value),
 	    cols = getCols({ rows }),
 	    _getCorners = getCorners({ rows }),
 	    colIndexes = _getCorners.colIndexes,
 	    rowIndexes = _getCorners.rowIndexes,
-	    zones = getZones({ rows, cols, colIndexes, rowIndexes });
+	    zones = getZones({ rows, cols, colIndexes, rowIndexes, options });
 
 
 	return {
@@ -66,7 +66,8 @@ function getZones(_ref3) {
 	var rows = _ref3.rows,
 	    cols = _ref3.cols,
 	    colIndexes = _ref3.colIndexes,
-	    rowIndexes = _ref3.rowIndexes;
+	    rowIndexes = _ref3.rowIndexes,
+	    options = _ref3.options;
 
 	var zones = [];
 
@@ -96,7 +97,7 @@ function getZones(_ref3) {
 				zone.content = rows.slice(top + 1, bottom).map(function (row) {
 					return row.substring(left + 1, right);
 				}).join(" ");
-				zone.selector = getZoneSelector(zone) || null;
+				zone.selector = getZoneSelector(zone, options) || null;
 				zone.name = getZoneName({ zone, zones });
 
 				zones.push(zone);
@@ -111,9 +112,10 @@ function getZones(_ref3) {
 	return zones;
 }
 
-function getZoneSelector(zone) {
-	return zone.content.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "").replace(/^:(\d+)$/, "*:nth-child($1)") // :2 => *:nth-child(2)
-	.replace(/(^[\w-]+):(\d+)$/, "$1:nth-of-type($2)"); // button:1 => button:nth-of-type(1)
+function getZoneSelector(zone, options) {
+	return options.selectorParser(zone.content.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "").replace(/^:(\d+)$/, "*:nth-child($1)" // :2 => *:nth-child(2)
+	).replace(/(^[\w-]+):(\d+)$/, "$1:nth-of-type($2)" // button:1 => button:nth-of-type(1)
+	));
 }
 
 function getZoneName(_ref4) {
@@ -138,8 +140,8 @@ function getZoneName(_ref4) {
 		return zoneNamesBySelector.get(zone.selector);
 	}
 
-	var baseName = zone.selector.replace(/(\w)([#.\[])/g, "$1_") // .foo#bar.baz[qux] => .foo_bar_baz_qux]
-	.replace(/[^\w]/g, ""); // .foo_bar_baz_qux] => foo_baz_baz_qux
+	var baseName = zone.selector.replace(/(\w)([#.\[])/g, "$1_" // .foo#bar.baz[qux] => .foo_bar_baz_qux]
+	).replace(/[^\w]/g, ""); // .foo_bar_baz_qux] => foo_baz_baz_qux
 
 	var aliasNum = 1,
 	    name = baseName;
