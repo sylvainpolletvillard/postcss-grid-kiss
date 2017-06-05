@@ -15,7 +15,8 @@ const {getGridAreas}      = require("./grid-template-areas");
 const {getFallback}       = require("./fallback");
 
 const DEFAULTS_OPTIONS = {
-	optimize: true
+	optimize: true,
+	selectorParser: x => x
 }
 
 module.exports = function (options) {
@@ -33,7 +34,7 @@ module.exports = function (options) {
 	return function (css, result) {
 		css.walkDecls('grid-kiss', function (decl) {
 
-			const input  = parse(decl);
+			const input  = parse(decl, options);
 			const grid   = { props: new Map, rule: decl.parent };
 			const zones  = [];
 			const indent = decl.raws.before.match(/.*$/)[0];

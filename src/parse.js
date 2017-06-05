@@ -2,12 +2,12 @@ const {range} = require("./utils");
 
 const CORNERS_CHARS = /[+┌┐└┘╔╗╚╝]/
 
-function parse(decl){
+function parse(decl, options){
 	const
 		rows = getRows(decl.value),
 		cols = getCols({ rows }),
 		{ colIndexes, rowIndexes } = getCorners({ rows }),
-		zones = getZones({ rows, cols, colIndexes, rowIndexes });
+		zones = getZones({ rows, cols, colIndexes, rowIndexes, options });
 
 	return {
 		decl, rows, cols, zones, rowIndexes, colIndexes
@@ -41,7 +41,7 @@ function getCorners({ rows }){
 	return { colIndexes, rowIndexes };
 }
 
-function getZones({ rows, cols, colIndexes, rowIndexes }){
+function getZones({ rows, cols, colIndexes, rowIndexes, options }){
 	const zones = [];
 
 	for(let y=0; y<rowIndexes.length; y+=2){
@@ -70,7 +70,7 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 					.slice(top+1, bottom)
 					.map(row => row.substring(left+1, right))
 					.join(" ");
-				zone.selector = getZoneSelector(zone) || null;
+				zone.selector = getZoneSelector(zone, options) || null;
 				zone.name = getZoneName({ zone, zones });
 
 				zones.push(zone);
@@ -81,11 +81,12 @@ function getZones({ rows, cols, colIndexes, rowIndexes }){
 	return zones;
 }
 
-function getZoneSelector(zone){
-	return zone.content
+function getZoneSelector(zone, options){
+	return options.selectorParser(zone.content
 		.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "")
 		.replace(/^:(\d+)$/, "*:nth-child($1)") // :2 => *:nth-child(2)
 		.replace(/(^[\w-]+):(\d+)$/, "$1:nth-of-type($2)") // button:1 => button:nth-of-type(1)
+	)
 }
 
 function getZoneName({ zone, zones }){

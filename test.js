@@ -772,3 +772,35 @@ test("optimize option", async t => {
 	t.is(output["div > qux"]["grid-area"], "e" );
 	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "a" );
 })
+
+
+test("advanced selectors", async t => {
+
+	let output = await process(
+	`div {
+		grid-kiss:
+		   "+-------+"
+		   "| :1    |"
+		   "+-------+"
+		   "         "
+		   "+-------+"
+		   "| p:2   |"
+		   "+-------+"
+		   "         "
+		   "+-------+"
+		   "| Hello |"
+		   "+-------+"
+	}`, {
+			selectorParser: function (selector) {
+				if (/[A-Z]/.test(selector[0])) {
+					return `[data-component-name='${selector}']`
+				}
+				else return selector
+			}
+		});
+
+	t.is("div > *:nth-child(1)" in output, true)
+	t.is("div > p:nth-of-type(2)" in output, true)
+	t.is("div > [data-component-name='Hello']" in output, true)
+
+})

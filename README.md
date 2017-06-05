@@ -213,6 +213,22 @@ Set this option to `false` if you prefer a more verbose and descriptive output. 
 postcss([ gridkiss({ optimize: false }) ])
 ```
 
+### `selectorParser` - apply custom transforms to zone selectors
+
+This option received a function that is applied on the selectors you wrote in the zones. This is useful to add your own transforms or selector syntax, for example to use component names in a component-based framework like Vue or React.
+```javascript
+postcss([ 
+  gridkiss({ 
+    selectorParser: function (selector) {
+      if (/[A-Z]/.test(selector[0])) {
+        return `[data-component-name='${selector}']`
+      }
+      return selector
+    }
+  }) 
+])
+ ```
+
 
 ## Fallback for older browsers
 
@@ -395,6 +411,8 @@ Since 1.2.0, selectors in zones may use some shortened notations specific to gri
 
 - `:1` ⇒ `*:nth-child(1)`
 - `button:2` ⇒ `button:nth-of-type(2)`
+
+Since 1.4.0, you can also apply custom transforms and make your own syntax with the `selectorParser` [option](#options)
 
 ### Horizontal alignment of the grid
 
