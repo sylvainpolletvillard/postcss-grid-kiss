@@ -62,6 +62,6 @@ exports.getGridCols = function(input){
 
 function cleanupDimInput(input){
 	return input
-		.replace(/[^a-zA-Z0-9()\-+\/*\s%,<>]/g, "") // remove anything that is not part of a dimension value
-		.replace(/^[\-+\s]+|[\-+\s]+$/g, "") // remove remaining '-' '+' segments but preserve range dimensions
+		.replace(/[^a-zA-Z0-9()\-+/*\s%,<>]/g, "") // remove anything that is not part of a dimension value
+		.replace(/^[-+\s]+|[-+\s]+$/g, "") // remove remaining '-' '+' segments but preserve range dimensions
 }

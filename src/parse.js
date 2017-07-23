@@ -83,7 +83,7 @@ function getZones({ rows, cols, colIndexes, rowIndexes, options }){
 
 function getZoneSelector(zone, options){
 	return options.selectorParser(zone.content
-		.replace(/[^\w]v[^\w]|[^\w#.:\-\[\]()]/g, "")
+		.replace(/[^\w]v[^\w]|[^\w#.:\-[\]()]/g, "")
 		.replace(/^:(\d+)$/, "*:nth-child($1)") // :2 => *:nth-child(2)
 		.replace(/(^[\w-]+):(\d+)$/, "$1:nth-of-type($2)") // button:1 => button:nth-of-type(1)
 	)
@@ -103,7 +103,7 @@ function getZoneName({ zone, zones }){
 	}
 
 	let baseName = zone.selector
-		.replace(/(\w)([#.\[])/g, "$1_") // .foo#bar.baz[qux] => .foo_bar_baz_qux]
+		.replace(/(\w)([#.[])/g, "$1_") // .foo#bar.baz[qux] => .foo_bar_baz_qux]
 		.replace(/[^\w]/g, ""); // .foo_bar_baz_qux] => foo_baz_baz_qux
 
 	let aliasNum = 1,
