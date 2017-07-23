@@ -1,41 +1,41 @@
 {
-	"name": "postcss-grid-kiss",
-	"version": "1.4.0",
-	"description": "A PostCSS plugin to keep CSS grids stupidly simple",
-	"main": "dist/index.js",
-	"author": "Sylvain Pollet-Villard",
-	"license": "MIT",
-	"repository": "https://github.com/sylvainpolletvillard/postcss-grid-kiss",
-	"keywords": [
-		"postcss",
-		"postcss-plugin",
-		"ascii-art",
-		"visual",
-		"css",
-		"grid",
-		"kiss"
-	],
-	"scripts": {
-		"test": "ava",
-		"build": "babel src --out-dir dist",
-		"lint": "eslint src --fix"
-	},
-	"engines": {
-		"node": ">=4.5.0"
-	},
-	"dependencies": {
-		"browserslist": "^2.1.2",
-		"caniuse-api": "^2.0.0",
-		"postcss": "^6.0.1",
-		"postcss-merge-grid-template": "^0.6.0",
-		"reduce-css-calc": "^2.0.2"
-	},
-	"devDependencies": {
-		"ava": "^0.19.1",
-		"babel-cli": "^6.24.1",
-		"babel-core": "^6.24.1",
-		"babel-preset-env": "^1.4.0",
-		"eslint": "^3.19.0",
-		"tap-diff": "^0.1.1"
-	}
+  "name": "postcss-grid-kiss",
+  "version": "1.4.1",
+  "description": "A PostCSS plugin to keep CSS grids stupidly simple",
+  "main": "dist/index.js",
+  "author": "Sylvain Pollet-Villard",
+  "license": "MIT",
+  "repository": "https://github.com/sylvainpolletvillard/postcss-grid-kiss",
+  "keywords": [
+    "postcss",
+    "postcss-plugin",
+    "ascii-art",
+    "visual",
+    "css",
+    "grid",
+    "kiss"
+  ],
+  "scripts": {
+    "test": "ava test.js",
+    "build": "babel src --out-dir dist",
+    "lint": "eslint src --fix"
+  },
+  "engines": {
+    "node": ">=4.5.0"
+  },
+  "dependencies": {
+    "browserslist": "^2.2.2",
+    "caniuse-api": "^2.0.0",
+    "postcss": "^6.0.8",
+    "postcss-merge-grid-template": "^0.6.0",
+    "reduce-css-calc": "^2.0.5"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-preset-env": "^1.6.0",
+    "eslint": "^4.3.0",
+    "tap-diff": "^0.1.1"
+  }
 }
