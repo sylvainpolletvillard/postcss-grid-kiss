@@ -215,7 +215,7 @@ postcss([ gridkiss({ optimize: false }) ])
 
 ### `selectorParser` - apply custom transforms to zone selectors
 
-This option received a function that is applied on the selectors you wrote in the zones. This is useful to add your own transforms or selector syntax, for example to use component names in a component-based framework like Vue or React.
+This option receives a function that is applied on the selectors you wrote in the zones. This is useful to add your own transforms or selector syntax, for example to use component names in a component-based framework like Vue or React.
 ```javascript
 postcss([ 
   gridkiss({ 
