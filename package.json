@@ -24,18 +24,18 @@
     "node": ">=4.5.0"
   },
   "dependencies": {
-    "browserslist": "^2.2.2",
+    "browserslist": "^2.5.1",
     "caniuse-api": "^2.0.0",
-    "postcss": "^6.0.8",
+    "postcss": "^6.0.13",
     "postcss-merge-grid-template": "^0.6.0",
-    "reduce-css-calc": "^2.0.5"
+    "reduce-css-calc": "^2.1.1"
   },
   "devDependencies": {
-    "ava": "^0.21.0",
+    "ava": "^0.22.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-preset-env": "^1.6.0",
-    "eslint": "^4.3.0",
+    "eslint": "^4.9.0",
     "tap-diff": "^0.1.1"
   }
 }
