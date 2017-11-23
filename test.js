@@ -47,6 +47,8 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("50% view", "vertical"), "50vh")
 	t.is(parseDimension("calc(20% + 10px)"), "calc(20% + 10px)")
 	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
+	t.is(parseDimension("min"), "min-content")
+	t.is(parseDimension("max"), "max-content")
 })
 
 test('display grid', async t => {
@@ -428,27 +430,27 @@ test('gaps', async t => {
 		   "+-----+        +--------------------+"
 		   "|.bar |        |  .bigzone2         |"
 		   "+-----+        +--------------------+"
-		   "| 20% | 10px   | 60% |  auto  | 10% |"
+		   "| 20% | 10px   | min |  auto  | 10% |"
 	}`, { optimize: false });
 
-	t.is(output["div"]["grid-template-columns"], "20% 10px 60% 1fr 10%");
+	t.is(output["div"]["grid-template-columns"], "20% 10px min-content 1fr 10%");
 
 	output = await process(
 	`div {
 		grid-kiss:
-		   "+------+  +------+         "
-		   "|      |  |  ^   |         "
-		   "|      |  | bar >|    1    "
-		   "|  v   |  +------+         "
-		   "| baz  |              2    "
-		   "|  ^   |  +------+         "
-		   "|      |  |  ^   |   3     "
-		   "+------+  |      |         "
-		   "          | foo  |   4     "
-		   "+------+  |      |         "
-		   "| < qux|  |  v   |   5     "
-		   "|  v   |  |      |         "
-		   "+------+  +------+         "
+		   "+------+  +------+        "
+		   "|      |  |  ^   |        "
+		   "|      |  | bar >|   1    "
+		   "|  v   |  +------+        "
+		   "| baz  |             2    "
+		   "|  ^   |  +------+        "
+		   "|      |  |  ^   |   3    "
+		   "+------+  |      |        "
+		   "          | foo  |   4    "
+		   "+------+  |      |        "
+		   "| < qux|  |  v   |   5    "
+		   "|  v   |  |      |        "
+		   "+------+  +------+        "
 	}`, { optimize: false });
 	t.is(output["div"]["grid-template-rows"], "1fr 2fr 3fr 4fr 5fr");
 
@@ -485,7 +487,7 @@ test('other ascii formats: simple segments', async t => {
 		     "│  ↓   │  └──────┘      "
 		     "│ baz  │             -  "
 		     "│  ↑   │  ┌──────┐      "
-		     "│      │  │  ↑   │ 200px"
+		     "│      │  │  ↑   │ max"
 		     "└──────┘  │      │      "
 		     "          │ foo  │   -  "
 		     "┌──────┐  │      │      "
@@ -515,7 +517,7 @@ test('other ascii formats: simple segments', async t => {
 		"display": "grid",
 		"align-content": "stretch",
 		"justify-content": "space-between",
-		"grid-template-rows": "200px 200px 200px",
+		"grid-template-rows": "200px max-content 200px",
 		"grid-template-columns": "20em 1fr",
 		"grid-template-areas": '\n\t\t"baz bar"\n\t\t"baz foo"\n\t\t"qux foo"'
 	})

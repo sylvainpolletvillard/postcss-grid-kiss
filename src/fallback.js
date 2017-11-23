@@ -32,12 +32,11 @@ function getFallback({
 }
 
 function dimensionFallback(dim, { decl, result }){
-	if(dim.startsWith("minmax(")){
-		decl.warn(result, "minmax() operator is not supported in fallback mode. Replaced by 1fr.");
-		dim = "1fr";
-	}
-	if(dim.startsWith("fit-content")){
-		decl.warn(result, "fit-content() operator is not supported in fallback mode. Replaced by 1fr.");
+	if(dim === "max-content"
+	|| dim === "min-content"
+	|| dim.startsWith("minmax(")
+	|| dim.startsWith("fit-content")){
+		decl.warn(result, dim + " operator is not supported in fallback mode. Replaced by 1fr.");
 		dim = "1fr";
 	}
 	return dim;
