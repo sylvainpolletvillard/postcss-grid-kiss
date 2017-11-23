@@ -1,6 +1,6 @@
 {
   "name": "postcss-grid-kiss",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A PostCSS plugin to keep CSS grids stupidly simple",
   "main": "dist/index.js",
   "author": "Sylvain Pollet-Villard",
@@ -31,7 +31,7 @@
     "reduce-css-calc": "^2.1.1"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^0.23.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-preset-env": "^1.6.0",
