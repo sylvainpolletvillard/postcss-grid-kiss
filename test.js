@@ -53,7 +53,7 @@ test("parsing dimensions", t => {
 
 test('display grid', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+"
 		   "| test |"
@@ -65,7 +65,7 @@ test('display grid', async t => {
 
 test('align-content stretch', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+"
 		   "| test |"
@@ -77,7 +77,7 @@ test('align-content stretch', async t => {
 
 test('align-content start', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+"
 		   "| test |"
@@ -90,7 +90,7 @@ test('align-content start', async t => {
 
 test('align-content end', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "        "
 		   "+------+"
@@ -103,7 +103,7 @@ test('align-content end', async t => {
 
 test('align-content center', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "        "
 		   "+------+"
@@ -117,7 +117,7 @@ test('align-content center', async t => {
 
 test('align-content space-between', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+"
 		   "| foo  |"
@@ -133,7 +133,7 @@ test('align-content space-between', async t => {
 
 test('align-content space-evenly', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "        "
 		   "+------+"
@@ -151,7 +151,7 @@ test('align-content space-evenly', async t => {
 
 test('align-content space-around', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "        "
 		   "+------+"
@@ -170,7 +170,7 @@ test('align-content space-around', async t => {
 
 test('justify-content start', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------++------+  "
 		   "| foo  || bar  |  "
@@ -182,7 +182,7 @@ test('justify-content start', async t => {
 
 test('justify-content end', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +-----++-----+"
 		   "  | foo || bar |"
@@ -194,7 +194,7 @@ test('justify-content end', async t => {
 
 test('justify-content center', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +------++------+  "
 		   "  | foo  || bar  |  "
@@ -206,7 +206,7 @@ test('justify-content center', async t => {
 
 test('justify-content space-between', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+"
 		   "| foo  |  | bar  |"
@@ -218,7 +218,7 @@ test('justify-content space-between', async t => {
 
 test('justify-content space-evenly', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +------+  +------+  "
 		   "  | foo  |  | bar  |  "
@@ -230,7 +230,7 @@ test('justify-content space-evenly', async t => {
 
 test('justify-content space-around', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +------+    +------+  "
 		   "  | foo  |    | bar  |  "
@@ -242,7 +242,7 @@ test('justify-content space-around', async t => {
 
 test('grid template rows', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +------+  +------+        "
 		   "  | foo  |  | bar  |   40px "
@@ -255,7 +255,7 @@ test('grid template rows', async t => {
 	t.is(output["div"]["grid-template-rows"], "40px 15%");
 
 	output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  | bar  |         "
@@ -273,7 +273,7 @@ test('grid template rows', async t => {
 	t.is(output["div"]["grid-template-rows"], "1fr 50fr minmax(20fr, auto)");
 
 	output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+     -   "
 		   "|      |  |  ^   |   <10%  "
@@ -296,7 +296,7 @@ test('grid template rows', async t => {
 
 test('grid template columns', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "  +-50px-+  +------+        "
 		   "  | foo  |  | bar  |   40px "
@@ -309,7 +309,7 @@ test('grid template columns', async t => {
 	t.is(output["div"]["grid-template-columns"], "50px 25%");
 
 	output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+----------------+ +-----+"
 		   "| foobar         | | baz |"
@@ -353,7 +353,7 @@ test('grid template columns', async t => {
 
 test('grid template areas', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  | bar  |         "
@@ -374,7 +374,7 @@ test('grid template areas', async t => {
 	t.is(output["div > foo"]["grid-area"], "foo" );
 
 	output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+----------------+ +-----+"
 		   "|foo#bar.baz[qux]| | baz |"
@@ -396,7 +396,7 @@ test('grid template areas', async t => {
 
 test('zone align-self', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+         "
 		   "|      |  |  ^   |         "
@@ -422,7 +422,7 @@ test('zone align-self', async t => {
 
 test('gaps', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+--------------------+        +-----+"
 		   "|  .bigzone          |        |.foo |"
@@ -436,7 +436,7 @@ test('gaps', async t => {
 	t.is(output["div"]["grid-template-columns"], "20% 10px min-content 1fr 10%");
 
 	output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+------+  +------+        "
 		   "|      |  |  ^   |        "
@@ -455,7 +455,7 @@ test('gaps', async t => {
 	t.is(output["div"]["grid-template-rows"], "1fr 2fr 3fr 4fr 5fr");
 
 	output = await process(
-	`body {
+		`body {
 		grid-kiss:
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .nw |      | .n  |      | .ne | 100px"
@@ -480,7 +480,7 @@ test('gaps', async t => {
 
 test('other ascii formats: simple segments', async t => {
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		     "┌──────┐  ┌──────┐      "
 		     "│      │  │ bar →│ 200px"
@@ -525,7 +525,7 @@ test('other ascii formats: simple segments', async t => {
 
 test('other ascii formats: double segments', async t => {
 	let output = await process(
-	`main {
+		`main {
 		grid-kiss:
 		"╔═══════╗  ╔════════════════╗      "
 		"║       ║  ║    .article    ║      "
@@ -556,7 +556,7 @@ test('other ascii formats: double segments', async t => {
 
 test('fallback properties with mixed relative/fixed', async t => {
 	let output = await process(
-	`body {
+		`body {
 		grid-kiss:
 		"+------------------------------+      "
 		"|           header ↑           | 120px"
@@ -620,7 +620,7 @@ test('fallback properties with mixed relative/fixed', async t => {
 
 test('fallback properties with all fixed', async t => {
 	let output = await process(
-	`body {
+		`body {
 		grid-kiss:
 	    "┌──────┐ ┌────────────────┐         "
 	    "│      │ │                │  100px  "
@@ -688,7 +688,7 @@ test('fallback properties with all fixed', async t => {
 
 test('fallback properties with all relative', async t => {
 	let output = await process(
-	`body {
+		`body {
 		grid-kiss:
 	   "╔═10═╗                  ╔═10═╗    "
 	   "║ .a>║                  ║<.b ║ 3fr"
@@ -757,7 +757,7 @@ test('fallback properties with all relative', async t => {
 
 test("optimize option", async t => {
 	let output = await process(
-	`div {
+		`div {
 	grid-kiss:
 	   "+----------------+ +-----+"
 	   "|foo#bar.baz[qux]| | baz |"
@@ -779,7 +779,7 @@ test("optimize option", async t => {
 test("advanced selectors", async t => {
 
 	let output = await process(
-	`div {
+		`div {
 		grid-kiss:
 		   "+-------+"
 		   "| :1    |"

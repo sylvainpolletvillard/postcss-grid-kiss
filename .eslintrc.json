@@ -8,6 +8,10 @@
     "extends": "eslint:recommended",
     "rules": {
         "indent": [ "error", "tab", { "SwitchCase": 1 } ],
-        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
-    }
+        "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
+	    "no-console": "off"
+    },
+	"parserOptions": {
+		"ecmaVersion": 2017
+	}
 }
