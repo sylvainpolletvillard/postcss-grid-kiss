@@ -1,11 +1,11 @@
 const postcss = require('postcss'),
-	  gridkiss = require('./dist/index'),
+	  gridkiss = require('./lib/index'),
 	  test = require('ava');
 
-const {parseDimension} = require("./dist/dimension");
+const {parseDimension} = require("./lib/dimension");
 
 async function process(input, options){
-	return postcss(gridkiss(options)).process(input).then(res => {
+	return postcss(gridkiss(options)).process(input, { from: undefined }).then(res => {
 		const output = {};
 		res.root.walkRules((rule) => {
 			if(rule.parent === res.root){
