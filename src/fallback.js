@@ -1,23 +1,27 @@
-const reduceCSSCalc = require('reduce-css-calc');
-const { isFillingRemainingSpace } = require("./dimension");
-const calc = require("./calc-utils");
+const
+	reduceCSSCalc = require('reduce-css-calc'),
+	{ isFluid } = require("./dimension"),
+	{ sum, remaining, fraction } = require("./calc-utils");
 
 function getFallback({
-	zones, grid, decl, result, input
+	zones, grid, decl, result,
+	input: { colIndexes, rowIndexes, colsDim, rowsDim }
 }){
-	const { colIndexes, rowIndexes } = input;
-	const colsDim = input.colsDim.map(dim => dimensionFallback(dim, { decl, result }));
-	const rowsDim = input.rowsDim.map(dim => dimensionFallback(dim, { decl, result }));
+	const dimensionsFallback = dims => dims.map(dim => dimensionFallback(dim, { decl, result }));
+	colsDim = dimensionsFallback(colsDim);
+	rowsDim = dimensionsFallback(rowsDim);
 
-	let fallback = {
-		grid: getGridFallback({ colsDim, rowsDim, rule: grid.rule, props: grid.props }),
-		zones: new Map
-	};
+	const
+		fallback = {
+			grid: getGridFallback({ colsDim, rowsDim, rule: grid.rule, props: grid.props }),
+			zones: new Map
+		},
 
-	const zonesCommonRule = grid.rule.clone({
-		selector: grid.rule.selector + ' > *',
-		nodes: []
-	});
+		zonesCommonRule = grid.rule.clone({
+			selector: grid.rule.selector + ' > *',
+			nodes: []
+		});
+
 	zonesCommonRule.append({ prop: "position", value: "absolute" });
 	zonesCommonRule.append({ prop: "box-sizing", value: "border-box" });
 	fallback.zones.set('*', { rule: zonesCommonRule })
@@ -42,15 +46,16 @@ function dimensionFallback(dim, { decl, result }){
 	return dim;
 }
 
-function getGridFallback({ rowsDim, colsDim, rule }){
-
+function getGridFallback({
+	rowsDim, colsDim, rule
+}){
 	const grid = {
 		rule: rule.clone({ nodes: [] }),
 		props: new Map
 	};
 
-	const gridWidth = colsDim.some(isFillingRemainingSpace) ? "100%" : reduceCSSCalc(calc.sum(...colsDim));
-	const gridHeight = rowsDim.some(isFillingRemainingSpace) ? "100%" : reduceCSSCalc(calc.sum(...rowsDim));
+	const gridWidth = colsDim.some(isFluid) ? "100%" : sum(...colsDim);
+	const gridHeight = rowsDim.some(isFluid) ? "100%" : sum(...rowsDim);
 
 	grid.props.set("position", "relative");
 	grid.props.set("display", "block");
@@ -97,7 +102,6 @@ function getZoneFallback({
 function getVerticalOffset({
 	props, zone, grid, rowsDim, rowIndexes, height
 }){
-
 	const alignSelf = props.get("align-self") || "stretch";
 
 	let offsetDims = [],
@@ -118,15 +122,14 @@ function getVerticalOffset({
 	}
 
 	if(alignByBottom && gridDelta && gridDelta !== "0"){
-		gridDelta = calc.remaining(gridDelta);
+		gridDelta = remaining(gridDelta);
 	}
 
-	let offset = calc.sum(
+	let offset = sum(
 		gridDelta,
-		calc.fraction(offsetDims, rowsDim),
+		fraction(offsetDims, rowsDim),
 		alignSelf === "center" ? `calc(${height} / 2)` : "0"
 	) || "0";
-
 
 	return {
 		verticalOffset: reduceCSSCalc(offset),
@@ -137,7 +140,6 @@ function getVerticalOffset({
 function getHorizontalOffset({
 	props, zone, grid, colsDim, colIndexes, width
 }){
-
 	const justifySelf = props.get("justify-self") || "stretch";
 
 	let offsetDims = [],
@@ -157,13 +159,13 @@ function getHorizontalOffset({
 		}
 	}
 
-	if(alignByRight && gridDelta && gridDelta != "0"){
-		gridDelta = calc.remaining(gridDelta);
+	if(alignByRight && gridDelta && gridDelta !== "0"){
+		gridDelta = remaining(gridDelta);
 	}
 
-	let offset = calc.sum(
+	let offset = sum(
 		gridDelta,
-		calc.fraction(offsetDims, colsDim),
+		fraction(offsetDims, colsDim),
 		justifySelf === "center" ? `calc(${width} / 2)` : "0"
 	) || "0";
 
@@ -186,7 +188,7 @@ function getHeight({ zone, props, rowsDim, rowIndexes }){
 	}
 
 	return {
-		height: reduceCSSCalc(calc.fraction(dims, rowsDim) || "100%"),
+		height: fraction(dims, rowsDim) || "100%",
 		isStretchingVertically: alignSelf === "stretch"
 	}
 }
@@ -203,7 +205,7 @@ function getWidth({ zone, props, colsDim, colIndexes }){
 	}
 
 	return {
-		width: reduceCSSCalc(calc.fraction(dims, colsDim) || "100%"),
+		width: fraction(dims, colsDim) || "100%",
 		isStretchingHorizontally: justifySelf === "stretch"
 	}
 }
@@ -222,7 +224,7 @@ function getTransform({ props }){
 
 function getJustifyContentFallbackDelta({ zone, grid, colsDim, colIndexes }){
 
-	if(colsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
+	if(colsDim.some(isFluid)) return "0" // fluid zone will fit all the remaining space
 
 	const justifyGrid = grid.props.get("justify-content") || "stretch";
 
@@ -231,7 +233,7 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim, colIndexes }){
 	if(justifyGrid === "start")
 		return "0"
 
-	const remainingSpace = calc.remaining(calc.sum(...colsDim)),
+	const remainingSpace = remaining(...colsDim),
 	      leftIndex = colIndexes.findIndex(colIndex => colIndex === zone.left),
 	      index = Math.floor(leftIndex / 2),
 	      nbCols = colsDim.length;
@@ -250,7 +252,7 @@ function getJustifyContentFallbackDelta({ zone, grid, colsDim, colIndexes }){
 
 function getAlignContentFallbackDelta({ zone, grid, rowsDim, rowIndexes }){
 
-	if(rowsDim.some(isFillingRemainingSpace)) return "0" // fluid zone will fit all the remaining space
+	if(rowsDim.some(isFluid)) return "0" // fluid zone will fit all the remaining space
 
 	const alignGrid = grid.props.get("align-content") || "stretch";
 
@@ -259,7 +261,7 @@ function getAlignContentFallbackDelta({ zone, grid, rowsDim, rowIndexes }){
 	if(alignGrid === "start")
 		return "0"
 
-	const remainingSpace = calc.remaining(calc.sum(...rowsDim)),
+	const remainingSpace = remaining(...rowsDim),
 	      topIndex = rowIndexes.findIndex(rowIndex => rowIndex === zone.top),
 	      index = Math.floor(topIndex / 2),
 	      nbRows = rowsDim.length;

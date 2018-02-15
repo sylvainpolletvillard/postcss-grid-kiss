@@ -1,4 +1,4 @@
-const {parseDimension} = require("./dimension");
+const { parseDimension } = require("./dimension");
 
 exports.getGridRows = function(input){
 
@@ -19,12 +19,14 @@ exports.getGridRows = function(input){
 
 	// check vertical gaps
 	for(let y=0; y<rowIndexes.length-2; y+=2) {
-		let top = rowIndexes[y+1]+1,
+		const
+			top = rowIndexes[y+1]+1,
 		    bottom = rowIndexes[y+2]-1,
-		    gapDimension = parseDimension(getRowDimInfo({ rows, colIndexes, from: top, to: bottom }), "vertical");
+			gapInput = getRowDimInfo({ rows, colIndexes, from: top, to: bottom }),
+		    gapDim = parseDimension(gapInput, "vertical");
 
-		if(gapDimension != null){ // vertical gap detected
-			gridRows.splice(Math.floor(y/2)+1, 0, gapDimension);
+		if(gapDim != null){ // vertical gap detected
+			gridRows.splice(Math.floor(y/2)+1, 0, gapDim);
 			rowIndexes.splice(y+2, 0, top, bottom);
 			y+=2;
 		}

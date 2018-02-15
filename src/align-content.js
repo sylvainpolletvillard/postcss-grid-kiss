@@ -3,17 +3,14 @@ exports.getAlignContent = function({ rows }){
 	const
 		isSpaceRow = row => /^\s*$/.test(row),
 
-		hasSpaceRows = rows.some(isSpaceRow),
-
-		hasSpaceRowsBeforeContent = isSpaceRow(rows[0]),
-
-		hasSpaceRowsAfterContent = isSpaceRow(rows[rows.length-1]),
-
 		firstContentRowIndex = rows.findIndex(row => !isSpaceRow(row)),
-
 		lastContentRowIndex = rows.length - 1 - rows.slice().reverse().findIndex(row => !isSpaceRow(row)),
 
 		hasContent = firstContentRowIndex >= 0 && lastContentRowIndex < rows.length,
+
+		hasSpaceRows = rows.some(isSpaceRow),
+		hasSpaceRowsBeforeContent = isSpaceRow(rows[0]),
+		hasSpaceRowsAfterContent = isSpaceRow(rows[rows.length-1]),
 
 		hasSpaceRowsBetweenContent = hasContent
 			&& rows.slice(firstContentRowIndex, lastContentRowIndex).some(isSpaceRow),

@@ -1,6 +1,7 @@
 exports.getAlignSelf = function(zone) {
 
-	let topIndicator = zone.content.search(/↑|\^/),
+	const
+		topIndicator = zone.content.search(/[↑^]/),
 	    bottomIndicator = zone.content.search(/↓|[^\w]v[^\w]/);
 
 	if(topIndicator >= 0 && bottomIndicator > topIndicator)

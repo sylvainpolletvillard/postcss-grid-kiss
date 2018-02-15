@@ -9,9 +9,7 @@ function parse(decl, options){
 		{ colIndexes, rowIndexes } = getCorners({ rows }),
 		zones = getZones({ rows, cols, colIndexes, rowIndexes, options });
 
-	return {
-		decl, rows, cols, zones, rowIndexes, colIndexes
-	};
+	return { decl, rows, cols, zones, rowIndexes, colIndexes };
 }
 
 function getRows(str){
@@ -19,13 +17,14 @@ function getRows(str){
 }
 
 function getCols({ rows }){
-	let colsLength = rows.reduce((min, row) => row.length < min ? row.length : min, Math.pow(2,31)-1);
+	let colsLength = rows.reduce((min, row) => row.length < min ? row.length : min, Math.pow(2,31) - 1);
 	return range(0, colsLength).map(x => rows.map(row => row[x]).join(''));
 }
 
 function getCorners({ rows }){
 	let colIndexes = new Set,
 	    rowIndexes = new Set;
+
 	rows.forEach((row, rowIndex) => {
 		row.split('').forEach((char, colIndex) => {
 			if(CORNERS_CHARS.test(char)){
@@ -46,11 +45,14 @@ function getZones({ rows, cols, colIndexes, rowIndexes, options }){
 
 	for(let y=0; y<rowIndexes.length; y+=2){
 		for(let x=0; x<colIndexes.length; x+=2){
-			let top = rowIndexes[y],
+			const
+				top = rowIndexes[y],
 			    left = colIndexes[x],
 			    zone = { top, left };
 
-			if(!isInZone({ zones, x:left, y:top }) && (x+1) in colIndexes && (y+1) in rowIndexes){
+			if(!isInZone({ zones, x: left, y: top })
+			&& (x+1) in colIndexes
+			&& (y+1) in rowIndexes ){
 
 				let bottom, right;
 
@@ -92,11 +94,12 @@ function getZoneSelector(zone, options){
 function getZoneName({ zone, zones }){
 	if(!zone.selector) return null;
 
-	const zoneNames = new Set(zones.map(z => z.name)),
-	      zoneSelectors = new Set(zones.map(z => z.selector)),
-	      zoneNamesBySelector = new Map([...zoneSelectors].map(
-		      selector => [selector, zones.find(z => z.selector === selector).name]
-	      ));
+	const
+		zoneNames           = new Set(zones.map(z => z.name)),
+		zoneSelectors       = new Set(zones.map(z => z.selector)),
+		zoneNamesBySelector = new Map([...zoneSelectors].map(
+			selector => [selector, zones.find(z => z.selector === selector).name]
+		));
 
 	if(zoneNamesBySelector.has(zone.selector)) {
 		return zoneNamesBySelector.get(zone.selector)
@@ -120,7 +123,12 @@ function getZoneName({ zone, zones }){
 }
 
 function isInZone({ zones, x, y }){
-	return zones.some(zone => x >= zone.left && x <= zone.right && y >= zone.top && y <= zone.bottom);
+	return zones.some(
+		zone => x >= zone.left
+		     && x <= zone.right
+		     && y >= zone.top
+		     && y <= zone.bottom
+	);
 }
 
 module.exports = { parse, getRows, getCols, getCorners, getZones, getZoneName, isInZone };

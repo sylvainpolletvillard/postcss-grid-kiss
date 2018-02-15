@@ -1,8 +1,11 @@
 const
-	REGEX_LENGTH = /^(\d+(?:\.\d+)?)([a-z]{1,4})$/,
-	REGEX_PERCENT = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
+	REGEX_LENGTH    = /^(\d+(?:\.\d+)?)([a-z]{1,4})$/,
+	REGEX_PERCENT   = /^(\d+(?:\.\d+)?)%\s*(free|grid|view)?$/,
 	REGEX_DIMENSION = /(\d+(?:\.\d+)?)%?\s*([a-z]{1,4})/,
-	REGEX_CALC = /^calc\((.*)\)$/
+	REGEX_CALC      = /^calc\((.*)\)$/,
+
+	isFluid = dim => dim.endsWith("fr"),
+	isFixed = dim => !isFluid(dim)
 
 function parseDimension(str, direction){
 
@@ -70,8 +73,4 @@ function parseDimension(str, direction){
 	return null;
 }
 
-function isFillingRemainingSpace(dim){
-	return dim.endsWith("fr");
-}
-
-module.exports = { parseDimension, isFillingRemainingSpace }
+module.exports = { parseDimension, isFluid, isFixed }

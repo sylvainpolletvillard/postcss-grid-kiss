@@ -1,23 +1,20 @@
-const {range} = require("./utils");
+const { range } = require("./utils");
 
 exports.getJustifyContent = function({ cols }) {
 
 	const
 		isSpaceCol = col => /^\s*$/.test(col),
 
-		hasSpaceCols = cols.some(isSpaceCol),
-
-		hasSpaceColsBeforeContent = isSpaceCol(cols[0]) && isSpaceCol(cols[1]),
-
-		hasSpaceRowsAfterContent = isSpaceCol(cols[cols.length-1]) && isSpaceCol(cols[cols.length-2]),
-
 		firstContentColIndex = cols.findIndex(col => !isSpaceCol(col)),
-
 		lastContentColIndex = cols.length - 1 - cols.slice().reverse().findIndex(col => !isSpaceCol(col)),
 
 		hasContent = firstContentColIndex >= 0 && lastContentColIndex < cols.length,
 
-	    hasSpaceColsBetweenContent = hasContent
+		hasSpaceCols = cols.some(isSpaceCol),
+		hasSpaceColsBeforeContent = isSpaceCol(cols[0]) && isSpaceCol(cols[1]),
+		hasSpaceRowsAfterContent = isSpaceCol(cols[cols.length-1]) && isSpaceCol(cols[cols.length-2]),
+
+		hasSpaceColsBetweenContent = hasContent
 		    && cols
 			    .slice(firstContentColIndex, lastContentColIndex-1)
 			    .some((col, index, cols) => isSpaceCol(col) && isSpaceCol(cols[index+1])),

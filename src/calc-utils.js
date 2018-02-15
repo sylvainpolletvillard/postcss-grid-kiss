@@ -1,49 +1,25 @@
-const reduceCSSCalc = require('reduce-css-calc');
-const { isFillingRemainingSpace } = require("./dimension");
+const
+	reduceCSSCalc      = require('reduce-css-calc'),
+	{isFluid, isFixed} = require("./dimension"),
 
-function sum(...args){
-	let dims = args.filter(arg => arg && arg !== "0");
-	if(dims.length === 0) return '0'
-	if(dims.length === 1) return dims[0]
-	return reduceCSSCalc(`calc(${dims.join(" + ")})`)
-}
+	calc      = expr => reduceCSSCalc(`calc(${expr})`),
+	sum       = (...args) => calc(args.filter(arg => !!arg).join(" + ") || "0"),
+	remaining = (...dims) => calc(`100% - ${sum(...dims)}`),
 
-function remaining(dim){
-	if(!dim || dim === "0") return "100%";
-	return reduceCSSCalc(`calc(100% - ${dim})`)
-}
+	fraction  = (dims, allDims) => {
+		if (dims.length === 0 || dims.length === allDims.length)
+			return null; // use default value
 
-function fraction(dims, allDims){
-	if(dims.length === 0 || dims.length === allDims.length)
-		return null; // use default value
+		if (dims.every(isFixed))
+			return sum(...dims);
 
-	if(dims.length === 1 && !isFillingRemainingSpace(dims[0]))
-		return dims[0];
+		const
+			fr             = dims.filter(isFluid).reduce((total, dim) => total + parseInt(dim), 0),
+			totalFr        = allDims.filter(isFluid).reduce((total, dim) => total + parseInt(dim), 0),
+			remainingSpace = remaining(...allDims.filter(isFixed)),
+			remainingFr    = calc(`${remainingSpace} * ${fr} / ${totalFr}`)
 
-	if(dims.every(dim => !isFillingRemainingSpace(dim))) // all fixed
-		return sum(...dims);
-
-	const
-		fr = dims.reduce((total, dim) => isFillingRemainingSpace(dim) ? total + parseInt(dim) : total, 0),
-		totalFr = allDims.reduce((total, dim) => isFillingRemainingSpace(dim) ? total + parseInt(dim) : total, 0),
-		allFixedDims = allDims.filter(dim => !isFillingRemainingSpace(dim)),
-		fixedDims = dims.filter(dim => !isFillingRemainingSpace(dim)),
-		remainingSpace = remaining(allFixedDims.join(" - "));
-
-	if(fixedDims.length === 0) { // all relative
-		if (fr === totalFr) {
-			return remainingSpace;
-		}
-		return reduceCSSCalc(`calc(${remainingSpace} * ${fr} / ${totalFr})`)
+		return sum(...dims.filter(isFixed), remainingFr);
 	}
 
-	let sumFixed = fixedDims.length === 1 ? fixedDims[0] : sum(...fixedDims);
-	if (fr === totalFr) {
-		return sum(sumFixed, remainingSpace);
-	}
-
-	return sum(sumFixed, `calc(${remainingSpace} * ${fr} / ${totalFr})`);
-
-}
-
-module.exports = { sum, remaining, fraction }
+module.exports = { calc, sum, remaining, fraction }
