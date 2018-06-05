@@ -6,24 +6,23 @@ exports.getGridRows = function(input){
 		{ rows, colIndexes, rowIndexes } = input,
 	    gridRows = [];
 
-	for(let y=0; y<rowIndexes.length; y+=2) {
-		let dimension = parseDimension(getRowDimInfo({
+	for(let y=0; y < rowIndexes.length; y+=2) {
+		let dimension = getRowDim({
 			rows, colIndexes,
-			from: rowIndexes[y] + 1,
-			to: rowIndexes[y+1] - 1
-		}), "vertical");
+			from: rowIndexes[y],
+			to: rowIndexes[y + 1]
+		});
 
-		if (dimension === null) dimension = "1fr";
+		if (dimension === null){ dimension = "1fr"; }
 		gridRows.push(dimension);
 	}
 
 	// check vertical gaps
 	for(let y=0; y<rowIndexes.length-2; y+=2) {
 		const
-			top = rowIndexes[y+1]+1,
-		    bottom = rowIndexes[y+2]-1,
-			gapInput = getRowDimInfo({ rows, colIndexes, from: top, to: bottom }),
-		    gapDim = parseDimension(gapInput, "vertical");
+			top = rowIndexes[y + 1],
+		    bottom = rowIndexes[y + 2],
+			gapDim = getRowDim({ rows, colIndexes, from: top, to: bottom });
 
 		if(gapDim != null){ // vertical gap detected
 			gridRows.splice(Math.floor(y/2)+1, 0, gapDim);
@@ -34,12 +33,10 @@ exports.getGridRows = function(input){
 
 	input.rowsDim = gridRows;
 	return gridRows.join(" ");
-}
+};
 
-function getRowDimInfo({ rows, colIndexes, from, to }){
+function getRowDim({ rows, colIndexes, from, to }){
 	const lastContentColIndex = colIndexes.slice(-1)[0];
-	return rows
-		.slice(from, to+1)
-		.map(row => row.substring(lastContentColIndex + 1))
-		.join(" ");
+	const dimInput = rows.slice(from + 1, to).map(row => row.substring(lastContentColIndex + 1)).join(" ");
+	return parseDimension(dimInput, "vertical")
 }

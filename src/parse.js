@@ -58,8 +58,8 @@ function getZones({ rows, cols, colIndexes, rowIndexes, options }){
 
 				if(CORNERS_CHARS.test(rows[top][left])) {
 					// a zone starts here, see how far if goes
-					bottom = cols[left].slice(top+1).search(CORNERS_CHARS)+top+1;
-					right = rows[top].slice(left+1).search(CORNERS_CHARS)+left+1;
+					bottom = cols[left].slice(top+1).search(CORNERS_CHARS) + top + 1;
+					right = rows[top].slice(left+1).search(CORNERS_CHARS) + left + 1;
 				} else {
 					zone.isHole = true; // no zone found, presumed as hole
 					bottom = rowIndexes[y+1];

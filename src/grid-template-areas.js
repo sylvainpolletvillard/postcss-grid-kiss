@@ -17,11 +17,11 @@ exports.getGridAreas = function({ zones, rowIndexes, colIndexes }){
 			} else { // gap
 				areaNames[y][x] = "...";
 				zones.push({
-					isGap: true,
-					top: rowIndexes[2*y],
+					isGap:  true,
+					top:    rowIndexes[2*y],
 					bottom: rowIndexes[2*y+1],
-					left: colIndexes[2*x],
-					right: colIndexes[2*x+1]
+					left:   colIndexes[2*x],
+					right:  colIndexes[2*x+1]
 				})
 			}
 		}

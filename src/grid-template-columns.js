@@ -19,20 +19,19 @@ exports.getGridCols = function(input){
 				if (colIndexRight === colIndexLeft + 1) {
 					gridCols[Math.floor(colIndexLeft / 2)] = colDim;
 				}
-				else throw decl.error(
-					`You cannot specify the width of a zone occupying more than one column.`,
-					{ plugin: 'postcss-mixins' }
-				);
+				else throw decl.error(`You cannot specify the width of a zone occupying more than one column.`)
 			}
 		}
 	}
 
 	// check the last row
-	let lastRow = rows[rowIndexes.slice(-1)[0]+1];
+	let lastRow = rows[rowIndexes.slice(-1)[0] + 1];
 	if(lastRow){
 		for(let x=0; x < gridCols.length; x++){
 			const
-				content = cleanupDimInput(lastRow.substring(colIndexes[2*x], colIndexes[2*x+1]+1)),
+				left    = colIndexes[2*x],
+				right   = colIndexes[2*x + 1],
+				content = cleanupDimInput(lastRow.substring(left+1, right)),
 			    colDim  = parseDimension(content, "horizontal")
 
 			if (colDim != null) {
@@ -43,9 +42,9 @@ exports.getGridCols = function(input){
 		// check horizontal gaps
 		for(let x=0; x < colIndexes.length-2; x+=2){
 			const
-				left     = colIndexes[x + 1] + 1,
-				right    = colIndexes[x + 2] - 1,
-				gapInput = cleanupDimInput(lastRow.substring(left, right)),
+				left     = colIndexes[x + 1],
+				right    = colIndexes[x + 2],
+				gapInput = cleanupDimInput(lastRow.substring(left+1, right)),
 				gapDim   = parseDimension(gapInput, "horizontal");
 
 			if(gapDim != null){ // horizontal gap detected
