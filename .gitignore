@@ -15,6 +15,9 @@ node_modules
 # Optional npm cache directory
 .npm
 
+# npm local config
+.npmrc
+
 # Optional REPL history
 .node_repl_history
 
