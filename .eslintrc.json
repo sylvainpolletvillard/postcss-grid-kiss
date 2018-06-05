@@ -1,5 +1,5 @@
 {
-    "env": {
+	"env": {
         "commonjs": true,
         "es6": true,
         "node": true
@@ -11,6 +11,7 @@
 	    "no-console": "off"
     },
 	"parserOptions": {
-		"ecmaVersion": 2017
+		"ecmaVersion": 2017,
+		"sourceType": "module"
 	}
 }

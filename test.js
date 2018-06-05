@@ -3,6 +3,7 @@ const postcss = require('postcss'),
 	  test = require('ava');
 
 const {parseDimension} = require("./lib/dimension");
+const caniuse = require("./lib/caniuse");
 
 async function process(input, options){
 	return postcss(gridkiss(options)).process(input, { from: undefined }).then(res => {
@@ -49,6 +50,13 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
 	t.is(parseDimension("min"), "min-content")
 	t.is(parseDimension("max"), "max-content")
+})
+
+test("browser support", t => {
+	t.is(caniuse("css-grid", "IE 11"), false)
+	t.is(caniuse("css-grid", "last 2 Chrome versions"), true)
+	t.is(caniuse("css-supports-api", "Firefox > 20"), false)
+	t.is(caniuse("css-supports-api", "Firefox > 40"), true)
 })
 
 test('display grid', async t => {

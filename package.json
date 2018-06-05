@@ -23,14 +23,14 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "browserslist": "^3.2.6",
-    "caniuse-api": "^2.0.0",
+    "browserslist": "^3.2.8",
+    "caniuse-lite": "latest",
     "postcss": "^6.0.22",
     "postcss-merge-grid-template": "^0.6.0",
     "reduce-css-calc": "^2.1.4"
   },
   "devDependencies": {
-    "ava": "^1.0.0-beta.4",
+    "ava": "0.25.0",
     "eslint": "^4.19.1"
   }
 }
