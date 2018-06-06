@@ -338,7 +338,7 @@ test('grid template columns', async t => {
 		   "+-----+ +-------------+"
 		   "|     | |  .bigzone2  |"
 		   "+-----+ +-------------+"
-		   "| 20% | | 60% | | 20% |"
+		   "|20%  | | 60% | |  20%|"
 	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
