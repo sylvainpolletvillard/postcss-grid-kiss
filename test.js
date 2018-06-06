@@ -1,11 +1,12 @@
 const postcss = require('postcss'),
-	  gridkiss = require('./dist/index'),
+	  gridkiss = require('./lib/index'),
 	  test = require('ava');
 
-const {parseDimension} = require("./dist/dimension");
+const {parseDimension} = require("./lib/dimension");
+const caniuse = require("./lib/caniuse");
 
 async function process(input, options){
-	return postcss(gridkiss(options)).process(input).then(res => {
+	return postcss(gridkiss(options)).process(input, { from: undefined }).then(res => {
 		const output = {};
 		res.root.walkRules((rule) => {
 			if(rule.parent === res.root){
@@ -49,6 +50,13 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
 	t.is(parseDimension("min"), "min-content")
 	t.is(parseDimension("max"), "max-content")
+})
+
+test("browser support", t => {
+	t.is(caniuse("css-grid", "IE 11"), false)
+	t.is(caniuse("css-grid", "last 2 Chrome versions"), true)
+	t.is(caniuse("css-supports-api", "Firefox > 20"), false)
+	t.is(caniuse("css-supports-api", "Firefox > 40"), true)
 })
 
 test('display grid', async t => {
@@ -330,7 +338,7 @@ test('grid template columns', async t => {
 		   "+-----+ +-------------+"
 		   "|     | |  .bigzone2  |"
 		   "+-----+ +-------------+"
-		   "| 20% | | 60% | | 20% |"
+		   "|20%  | | 60% | |  20%|"
 	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
@@ -458,17 +466,17 @@ test('gaps', async t => {
 		`body {
 		grid-kiss:
 		   "+-----+      +-----+      +-----+  ----"
-		   "| .nw |      | .n  |      | .ne | 100px"
+		   "| .nw |      | .n  |      | .ne |100px "
 		   "+-----+      +-----+      +-----+  ----"
 		   "                                   50px"
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .w  |      |     |      | .e  | 100px"
 		   "+-----+      +-----+      +-----+  ----"
-		    "                                  50px"
+		    "                                 50px "
 		   "+-----+      +-----+      +-----+  ----"
 		   "| .sw |      | .s  |      | .se | 100px"
 		   "+-----+      +-----+      +-----+  ----"
-		   "|100px| 50px |100px| 50px |100px|      "
+		   "|100px|50px  |100px|  50px|100px|      "
 	}`, { optimize: false });
 
 	t.is(output["body"]["grid-template-columns"], "100px 50px 100px 50px 100px");
