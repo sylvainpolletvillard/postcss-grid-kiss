@@ -167,14 +167,6 @@ Grid-kiss comes with a few options:
 postcss([ gridkiss({ ...options }) ])
 ```
 
-### `browsers` : specify the list of browsers to support
-
-**Note: it is recommended to declare browserslist config in `package.json` instead of using this option, so that other plugins can reuse the configuration. See [browserslist docs][browserslist].**
-
-```javascript
-postcss([ gridkiss({ browsers: ["last 2 versions", "> 1%"] }) ])
-```
-
 ### `fallback` : add fallback for browsers not supporting CSS Grid Layout 
 
 **Note: it is recommended to use automatic detection through browserslist instead of using this option. See [Fallback](#fallback-for-older-browsers) section.**
