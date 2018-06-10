@@ -104,14 +104,14 @@ Use different `grid-kiss` declarations in media queries to easily get responsive
 
 ## Installation
 
-- with [yarn](https://yarnpkg.com/)
-```bash
-yarn add postcss-grid-kiss --dev
-```
-
 - with [npm](https://www.npmjs.com/)
 ```bash
 npm install postcss-grid-kiss --save-dev
+```
+
+- with [yarn](https://yarnpkg.com/)
+```bash
+yarn add postcss-grid-kiss --dev
 ```
 
 ## Usage
@@ -137,16 +137,13 @@ postcss([ gridkiss ])
     });
 ```
 
-Read PostCSS documentation for usage with Gulp, Webpack, Grunt or other build systems.
-
+Read PostCSS documentation to make it work with Webpack, Gulp or your other build system.
 
 ## Fallback for older browsers
 
-As of October 2017, [CSS Grid Layout][w3c-spec] is a W3C Candidate Recommandation supported in all the evergreen browsers. It is available in Chrome 57, Firefox 52, Safari 10.1, Edge 16 and Opera 44. It is also supported on mobile iOS Safari and Chrome for Android. See [Can I Use][can-i-use] for more information on browser support. 
+[CSS Grid Layout][w3c-spec] is a W3C Candidate Recommandation supported in all the evergreen browsers. It is available in Chrome 57, Firefox 52, Safari 10.1, Edge 16 and Opera 44. It is also supported on mobile iOS Safari and Chrome for Android. See [Can I Use][can-i-use] for more information on browser support.
 
-If you are looking for a polyfill for Grid layout to support older browsers, unfortunately, **it is impossible to make a pure CSS polyfill that is fully compliant with the Grid spec, because it let you do things that were not possible before**.
-
-What Grid-kiss proposes is not a *polyfill*, but a *fallback* that tries to simulate CSS Grid Layout using absolute positionning and `calc()` operator. This does not require JavaScript and only applies on browsers not supporting CSS Grid Layout, thanks to a `@supports` query.
+For browsers not supporting CSS Grid Layout, Grid-kiss proposes a *fallback* that use absolute positionning and `calc()` operator. It uses a `@supports` query to only apply on non-supported browsers, and does not involve JavaScript.
 
 **With this fallback, Grid-kiss layouts will work on any browser supporting `calc()`, which is like [95% of browsers](http://caniuse.com/#search=calc).** But you should note that a fallback based on absolute positionning has some limitations:
 
@@ -158,7 +155,7 @@ What Grid-kiss proposes is not a *polyfill*, but a *fallback* that tries to simu
 
 Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:\0)`. This extends support from **IE9 to IE11** at the cost of a bigger output size. If you don't care about Internet Explorer support and want to reduce the output size, you should omit IE in your [browserslist][browserslist].
 
-By default, Grid-kiss is looking in your [browserslist][browserslist] config for the list of supported browsers and automatically deduce what fallbacks are needed for your project by using [Can I Use data][can-i-use]. You can override this automatic detection with the `browsers` and `fallback` options.
+By default, Grid-kiss is looking in your [browserslist][browserslist] config for the list of supported browsers and automatically deduce what fallbacks are needed for your project by using [Can I Use data][can-i-use]. You can override this automatic detection with the `fallback` option explained below.
 
 ## Options
 
