@@ -42,6 +42,7 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("> 3rem"), "minmax(3rem, auto)")
 	t.is(parseDimension("< 10"), "minmax(auto, 10fr)")
 	t.is(parseDimension("50%"), "50%")
+	t.is(parseDimension("12.5%"), "12.5%")
 	t.is(parseDimension("50% grid"), "50%")
 	t.is(parseDimension("5.55% free"), "5.55fr")
 	t.is(parseDimension("50% view", "horizontal"), "50vw")
@@ -309,12 +310,12 @@ test('grid template columns', async t => {
 		   "  +-50px-+  +------+        "
 		   "  | foo  |  | bar  |   40px "
 		   "  +------+  +------+        "
-		   "  +------+  +-25%--+        "
+		   "  +------+  +-25.5%+        "
 		   "  | bar  |  | foo  |    15% "
 		   "  +------+  +------+        "
 	}`, { optimize: false })
 
-	t.is(output["div"]["grid-template-columns"], "50px 25%");
+	t.is(output["div"]["grid-template-columns"], "50px 25.5%");
 
 	output = await process(
 		`div {
@@ -338,10 +339,10 @@ test('grid template columns', async t => {
 		   "+-----+ +-------------+"
 		   "|     | |  .bigzone2  |"
 		   "+-----+ +-------------+"
-		   "|20%  | | 60% | |  20%|"
+		   "|20%  | |66.7%| |13.3%|"
 	}`, { optimize: false })
 
-	t.is(output["div"]["grid-template-columns"], "20% 60% 20%");
+	t.is(output["div"]["grid-template-columns"], "20% 66.7% 13.3%");
 
 	output = await process(
 		`div {
