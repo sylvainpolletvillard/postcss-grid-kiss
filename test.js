@@ -2,6 +2,7 @@ const postcss = require('postcss'),
 	  gridkiss = require('./lib/index'),
 	  test = require('ava');
 
+const {remaining, sum} = require("./lib/calc-utils");
 const {parseDimension} = require("./lib/dimension");
 const caniuse = require("./lib/caniuse");
 
@@ -51,6 +52,11 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
 	t.is(parseDimension("min"), "min-content")
 	t.is(parseDimension("max"), "max-content")
+})
+
+test("calc utils", t => {
+	t.is(sum("120px","1em","100px","2em"), "calc(220px + 3em)");
+	t.is(remaining('120px', '1em', '2em', '100px'), "calc(100% - 220px - 3em)");
 })
 
 test("browser support", t => {
@@ -570,15 +576,16 @@ test('fallback properties with mixed relative/fixed', async t => {
 		"+------------------------------+      "
 		"|           header ↑           | 120px"
 		"+------------------------------+      "
-		"                                      "
-		"+--150px---+  +----- auto -----+      "
-		"| .sidebar |  |      main      | auto "
-		"+----------+  +----------------+      "
-		"                                      "
+		"                                 1em "
+		"+--150px---+     +--- auto ----+      "
+		"| .sidebar |     |    main     | auto "
+		"+----------+     +-------------+      "
+		"                                 2em  "
 		"+------------------------------+      "
 		"|              ↓               |      "
-		"|         → footer ←           | 60px "
+		"|         → footer ←           | 100px"
 		"+------------------------------+      "
+		"           | 4vw |                    "
 	}`, { fallback: true });
 
 	t.is("supports" in output, true);
@@ -604,22 +611,22 @@ test('fallback properties with mixed relative/fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .sidebar"], {
-		"top":"120px",
-		"height":"calc(100% - 180px)",
+		"top":"calc(120px + 1em)",
+		"height":"calc(100% - 220px - 3em)",
 		"left":"0",
 		"width":"150px"
 	})
 
 	t.deepEqual(output["supports"]["body > main"], {
-		"top":"120px",
-		"height":"calc(100% - 180px)",
-		"left":"150px",
-		"width":"calc(100% - 150px)"
+		"top":"calc(120px + 1em)",
+		"height":"calc(100% - 220px - 3em)",
+		"left":"calc(150px + 4vw)",
+		"width":"calc(100% - 150px - 4vw)"
 	})
 
 	t.deepEqual(output["supports"]["body > footer"], {
 		"bottom":"0",
-		"max-height":"60px",
+		"max-height":"100px",
 		"left":"50%",
 		"max-width":"100%",
 		"transform":"translateX(-50%)"
