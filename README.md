@@ -697,10 +697,13 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
 
+---
+
+![Sketchnote](https://user-images.githubusercontent.com/566536/52332976-553bf180-29fc-11e9-9578-8365ae7eee1b.jpg)
 
 ---
 
-Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/)
+Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/), [@aneveux](https://github.com/aneveux/)
 
 [playground]:https://sylvainpolletvillard.github.io/grid-kiss-playground/index.html
 [codepen]:http://codepen.io/sylvainpv/pen/oBxKWg
