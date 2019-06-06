@@ -1,16 +1,16 @@
 const postcss = require('postcss'),
-	  gridkiss = require('./lib/index'),
-	  test = require('ava');
+	gridkiss = require('./lib/index'),
+	test = require('ava');
 
-const {remaining, sum} = require("./lib/calc-utils");
-const {parseDimension} = require("./lib/dimension");
+const { remaining, sum } = require("./lib/calc-utils");
+const { parseDimension } = require("./lib/dimension");
 const caniuse = require("./lib/caniuse");
 
-async function process(input, options){
+async function process(input, options) {
 	return postcss(gridkiss(options)).process(input, { from: undefined }).then(res => {
 		const output = {};
 		res.root.walkRules((rule) => {
-			if(rule.parent === res.root){
+			if (rule.parent === res.root) {
 				output[rule.selector] = {};
 				rule.walkDecls((decl) => {
 					output[rule.selector][decl.prop] = decl.value;
@@ -27,8 +27,6 @@ async function process(input, options){
 			});
 		});
 
-
-		//console.log(input, output);
 		return output;
 	}).catch(err => console.error(err));
 }
@@ -55,15 +53,15 @@ test("parsing dimensions", t => {
 })
 
 test("calc utils", t => {
-	t.is(sum("120px","1em","100px","2em"), "calc(220px + 3em)");
+	t.is(sum("120px", "1em", "100px", "2em"), "calc(220px + 3em)");
 	t.is(remaining('120px', '1em', '2em', '100px'), "calc(100% - 220px - 3em)");
 })
 
 test("browser support", t => {
-	t.is(caniuse("css-grid", "IE 11"), false)
-	t.is(caniuse("css-grid", "last 2 Chrome versions"), true)
-	t.is(caniuse("css-supports-api", "Firefox > 20"), false)
-	t.is(caniuse("css-supports-api", "Firefox > 40"), true)
+	t.is(caniuse.cssGrid("IE 11"), false)
+	t.is(caniuse.cssGrid("last 2 Chrome versions"), true)
+	t.is(caniuse.cssSupportsApi("Firefox > 20"), false)
+	t.is(caniuse.cssSupportsApi("Firefox > 40"), true)
 })
 
 test('display grid', async t => {
@@ -384,9 +382,9 @@ test('grid template areas', async t => {
 	}`, { optimize: false })
 
 	t.is(output["div"]["grid-template-areas"], `\n\t\t"baz bar"\n\t\t"baz foo"\n\t\t"bar foo"`);
-	t.is(output["div > bar"]["grid-area"], "bar" );
-	t.is(output["div > baz"]["grid-area"], "baz" );
-	t.is(output["div > foo"]["grid-area"], "foo" );
+	t.is(output["div > bar"]["grid-area"], "bar");
+	t.is(output["div > baz"]["grid-area"], "baz");
+	t.is(output["div > foo"]["grid-area"], "foo");
 
 	output = await process(
 		`div {
@@ -401,11 +399,11 @@ test('grid template areas', async t => {
 
 	t.is(output["div"]["grid-template-areas"],
 		`\n\t\t"foo_bar_baz_qux foo_bar_baz_qux baz"\n\t\t"bar             foo             qux"`);
-	t.is(output["div > .bar"]["grid-area"], "bar" );
-	t.is(output["div > baz"]["grid-area"], "baz" );
-	t.is(output["div > #foo"]["grid-area"], "foo" );
-	t.is(output["div > qux"]["grid-area"], "qux" );
-	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "foo_bar_baz_qux" );
+	t.is(output["div > .bar"]["grid-area"], "bar");
+	t.is(output["div > baz"]["grid-area"], "baz");
+	t.is(output["div > #foo"]["grid-area"], "foo");
+	t.is(output["div > qux"]["grid-area"], "qux");
+	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "foo_bar_baz_qux");
 
 });
 
@@ -490,7 +488,7 @@ test('gaps', async t => {
 	t.is(output["body"]["grid-template-rows"], "100px 50px 100px 50px 100px");
 	t.is(output["body"]["grid-template-areas"],
 		`\n\t\t"nw  ... n   ... ne "\n\t\t"... ... ... ... ..."\n\t\t"w   ... ... ... e  "`
-		+`\n\t\t"... ... ... ... ..."\n\t\t"sw  ... s   ... se "`);
+		+ `\n\t\t"... ... ... ... ..."\n\t\t"sw  ... s   ... se "`);
 })
 
 test('other ascii formats: simple segments', async t => {
@@ -512,21 +510,21 @@ test('other ascii formats: simple segments', async t => {
 	}`, { optimize: false });
 
 	t.deepEqual(output["div > baz"], {
-		"grid-area":"baz",
-		"align-self":"center"
+		"grid-area": "baz",
+		"align-self": "center"
 	})
 	t.deepEqual(output["div > bar"], {
-		"grid-area":"bar",
-		"justify-self":"end"
+		"grid-area": "bar",
+		"justify-self": "end"
 	})
 	t.deepEqual(output["div > foo"], {
-		"grid-area":"foo",
-		"align-self":"stretch"
+		"grid-area": "foo",
+		"align-self": "stretch"
 	})
 	t.deepEqual(output["div > qux"], {
-		"grid-area":"qux",
-		"justify-self":"start",
-		"align-self":"end"
+		"grid-area": "qux",
+		"justify-self": "start",
+		"align-self": "end"
 	})
 	t.deepEqual(output["div"], {
 		"display": "grid",
@@ -551,13 +549,13 @@ test('other ascii formats: double segments', async t => {
 	}`, { optimize: false });
 
 	t.deepEqual(output["main > nav"], {
-		"grid-area":"nav"
+		"grid-area": "nav"
 	})
 	t.deepEqual(output["main > .article"], {
-		"grid-area":"article"
+		"grid-area": "article"
 	})
 	t.deepEqual(output["main > aside"], {
-		"grid-area":"aside"
+		"grid-area": "aside"
 	})
 	t.deepEqual(output["main"], {
 		"display": "grid",
@@ -604,32 +602,32 @@ test('fallback properties with mixed relative/fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > header"], {
-		"top":"0",
-		"max-height":"120px",
+		"top": "0",
+		"max-height": "120px",
 		"left": "0",
-		"width":"100%"
+		"width": "100%"
 	})
 
 	t.deepEqual(output["supports"]["body > .sidebar"], {
-		"top":"calc(120px + 1em)",
-		"height":"calc(100% - 220px - 3em)",
-		"left":"0",
-		"width":"150px"
+		"top": "calc(120px + 1em)",
+		"height": "calc(100% - 220px - 3em)",
+		"left": "0",
+		"width": "150px"
 	})
 
 	t.deepEqual(output["supports"]["body > main"], {
-		"top":"calc(120px + 1em)",
-		"height":"calc(100% - 220px - 3em)",
-		"left":"calc(150px + 4vw)",
-		"width":"calc(100% - 150px - 4vw)"
+		"top": "calc(120px + 1em)",
+		"height": "calc(100% - 220px - 3em)",
+		"left": "calc(150px + 4vw)",
+		"width": "calc(100% - 150px - 4vw)"
 	})
 
 	t.deepEqual(output["supports"]["body > footer"], {
-		"bottom":"0",
-		"max-height":"100px",
-		"left":"50%",
-		"max-width":"100%",
-		"transform":"translateX(-50%)"
+		"bottom": "0",
+		"max-height": "100px",
+		"left": "50%",
+		"max-width": "100%",
+		"transform": "translateX(-50%)"
 	})
 
 })
@@ -671,33 +669,33 @@ test('fallback properties with all fixed', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .baz"], {
-		"top":"0",
-		"height":"200px",
-		"left":"0",
+		"top": "0",
+		"height": "200px",
+		"left": "0",
 		"width": "100px"
 	})
 
 	t.deepEqual(output["supports"]["body > .bar"], {
-		"top":"0",
-		"height":"100px",
-		"left":"100px",
+		"top": "0",
+		"height": "100px",
+		"left": "100px",
 		"max-width": "200px"
 	})
 
 	t.deepEqual(output["supports"]["body > .qux"], {
-		"top":"200px",
-		"height":"100px",
-		"left":"100px",
-		"max-width":"200px",
+		"top": "200px",
+		"height": "100px",
+		"left": "100px",
+		"max-width": "200px",
 		"transform": "translateX(-50%)"
 	})
 
 	t.deepEqual(output["supports"]["body > .foo"], {
-		"top":"200px",
-		"max-height":"200px",
-		"left":"200px",
+		"top": "200px",
+		"max-height": "200px",
+		"left": "200px",
 		"transform": "translateY(-50%)",
-		"width":"100px"
+		"width": "100px"
 	})
 
 })
@@ -735,38 +733,38 @@ test('fallback properties with all relative', async t => {
 	})
 
 	t.deepEqual(output["supports"]["body > .a"], {
-		"top":"0",
-		"height":"20%",
-		"right":"88.88889%",
-		"max-width":"11.11111%",
+		"top": "0",
+		"height": "20%",
+		"right": "88.88889%",
+		"max-width": "11.11111%",
 	})
 
 	t.deepEqual(output["supports"]["body > .b"], {
-		"top":"0",
-		"height":"20%",
-		"left":"88.88889%",
-		"max-width":"11.11111%",
+		"top": "0",
+		"height": "20%",
+		"left": "88.88889%",
+		"max-width": "11.11111%",
 	})
 
 	t.deepEqual(output["supports"]["body > .c"], {
-		"top":"20%",
-		"height":"33.33333%",
-		"left":"11.11111%",
-		"width":"22.22222%",
+		"top": "20%",
+		"height": "33.33333%",
+		"left": "11.11111%",
+		"width": "22.22222%",
 	})
 
 	t.deepEqual(output["supports"]["body > .d"], {
-		"top":"20%",
-		"height":"33.33333%",
-		"left":"66.66667%",
-		"width":"22.22222%",
+		"top": "20%",
+		"height": "33.33333%",
+		"left": "66.66667%",
+		"width": "22.22222%",
 	})
 
 	t.deepEqual(output["supports"]["body > .e"], {
-		"top":"53.33333%",
-		"height":"46.66667%",
-		"left":"33.33333%",
-		"width":"33.33333%",
+		"top": "53.33333%",
+		"height": "46.66667%",
+		"left": "33.33333%",
+		"width": "33.33333%",
 	})
 
 })
@@ -784,11 +782,11 @@ test("optimize option", async t => {
 }`, { optimize: true })
 
 	t.is(output["div"]["grid-template"], `"a a b" 1fr "c d e" 1fr / minmax(4em, auto) 20% 100px`);
-	t.is(output["div > .bar"]["grid-area"], "c" );
-	t.is(output["div > baz"]["grid-area"], "b" );
-	t.is(output["div > #foo"]["grid-area"], "d" );
-	t.is(output["div > qux"]["grid-area"], "e" );
-	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "a" );
+	t.is(output["div > .bar"]["grid-area"], "c");
+	t.is(output["div > baz"]["grid-area"], "b");
+	t.is(output["div > #foo"]["grid-area"], "d");
+	t.is(output["div > qux"]["grid-area"], "e");
+	t.is(output["div > foo#bar.baz[qux]"]["grid-area"], "a");
 })
 
 
