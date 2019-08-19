@@ -1,6 +1,6 @@
 {
   "name": "postcss-grid-kiss",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "A PostCSS plugin to keep CSS grids stupidly simple",
   "main": "lib/index.js",
   "author": "Sylvain Pollet-Villard",
@@ -30,7 +30,7 @@
     "reduce-css-calc": "^2.1.6"
   },
   "devDependencies": {
-    "ava": "^2.2.0",
-    "eslint": "^6.0.1"
+    "ava": "^2.3.0",
+    "eslint": "^6.2.0"
   }
 }
