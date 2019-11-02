@@ -1,36 +1,36 @@
 {
-	"name": "postcss-grid-kiss",
-	"version": "2.2.0",
-	"description": "A PostCSS plugin to keep CSS grids stupidly simple",
-	"main": "lib/index.js",
-	"author": "Sylvain Pollet-Villard",
-	"license": "MIT",
-	"repository": "https://github.com/sylvainpolletvillard/postcss-grid-kiss",
-	"keywords": [
-		"postcss",
-		"postcss-plugin",
-		"ascii-art",
-		"visual",
-		"css",
-		"grid",
-		"kiss"
-	],
-	"scripts": {
-		"test": "ava test.js",
-		"lint": "eslint lib --fix"
-	},
-	"engines": {
-		"node": ">=6.0.0"
-	},
-	"dependencies": {
-		"browserslist": "^4.7.0",
-		"caniuse-lite": "latest",
-		"postcss": "^7.0.17",
-		"postcss-merge-grid-template": "^0.7.0",
-		"reduce-css-calc": "^2.1.6"
-	},
-	"devDependencies": {
-		"ava": "^2.3.0",
-		"eslint": "^6.3.0"
-	}
+  "name": "postcss-grid-kiss",
+  "version": "2.3.0",
+  "description": "A PostCSS plugin to keep CSS grids stupidly simple",
+  "main": "lib/index.js",
+  "author": "Sylvain Pollet-Villard",
+  "license": "MIT",
+  "repository": "https://github.com/sylvainpolletvillard/postcss-grid-kiss",
+  "keywords": [
+    "postcss",
+    "postcss-plugin",
+    "ascii-art",
+    "visual",
+    "css",
+    "grid",
+    "kiss"
+  ],
+  "scripts": {
+    "test": "ava test.js",
+    "lint": "eslint lib --fix"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "browserslist": "^4.7.2",
+    "caniuse-lite": "latest",
+    "postcss": "^7.0.21",
+    "postcss-merge-grid-template": "^0.7.0",
+    "reduce-css-calc": "^2.1.7"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "eslint": "^6.6.0"
+  }
 }
