@@ -407,6 +407,32 @@ test('grid template areas', async t => {
 
 });
 
+test('zone justify-self', async t => {
+	let output = await process(
+		`div {
+		grid-kiss:
+		   "+-----------+  +------------+   "
+		   "|           |  |  ^         |   "
+		   "|           |  | bar ->     |   "
+		   "|  v        |  +------------+   "
+		   "| baz <--   |                   "
+		   "|  ^        |  +------------+   "
+		   "|           |  |            |   "
+		   "+-----------+  |            |   "
+		   "               |   → foo ←  |   "
+		   "+-----------+  |            |   "
+		   "|   < qux > |  |            |   "
+		   "|      v    |  |            |   "
+		   "+-----------+  +------------+   "
+	}`);
+
+	t.is(output["div > baz"]["justify-self"], "start");
+	t.is(output["div > bar"]["justify-self"], "end");
+	t.is(output["div > qux"]["justify-self"], "stretch");
+	t.is(output["div > foo"]["justify-self"], "center");
+
+});
+
 test('zone align-self', async t => {
 	let output = await process(
 		`div {
