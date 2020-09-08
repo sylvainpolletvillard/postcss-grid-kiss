@@ -847,3 +847,20 @@ test("advanced selectors", async t => {
 	t.is("div > [data-component-name='Hello']" in output, true)
 
 })
+
+test("css vars", async t => {
+	let output = await process(
+		`div {
+	grid-kiss:
+	   "+-------------+ +--------------+"
+	   "|     foo     | |     baz      | var(--fooh)"
+	   "+-------------+ +--------------+"
+	   "+-------------+ +-var(--quxw) -+"
+	   "|     bar     | |     qux      |"
+	   "+-------------+ +--------------+"
+	   "| var(--barw) | |       |"
+}`, { optimize: false })
+
+	t.is(output["div"]["grid-template-rows"], `var(--fooh) 1fr`)
+	t.is(output["div"]["grid-template-columns"], `var(--barw) var(--quxw)`)
+})
