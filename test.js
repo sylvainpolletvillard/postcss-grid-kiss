@@ -50,6 +50,7 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("calc(20% + 10%)"), "calc(20% + 10%)")
 	t.is(parseDimension("min"), "min-content")
 	t.is(parseDimension("max"), "max-content")
+	t.is(parseDimension("var(--test)"), "var(--test)")
 })
 
 test("calc utils", t => {
@@ -833,13 +834,13 @@ test("advanced selectors", async t => {
 		   "| Hello |"
 		   "+-------+"
 	}`, {
-			selectorParser: function (selector) {
-				if (/[A-Z]/.test(selector[0])) {
-					return `[data-component-name='${selector}']`
-				}
-				else return selector
+		selectorParser: function (selector) {
+			if (/[A-Z]/.test(selector[0])) {
+				return `[data-component-name='${selector}']`
 			}
-		});
+			else return selector
+		}
+	});
 
 	t.is("div > *:nth-child(1)" in output, true)
 	t.is("div > p:nth-of-type(2)" in output, true)

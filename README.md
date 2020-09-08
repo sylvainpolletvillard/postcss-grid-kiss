@@ -21,16 +21,16 @@ Table of contents
 * [Alternative styles](#alternative-styles)
 * [Documentation](#documentation)
   - [How to draw a grid](#how-to-draw-a-grid)
-  - [Values accepted for selectors](#values-accepted-for-selectors)  
+  - [Values accepted for selectors](#values-accepted-for-selectors)
   - [Dimensions of rows](#dimensions-of-rows)
-  - [Dimensions of columns](#dimensions-of-columns)  
+  - [Dimensions of columns](#dimensions-of-columns)
   - [Dimensions of gaps](#dimensions-of-gaps)
   - [Values accepted for dimensions](#values-accepted-for-dimensions)
   - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
   - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
   - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
   - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
-  
+
 
 ## Examples
 
@@ -85,7 +85,7 @@ body {
 	align-content: space-between;
 	grid-template-rows: 120px 1fr 60px;
 	grid-template-columns: 30% 1fr;
-	grid-template-areas: 
+	grid-template-areas:
 	"header  header"
 	"sidebar main  "
 	"footer  footer"
@@ -159,16 +159,16 @@ By default, Grid-kiss is looking in your [browserslist][browserslist] config for
 
 ## Options
 
-Grid-kiss comes with a few options: 
+Grid-kiss comes with a few options:
 ```javascript
 postcss([ gridkiss({ ...options }) ])
 ```
 
-### `fallback` : add fallback for browsers not supporting CSS Grid Layout 
+### `fallback` : add fallback for browsers not supporting CSS Grid Layout
 
 **Note: it is recommended to use automatic detection through browserslist instead of using this option. See [Fallback](#fallback-for-older-browsers) section.**
 
-If this option is provided, it overrides automatic detection and tells explicitely whether to add or not the fallback styles to the output. 
+If this option is provided, it overrides automatic detection and tells explicitely whether to add or not the fallback styles to the output.
 
 ```javascript
 postcss([ gridkiss({ fallback: true }) ]) // always add all fallbacks
@@ -189,15 +189,15 @@ postcss([ gridkiss({ optimize: false }) ])
 
 This option receives a function that is applied on the selectors you wrote in the zones. This is useful to add your own transforms or selector syntax, for example to use component names in a component-based framework like Vue or React.
 ```javascript
-postcss([ 
-  gridkiss({ 
+postcss([
+  gridkiss({
     selectorParser: function (selector) {
       if (/[A-Z]/.test(selector[0])) {
         return `[data-component-name='${selector}']`
       }
       return selector
     }
-  }) 
+  })
 ])
  ```
 
@@ -209,7 +209,7 @@ These alternative styles for zone syntax are also supported :
 
  ```css
  div {
- 	grid-kiss:		   
+ 	grid-kiss:
  	"┌──────┐  ┌──────┐         "
  	"│      │  │  ↑   │         "
  	"│      │  │ bar →│  200px  "
@@ -230,7 +230,7 @@ These alternative styles for zone syntax are also supported :
 
  ```css
  main {
- 	grid-kiss:		   
+ 	grid-kiss:
  	"╔═══════╗  ╔════════════════╗      "
  	"║       ║  ║    .article    ║ auto "
  	"║   ↑   ║  ╚════════════════╝      "
@@ -268,17 +268,17 @@ Since 1.4.0, you can also apply custom transforms and make your own syntax with 
 
 Declare the size of a row by writing the dimension **just after the last column of the grid**
 ```
-+------+  +------+ --- 
++------+  +------+ ---
 |  ^   |  | .bar | 40em
-|      |  +------+ --- 
-| .baz |               
-|      |  +------+ --- 
+|      |  +------+ ---
+| .baz |
+|      |  +------+ ---
 |  v   |  |  ^   | 38em
-+------+  |      | --- 
-          | .foo |     
-+------+  |      | --- 
++------+  |      | ---
+          | .foo |
++------+  |      | ---
 | .qux |  |  v   | 40em
-+------+  +------+ --- 
++------+  +------+ ---
 ```
 
 The `-` separators between dimensions are not mandatory, they are only here to make the grid more readable.
@@ -298,11 +298,11 @@ You cannot set the width of a zone occupying more than one column. This would im
 ```
 +-------------+ +-----+        +-------------+ +-20%-+
 |  .bigzone   | |     |        |  .bigzone   | |     |
-+-------------+ +-----+        +-------------+ +-----+            
++-------------+ +-----+        +-------------+ +-----+
 +-----+ +-------------+   or   +-----+ +-------------+
 |     | |  .bigzone2  |        |     | |  .bigzone2  |
 +-----+ +-------------+        +-20%-+ +-------------+
-| 20% | | 60% | | 20% |                | 60% |                 
+| 20% | | 60% | | 20% |                | 60% |
 ```
 
 The `|` separators between dimensions are not mandatory, they are only here to make the grid more readable.
@@ -323,14 +323,14 @@ You can also declare the dimension of spacing between zones the same way you do 
 +-----+      +-----+      +-----+  ----
 | .sw |      | .s  |      | .se | 100px
 +-----+      +-----+      +-----+  ----
-|100px| 50px |100px| 50px |100px|      
+|100px| 50px |100px| 50px |100px|
 ```
 
 ### Values accepted for dimensions
 
 Dimensions can be any of the specified values:
 
-- a non-negative length. 
+- a non-negative length.
   - `15px`
   - `4rem`
 
@@ -339,10 +339,10 @@ Dimensions can be any of the specified values:
   - `25% free` ⇒ `25fr`
   - `30% grid` ⇒ `30%`
   - `5% view` ⇒ `5vw` or `5vh` depending on the direction
-  
+
 - a non-negative number representing a fraction of the free space in the grid container.
   - `5` ⇒ `5fr`
-  
+
 - `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
 
 - `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
@@ -353,11 +353,13 @@ Dimensions can be any of the specified values:
 - `> *length*` or `< *length*`: a minimum or maximum value
   - `> 100px` ⇒ `minmax(100px, auto)`
   - `< 50%` ⇒ `minmax(auto, 50%)`
-  
+
 - `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
   - `fit 100px` ⇒ `fit-content(100px)`
-  
-- `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function  
+
+- `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function
+
+- `var(--name)` : a [CSS variable](https://developer.mozilla.org/en-US/docs/Web/CSS/var) interpolation
 
 - `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
 
@@ -379,7 +381,7 @@ when there are no two consecutive spaces at the beginning or the end of the rows
 "+---+ +---+ +---+"
 "| g | | h | | i |"
 "+---+ +---+ +---+"
-``` 
+```
 
 ![grid-justify-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096183/4211e616-f617-11e6-9819-701ef3958093.png)
 
@@ -395,7 +397,7 @@ when there are two consecutive spaces or more at the end of the rows
 "+---+ +---+ +---+    "
 "| g | | h | | i |    "
 "+---+ +---+ +---+    "
-``` 
+```
 
 
 ![grid-justify-content-start](https://cloud.githubusercontent.com/assets/566536/23096182/4203ebd8-f617-11e6-8972-1ee145bb8359.png)
@@ -413,7 +415,7 @@ when there are two consecutive spaces or more at the beginning of the rows
 "    +---+ +---+ +---+"
 "    | g | | h | | i |"
 "    +---+ +---+ +---+"
-``` 
+```
 ![grid-justify-content-end](https://cloud.githubusercontent.com/assets/566536/23096179/41fefe70-f617-11e6-9340-c53943440a44.png)
 
 - `justify-content: center`
@@ -496,7 +498,7 @@ when no space rows
 "+---+ +---+ +---+"
 "| g | | h | | i |"
 "+---+ +---+ +---+"
-``` 
+```
 
 ![grid-align-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096172/41e9bc04-f617-11e6-9de4-a0906fa68a7e.png)
 
@@ -514,7 +516,7 @@ when at least one space row at the end
 "+---+ +---+ +---+"
 "                 "
 "                 "
-``` 
+```
 
 ![grid-align-content-start](https://cloud.githubusercontent.com/assets/566536/23096171/41e983f6-f617-11e6-8e8c-89425ca2c76c.png)
 
@@ -532,7 +534,7 @@ when at least one space row at the beginning
 "+---+ +---+ +---+"
 "| g | | h | | i |"
 "+---+ +---+ +---+"
-``` 
+```
 
 ![grid-align-content-end](https://cloud.githubusercontent.com/assets/566536/23096167/41d703e8-f617-11e6-928b-ef29645c132a.png)
 
@@ -625,10 +627,10 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 
 - `justify-self: start` with `<` or `←`
 ```
-+-------------+    +-------------+  
++-------------+    +-------------+
 | .item-a  <  | or | .item-a  ←  |
 +-------------+    +-------------+
-``` 
+```
 ![grid-justify-self-start](https://cloud.githubusercontent.com/assets/566536/23096186/4213332c-f617-11e6-9fb1-13e46b932364.png)
 
 - `justify-self: end` with `>` or `→`
@@ -636,7 +638,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 +-------------+    +-------------+
 |  >  .item-a | or |  →  .item-a |
 +-------------+    +-------------+
-``` 
+```
 ![grid-justify-self-end](https://cloud.githubusercontent.com/assets/566536/23096185/42121c8a-f617-11e6-830d-2be797b6c71a.png)
 
 - `justify-self: stretch` with `<` and `>` or `←` and `→` in this order
@@ -644,7 +646,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 +--------------+    +--------------+
 | < .item-a  > | or | ← .item-a  → |
 +--------------+    +--------------+
-``` 
+```
 ![grid-justify-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096188/42182026-f617-11e6-9ee0-8f43f2065562.png)
 
 - `justify-self: center` with `>` and `<` or `→` and `←` in this order
@@ -652,7 +654,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 +--------------+    +--------------+
 | > .item-a  < | or | → .item-a  ← |
 +--------------+    +--------------+
-``` 
+```
 ![grid-justify-self-center](https://cloud.githubusercontent.com/assets/566536/23096184/4211f75a-f617-11e6-9f7c-0e2a5dc959e7.png)
 
 ### Vertical alignment inside a zone
@@ -663,7 +665,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |   .item-a   | or |   .item-a   |
 |      ^      |    |      ↑      |
 +-------------+    +-------------+
-``` 
+```
 ![grid-align-self-start](https://cloud.githubusercontent.com/assets/566536/23096175/41ecd68c-f617-11e6-91bb-37789cd16c32.png)
 
 - `align-self: end` with ` v ` or `↓`
@@ -672,7 +674,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      v      | or |      ↓      |
 |   .item-a   |    |   .item-a   |
 +-------------+    +-------------+
-``` 
+```
 ![grid-align-self-end](https://cloud.githubusercontent.com/assets/566536/23096174/41ebf460-f617-11e6-9f6a-70c7ea8e4c1f.png)
 
 - `align-self: stretch` with `^` and ` v ` or `↑` and `↓` in this order
@@ -682,7 +684,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |   .item-a   | or |   .item-a   |
 |      v      |    |      ↓      |
 +-------------+    +-------------+
-``` 
+```
 ![grid-align-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096176/41f05fa0-f617-11e6-8841-f353256e0b3a.png)
 
 - `align-self: center` with ` v ` and `^` or `↓` and `↑` in this order
