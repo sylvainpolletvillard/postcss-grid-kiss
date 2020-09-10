@@ -10,27 +10,25 @@ This is a [PostCSS][postcss-website] plugin aiming to replace the 24 new propert
   <a href="https://gitter.im/sylvainpolletvillard/postcss-grid-kiss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"><img src="https://badges.gitter.im/sylvainpolletvillard/postcss-grid-kiss.svg" alt="Discuss about this project on gitter"></a>
 </p>
 
-Table of contents
------------------
+## Table of contents
 
-* [Examples](#examples)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Fallback](#fallback-for-older-browsers)
-* [Options](#options)
-* [Alternative styles](#alternative-styles)
-* [Documentation](#documentation)
-  - [How to draw a grid](#how-to-draw-a-grid)
-  - [Values accepted for selectors](#values-accepted-for-selectors)
-  - [Dimensions of rows](#dimensions-of-rows)
-  - [Dimensions of columns](#dimensions-of-columns)
-  - [Dimensions of gaps](#dimensions-of-gaps)
-  - [Values accepted for dimensions](#values-accepted-for-dimensions)
-  - [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
-  - [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
-  - [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
-  - [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
-
+-   [Examples](#examples)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Fallback](#fallback-for-older-browsers)
+-   [Options](#options)
+-   [Alternative styles](#alternative-styles)
+-   [Documentation](#documentation)
+    -   [How to draw a grid](#how-to-draw-a-grid)
+    -   [Values accepted for selectors](#values-accepted-for-selectors)
+    -   [Dimensions of rows](#dimensions-of-rows)
+    -   [Dimensions of columns](#dimensions-of-columns)
+    -   [Dimensions of gaps](#dimensions-of-gaps)
+    -   [Values accepted for dimensions](#values-accepted-for-dimensions)
+    -   [Horizontal alignment of the grid](#horizontal-alignment-of-the-grid)
+    -   [Vertical alignment of the grid](#vertical-alignment-of-the-grid)
+    -   [Horizontal alignment inside a zone](#horizontal-alignment-inside-a-zone)
+    -   [Vertical alignment inside a zone](#vertical-alignment-inside-a-zone)
 
 ## Examples
 
@@ -42,8 +40,7 @@ Try the different examples and play with the plugin on the [playground][playgrou
 
 ```css
 body {
-	grid-kiss:
-		"+-------------------------------+      "
+	grid-kiss: "+-------------------------------+      "
 		"|           header ↑            | 120px"
 		"+-------------------------------+      "
 		"                                       "
@@ -54,7 +51,7 @@ body {
 		"+-------------------------------+      "
 		"|              ↓                | 60px "
 		"|         → footer ←            |      "
-		"+-------------------------------+      "
+		"+-------------------------------+      ";
 }
 ```
 
@@ -63,21 +60,21 @@ is converted to:
 ```css
 body > header {
 	grid-area: header;
-	align-self: start
+	align-self: start;
 }
 
 body > .sidebar {
-	grid-area: sidebar
+	grid-area: sidebar;
 }
 
 body > main {
-	grid-area: main
+	grid-area: main;
 }
 
 body > footer {
 	grid-area: footer;
 	justify-self: center;
-	align-self: end
+	align-self: end;
 }
 
 body {
@@ -86,9 +83,9 @@ body {
 	grid-template-rows: 120px 1fr 60px;
 	grid-template-columns: 30% 1fr;
 	grid-template-areas:
-	"header  header"
-	"sidebar main  "
-	"footer  footer"
+		"header  header"
+		"sidebar main  "
+		"footer  footer";
 }
 ```
 
@@ -104,12 +101,14 @@ Use different `grid-kiss` declarations in media queries to easily get responsive
 
 ## Installation
 
-- with [npm](https://www.npmjs.com/)
+-   with [npm](https://www.npmjs.com/)
+
 ```bash
 npm install postcss-grid-kiss --save-dev
 ```
 
-- with [yarn](https://yarnpkg.com/)
+-   with [yarn](https://yarnpkg.com/)
+
 ```bash
 yarn add postcss-grid-kiss --dev
 ```
@@ -118,23 +117,24 @@ yarn add postcss-grid-kiss --dev
 
 If you never used PostCSS before, read [PostCSS usage documentation](https://github.com/postcss/postcss#usage) first.
 
-- with command line interface :
+-   with command line interface :
 
 ```bash
 postcss src/your.css --output dist/compiled.css --use postcss-grid-kiss
 ```
 
-- with Node:
-```js
-const postcss  = require('postcss'),
-      gridkiss = require('postcss-grid-kiss');
+-   with Node:
 
-postcss([ gridkiss ])
-    .process(css, { from: 'src/your.css', to: 'compiled.css' })
-    .then(function (result) {
-        fs.writeFileSync('compiled.css', result.css);
-        if( result.map ) fs.writeFileSync('compiled.css.map', result.map);
-    });
+```js
+const postcss = require("postcss"),
+	gridkiss = require("postcss-grid-kiss");
+
+postcss([gridkiss])
+	.process(css, { from: "src/your.css", to: "compiled.css" })
+	.then(function (result) {
+		fs.writeFileSync("compiled.css", result.css);
+		if (result.map) fs.writeFileSync("compiled.css.map", result.map);
+	});
 ```
 
 Read PostCSS documentation to make it work with Webpack, Gulp or your other build system.
@@ -143,15 +143,15 @@ Read PostCSS documentation to make it work with Webpack, Gulp or your other buil
 
 [CSS Grid Layout][w3c-spec] is a W3C Candidate Recommandation supported in all the evergreen browsers. It is available in Chrome 57, Firefox 52, Safari 10.1, Edge 16 and Opera 44. It is also supported on mobile iOS Safari and Chrome for Android. See [Can I Use][can-i-use] for more information on browser support.
 
-For browsers not supporting CSS Grid Layout, Grid-kiss proposes a *fallback* that use absolute positionning and `calc()` operator. It uses a `@supports` query to only apply on non-supported browsers, and does not involve JavaScript.
+For browsers not supporting CSS Grid Layout, Grid-kiss proposes a _fallback_ that use absolute positionning and `calc()` operator. It uses a `@supports` query to only apply on non-supported browsers, and does not involve JavaScript.
 
 **With this fallback, Grid-kiss layouts will work on any browser supporting `calc()`, which is like [95% of browsers](http://caniuse.com/#search=calc).** But you should note that a fallback based on absolute positionning has some limitations:
 
-- It is only a fallback for `grid-kiss` declarations. The reason this fallback works is because of the constraints designed by purpose for grid-kiss layouts. Other Grid Layout properties such as `grid-gap` are not covered by this fallback.
-- New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
-- Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
-- Grid-kiss adds the property `box-sizing: border-box` to each zone so that they don't overlap because of their padding or border size. If you don't already use this property, it may change a bit the zones dimensions.
-- The CSS output is significally bigger, between 2x and 3x in size depending on the targeted browsers
+-   It is only a fallback for `grid-kiss` declarations. The reason this fallback works is because of the constraints designed by purpose for grid-kiss layouts. Other Grid Layout properties such as `grid-gap` are not covered by this fallback.
+-   New dimensions properties defined in the Grid layout specification such as `min-content`, `max-content`, `minmax()`, `fit-content` also are not supported
+-   Zones with `position: absolute` are out of the flow. This implies that the container will no longer resize based on the zones content. Grid-kiss tries to calculate the total size of the grid when possible. If one of the rows/columns dimensions is `auto` or a fraction of the remaining space (`fr`), the height/width is set to `100%`.
+-   Grid-kiss adds the property `box-sizing: border-box` to each zone so that they don't overlap because of their padding or border size. If you don't already use this property, it may change a bit the zones dimensions.
+-   The CSS output is significally bigger, between 2x and 3x in size depending on the targeted browsers
 
 Internet Explorer does not support `@supports` 🙄 , so Grid-kiss needs to add another media query hack that is known to run only on IE: `@media screen and (min-width:0\0)`. This extends support from **IE9 to IE11** at the cost of a bigger output size. If you don't care about Internet Explorer support and want to reduce the output size, you should omit IE in your [browserslist][browserslist].
 
@@ -160,8 +160,9 @@ By default, Grid-kiss is looking in your [browserslist][browserslist] config for
 ## Options
 
 Grid-kiss comes with a few options:
+
 ```javascript
-postcss([ gridkiss({ ...options }) ])
+postcss([gridkiss({ ...options })]);
 ```
 
 ### `fallback` : add fallback for browsers not supporting CSS Grid Layout
@@ -171,102 +172,117 @@ postcss([ gridkiss({ ...options }) ])
 If this option is provided, it overrides automatic detection and tells explicitely whether to add or not the fallback styles to the output.
 
 ```javascript
-postcss([ gridkiss({ fallback: true }) ]) // always add all fallbacks
-postcss([ gridkiss({ fallback: false }) ]) // never add any fallback
+postcss([gridkiss({ fallback: true })]); // always add all fallbacks
+postcss([gridkiss({ fallback: false })]); // never add any fallback
 ```
 
 ### `optimize` - reduce output size
 
-This option *(enabled by default)* reduces the size of the output while keeping it readable. It does so by merging grid properties and renaming zone identifiers. For complete minification, use it with [cssnano](http://cssnano.co/).
+This option _(enabled by default)_ reduces the size of the output while keeping it readable. It does so by merging grid properties and renaming zone identifiers. For complete minification, use it with [cssnano](http://cssnano.co/).
 
 Set this option to `false` if you prefer a more verbose and descriptive output. Try to toggle the option in the [playground][playground] to compare the outputs.
 
 ```javascript
-postcss([ gridkiss({ optimize: false }) ])
+postcss([gridkiss({ optimize: false })]);
 ```
 
 ### `selectorParser` - apply custom transforms to zone selectors
 
 This option receives a function that is applied on the selectors you wrote in the zones. This is useful to add your own transforms or selector syntax, for example to use component names in a component-based framework like Vue or React.
+
 ```javascript
 postcss([
-  gridkiss({
-    selectorParser: function (selector) {
-      if (/[A-Z]/.test(selector[0])) {
-        return `[data-component-name='${selector}']`
-      }
-      return selector
-    }
-  })
-])
- ```
+	gridkiss({
+		selectorParser: function (selector) {
+			if (/[A-Z]/.test(selector[0])) {
+				return `[data-component-name='${selector}']`;
+			}
+			return selector;
+		},
+	}),
+]);
+```
+
+## `dimensionParser` - apply custom transforms to zone dimensions
+
+This option receives a function that is applied on every zone dimension input which syntax is not already recognized by grid-kiss (see [Values accepted for dimensions](#values-accepted-for-dimensions)). This is useful to add your own transforms or custom syntax, for example to use in combination with other PostCSS plugins for static variables or functions in CSS.
+
+```javascript
+postcss([
+	gridkiss({
+		dimensionParser: function (dimension) {
+			// v(my-cool-length) → var(--my-cool-length)
+			const CUSTOM_VAR_SYNTAX = /v\(([^\)]+)\)/;
+			const varMatch = dimension.match(CUSTOM_VAR_SYNTAX);
+			if (varMatch != null) {
+				return `var(--${varMatch[1]})`;
+			} else {
+				return null; // unrecognized syntax, will default to auto
+			}
+		},
+	}),
+]);
+```
 
 ## Alternative styles
 
 These alternative styles for zone syntax are also supported :
 
- - `┌ ┐ └ ┘` for corners and `│ ─` for segments
+-   `┌ ┐ └ ┘` for corners and `│ ─` for segments
 
- ```css
- div {
- 	grid-kiss:
- 	"┌──────┐  ┌──────┐         "
- 	"│      │  │  ↑   │         "
- 	"│      │  │ bar →│  200px  "
- 	"│  ↓   │  └──────┘         "
- 	"│ baz  │              -    "
- 	"│  ↑   │  ┌──────┐         "
- 	"│      │  │  ↑   │  200px  "
- 	"└──────┘  │      │         "
- 	"          │ foo  │    -    "
- 	"┌──────┐  │      │         "
- 	"│ qux  │  │  ↓   │  200px  "
- 	"│  ↓   │  │      │         "
- 	"└─20em─┘  └──────┘         "
- }
- ```
+```css
+div {
+	grid-kiss: "┌──────┐  ┌──────┐         " "│      │  │  ↑   │         "
+		"│      │  │ bar →│  200px  " "│  ↓   │  └──────┘         "
+		"│ baz  │              -    " "│  ↑   │  ┌──────┐         "
+		"│      │  │  ↑   │  200px  " "└──────┘  │      │         "
+		"          │ foo  │    -    " "┌──────┐  │      │         "
+		"│ qux  │  │  ↓   │  200px  " "│  ↓   │  │      │         "
+		"└─20em─┘  └──────┘         ";
+}
+```
 
- - `╔ ╗ ╚ ╝` for corners and `║ ═` for segments
+-   `╔ ╗ ╚ ╝` for corners and `║ ═` for segments
 
- ```css
- main {
- 	grid-kiss:
- 	"╔═══════╗  ╔════════════════╗      "
- 	"║       ║  ║    .article    ║ auto "
- 	"║   ↑   ║  ╚════════════════╝      "
- 	"║  nav  ║  ╔════╗  ╔════════╗      "
- 	"║       ║  ║    ║  ║ aside →║ 240px"
- 	"╚═ 25% ═╝  ╚════╝  ╚═ 80em ═╝      "
- }
- ```
+```css
+main {
+	grid-kiss: "╔═══════╗  ╔════════════════╗      "
+		"║       ║  ║    .article    ║ auto "
+		"║   ↑   ║  ╚════════════════╝      "
+		"║  nav  ║  ╔════╗  ╔════════╗      "
+		"║       ║  ║    ║  ║ aside →║ 240px"
+		"╚═ 25% ═╝  ╚════╝  ╚═ 80em ═╝      ";
+}
+```
 
 ## Documentation
 
 ### How to draw a grid
 
-- Draw the different zones of your grid as shown in the example. You can use some tools like [AsciiFlow](http://asciiflow.com/).
-- Inside every zone, write a selector that matches the corresponding element. See [Values accepted for selectors](#values-accepted-for-selectors)
-- The elements matched have to be **direct descendants** of the grid element
-- Separate each row by a newline (`\n`) and give the same indentation level to every row
-- Make sure each row starts and end by a double quote `"`
-- Make sure the zone corners (`+`) are correctly aligned. Every index in the rows where a corner character is found creates a new column.
-- Do not hesitate to make large zones with unused space, it may be useful for future modifications
-- Use Insert. key and Multi-cursor if supported by your editor to draw and edit your grids easily
+-   Draw the different zones of your grid as shown in the example. You can use some tools like [AsciiFlow](http://asciiflow.com/).
+-   Inside every zone, write a selector that matches the corresponding element. See [Values accepted for selectors](#values-accepted-for-selectors)
+-   The elements matched have to be **direct descendants** of the grid element
+-   Separate each row by a newline (`\n`) and give the same indentation level to every row
+-   Make sure each row starts and end by a double quote `"`
+-   Make sure the zone corners (`+`) are correctly aligned. Every index in the rows where a corner character is found creates a new column.
+-   Do not hesitate to make large zones with unused space, it may be useful for future modifications
+-   Use Insert. key and Multi-cursor if supported by your editor to draw and edit your grids easily
 
 ### Values accepted for selectors
 
 Inside each zone, you can write a selector to associate a zone to a DOM element. It can be a `tag` name, a `.class`, an `#id`, or `any.other[valid]#selector`.
 
-Since 1.2.0, selectors in zones may use some shortened notations specific to grid-kiss, although using a class is still the recommended method.
+Since v1.2.0, selectors in zones may use some shortened notations specific to grid-kiss, although using a class is still the recommended method.
 
-- `:1` ⇒ `*:nth-child(1)`
-- `button:2` ⇒ `button:nth-of-type(2)`
+-   `:1` ⇒ `*:nth-child(1)`
+-   `button:2` ⇒ `button:nth-of-type(2)`
 
-Since 1.4.0, you can also apply custom transforms and make your own syntax with the `selectorParser` [option](#options)
+Since v1.4.0, you can also apply custom transforms and make your own syntax with the `selectorParser` [option](#options)
 
 ### Dimensions of rows
 
 Declare the size of a row by writing the dimension **just after the last column of the grid**
+
 ```
 +------+  +------+ ---
 |  ^   |  | .bar | 40em
@@ -309,7 +325,7 @@ The `|` separators between dimensions are not mandatory, they are only here to m
 
 ### Dimensions of gaps
 
-You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called *gaps* and act like empty zones. The example below defines gaps of *50px*.
+You can also declare the dimension of spacing between zones the same way you do with rows and columns. These spaces are called _gaps_ and act like empty zones. The example below defines gaps of _50px_.
 
 ```
 +-----+      +-----+      +-----+  ----
@@ -330,47 +346,56 @@ You can also declare the dimension of spacing between zones the same way you do 
 
 Dimensions can be any of the specified values:
 
-- a non-negative length.
-  - `15px`
-  - `4rem`
+-   a non-negative length.
 
-- a non-negative percentage value, optionally with a context keyword
-  - `20%`
-  - `25% free` ⇒ `25fr`
-  - `30% grid` ⇒ `30%`
-  - `5% view` ⇒ `5vw` or `5vh` depending on the direction
+    -   `15px`
+    -   `4rem`
 
-- a non-negative number representing a fraction of the free space in the grid container.
-  - `5` ⇒ `5fr`
+-   a non-negative percentage value, optionally with a context keyword
 
-- `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
+    -   `20%`
+    -   `25% free` ⇒ `25fr`
+    -   `30% grid` ⇒ `30%`
+    -   `5% view` ⇒ `5vw` or `5vh` depending on the direction
 
-- `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
+-   a non-negative number representing a fraction of the free space in the grid container.
 
-- a range between a minimum and a maximum or `minmax(min, max)`
-  - `100px - 200px` ⇒ `minmax(100px, 200px)`
+    -   `5` ⇒ `5fr`
 
-- `> *length*` or `< *length*`: a minimum or maximum value
-  - `> 100px` ⇒ `minmax(100px, auto)`
-  - `< 50%` ⇒ `minmax(auto, 50%)`
+-   `max` or `max-content`: a keyword representing the largest maximal content contribution of the grid items occupying the grid track
 
-- `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, *length*)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument *length* if it is greater than the auto minimum.
-  - `fit 100px` ⇒ `fit-content(100px)`
+-   `min` or `min-content`: a keyword representing the largest minimal content contribution of the grid items occupying the grid track
 
-- `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function
+-   a range between a minimum and a maximum or `minmax(min, max)`
 
-- `var(--name)` : a [CSS variable](https://developer.mozilla.org/en-US/docs/Web/CSS/var) interpolation
+    -   `100px - 200px` ⇒ `minmax(100px, 200px)`
 
-- `auto`:  a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value,  it it is equal to `min-content`.
+-   `> *length*` or `< *length*`: a minimum or maximum value
 
-When no value is specified, row and column sizes are set as `auto`
+    -   `> 100px` ⇒ `minmax(100px, auto)`
+    -   `< 50%` ⇒ `minmax(auto, 50%)`
+
+-   `fit *length*` or `fit-content(*length*)`: a keyword representing the formula min(max-content, max(auto, _length_)), which is calculated similar to auto (i.e. minmax(auto, max-content)), except that the track size is clamped at argument _length_ if it is greater than the auto minimum.
+
+    -   `fit 100px` ⇒ `fit-content(100px)`
+
+-   `calc( expr )` : an expression using native [calc()](https://developer.mozilla.org/en-US/docs/Web/CSS/calc) CSS function
+
+-   `var(--name)` : a [CSS variable](https://developer.mozilla.org/en-US/docs/Web/CSS/var) interpolation
+
+-   `auto`: a keyword representing one part of the remaining free space, i.e. `1fr`. When used as a maximum value, it is equal to `max-content`. When used as a minimum value, it it is equal to `min-content`.
+
+When no value is specified, row and column sizes are set as `auto`.
+
+Since v2.5.0, you can also apply custom transforms and make your own syntax with the `dimensionParser` [option](#options)
 
 ### Horizontal alignment of the grid
 
 Specifies how all the zones are aligned horizontally inside the grid container. Irrelevant if one of the zones fits all the remaining free space.
 
-- `justify-content: stretch`
-when there are no two consecutive spaces at the beginning or the end of the rows
+-   `justify-content: stretch`
+    when there are no two consecutive spaces at the beginning or the end of the rows
+
 ```
 "+---+ +---+ +---+"
 "| a | | b | | c |"
@@ -385,8 +410,9 @@ when there are no two consecutive spaces at the beginning or the end of the rows
 
 ![grid-justify-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096183/4211e616-f617-11e6-9819-701ef3958093.png)
 
-- `justify-content: start`
-when there are two consecutive spaces or more at the end of the rows
+-   `justify-content: start`
+    when there are two consecutive spaces or more at the end of the rows
+
 ```
 "+---+ +---+ +---+    "
 "| a | | b | | c |    "
@@ -399,12 +425,12 @@ when there are two consecutive spaces or more at the end of the rows
 "+---+ +---+ +---+    "
 ```
 
-
 ![grid-justify-content-start](https://cloud.githubusercontent.com/assets/566536/23096182/4203ebd8-f617-11e6-8972-1ee145bb8359.png)
 
-- `justify-content: end`
+-   `justify-content: end`
 
 when there are two consecutive spaces or more at the beginning of the rows
+
 ```
 "    +---+ +---+ +---+"
 "    | a | | b | | c |"
@@ -416,10 +442,12 @@ when there are two consecutive spaces or more at the beginning of the rows
 "    | g | | h | | i |"
 "    +---+ +---+ +---+"
 ```
+
 ![grid-justify-content-end](https://cloud.githubusercontent.com/assets/566536/23096179/41fefe70-f617-11e6-9340-c53943440a44.png)
 
-- `justify-content: center`
-when there are two consecutive spaces or more at the beginning and the end of the rows
+-   `justify-content: center`
+    when there are two consecutive spaces or more at the beginning and the end of the rows
+
 ```
 "    +---+ +---+ +---+    "
 "    | a | | b | | c |    "
@@ -434,8 +462,9 @@ when there are two consecutive spaces or more at the beginning and the end of th
 
 ![grid-justify-content-center](https://cloud.githubusercontent.com/assets/566536/23096177/41fe1078-f617-11e6-94b3-446296152dfc.png)
 
-- `justify-content: space-between`
-when there are two consecutive spaces or more between zones
+-   `justify-content: space-between`
+    when there are two consecutive spaces or more between zones
+
 ```
 "+---+    +---+    +---+"
 "| a |    | b |    | c |"
@@ -450,8 +479,9 @@ when there are two consecutive spaces or more between zones
 
 ![grid-justify-content-space-between](https://cloud.githubusercontent.com/assets/566536/23096180/41ffe254-f617-11e6-8caf-2a4cc2ca467b.png)
 
-- `justify-content: space-evenly`
-when there are two consecutive spaces or more at the beginning and the end of the rows, and exactly two consecutive spaces between zones
+-   `justify-content: space-evenly`
+    when there are two consecutive spaces or more at the beginning and the end of the rows, and exactly two consecutive spaces between zones
+
 ```
 "    +---+  +---+  +---+    "
 "    | a |  | b |  | c |    "
@@ -466,8 +496,9 @@ when there are two consecutive spaces or more at the beginning and the end of th
 
 ![grid-justify-content-space-evenly](https://cloud.githubusercontent.com/assets/566536/23096181/4201ba70-f617-11e6-8b9a-5f86ca80b423.png)
 
-- `justify-content: space-around`
-when there are two consecutive spaces or more at the beginning and the end of the rows, and four consecutive spaces or more between zones
+-   `justify-content: space-around`
+    when there are two consecutive spaces or more at the beginning and the end of the rows, and four consecutive spaces or more between zones
+
 ```
 "  +---+    +---+    +---+  "
 "  | a |    | b |    | c |  "
@@ -486,8 +517,9 @@ when there are two consecutive spaces or more at the beginning and the end of th
 
 Specifies how all the zones are aligned vertically inside the grid container. Irrelevant if one of the zones fits all the remaining free space.
 
-- `align content: stretch`
-when no space rows
+-   `align content: stretch`
+    when no space rows
+
 ```
 "+---+ +---+ +---+"
 "| a | | b | | c |"
@@ -502,8 +534,9 @@ when no space rows
 
 ![grid-align-content-stretch](https://cloud.githubusercontent.com/assets/566536/23096172/41e9bc04-f617-11e6-9de4-a0906fa68a7e.png)
 
--  `align-content: start`
-when at least one space row at the end
+-   `align-content: start`
+    when at least one space row at the end
+
 ```
 "+---+ +---+ +---+"
 "| a | | b | | c |"
@@ -520,8 +553,9 @@ when at least one space row at the end
 
 ![grid-align-content-start](https://cloud.githubusercontent.com/assets/566536/23096171/41e983f6-f617-11e6-8e8c-89425ca2c76c.png)
 
-- `align-content: end`
-when at least one space row at the beginning
+-   `align-content: end`
+    when at least one space row at the beginning
+
 ```
 "                 "
 "                 "
@@ -538,8 +572,8 @@ when at least one space row at the beginning
 
 ![grid-align-content-end](https://cloud.githubusercontent.com/assets/566536/23096167/41d703e8-f617-11e6-928b-ef29645c132a.png)
 
-- `align-content: center`
-when at least one space row at the beginning and one space row at the end
+-   `align-content: center`
+    when at least one space row at the beginning and one space row at the end
 
 ```
 "                 "
@@ -557,8 +591,8 @@ when at least one space row at the beginning and one space row at the end
 
 ![grid-align-content-center](https://cloud.githubusercontent.com/assets/566536/23096166/41d67752-f617-11e6-96c7-61f8ba81f4a9.png)
 
-- `align-content: space-between`
-when there is one space row between zones
+-   `align-content: space-between`
+    when there is one space row between zones
 
 ```
 "+---+ +---+ +---+"
@@ -576,8 +610,8 @@ when there is one space row between zones
 
 ![grid-align-content-space-between](https://cloud.githubusercontent.com/assets/566536/23096168/41d7ea74-f617-11e6-861a-963f87debf74.png)
 
-- `align-content: space-evenly`
-when there is one space row at the beginning, at the end and between zones
+-   `align-content: space-evenly`
+    when there is one space row at the beginning, at the end and between zones
 
 ```
 "                 "
@@ -597,8 +631,8 @@ when there is one space row at the beginning, at the end and between zones
 
 ![grid-align-content-space-evenly](https://cloud.githubusercontent.com/assets/566536/23096169/41d855cc-f617-11e6-883d-712654b4d4b8.png)
 
-- `align-content: space-around`
-when there is one space row at the beginning and at the end, and two space rows between zones
+-   `align-content: space-around`
+    when there is one space row at the beginning and at the end, and two space rows between zones
 
 ```
 "                 "
@@ -624,60 +658,72 @@ when there is one space row at the beginning and at the end, and two space rows 
 
 Each zone can specify an alignment indicator. When no indicators are specified, defaults are stretch horizontally and vertically.
 
+-   `justify-self: start` with `<` or `←`
 
-- `justify-self: start` with `<` or `←`
 ```
 +-------------+    +-------------+
 | .item-a  <  | or | .item-a  ←  |
 +-------------+    +-------------+
 ```
+
 ![grid-justify-self-start](https://cloud.githubusercontent.com/assets/566536/23096186/4213332c-f617-11e6-9fb1-13e46b932364.png)
 
-- `justify-self: end` with `>` or `→`
+-   `justify-self: end` with `>` or `→`
+
 ```
 +-------------+    +-------------+
 |  >  .item-a | or |  →  .item-a |
 +-------------+    +-------------+
 ```
+
 ![grid-justify-self-end](https://cloud.githubusercontent.com/assets/566536/23096185/42121c8a-f617-11e6-830d-2be797b6c71a.png)
 
-- `justify-self: stretch` with `<` and `>` or `←` and `→` in this order
+-   `justify-self: stretch` with `<` and `>` or `←` and `→` in this order
+
 ```
 +--------------+    +--------------+
 | < .item-a  > | or | ← .item-a  → |
 +--------------+    +--------------+
 ```
+
 ![grid-justify-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096188/42182026-f617-11e6-9ee0-8f43f2065562.png)
 
-- `justify-self: center` with `>` and `<` or `→` and `←` in this order
+-   `justify-self: center` with `>` and `<` or `→` and `←` in this order
+
 ```
 +--------------+    +--------------+
 | > .item-a  < | or | → .item-a  ← |
 +--------------+    +--------------+
 ```
+
 ![grid-justify-self-center](https://cloud.githubusercontent.com/assets/566536/23096184/4211f75a-f617-11e6-9f7c-0e2a5dc959e7.png)
 
 ### Vertical alignment inside a zone
 
-- `align-self: start` with `^` or `↑`
+-   `align-self: start` with `^` or `↑`
+
 ```
 +-------------+    +-------------+
 |   .item-a   | or |   .item-a   |
 |      ^      |    |      ↑      |
 +-------------+    +-------------+
 ```
+
 ![grid-align-self-start](https://cloud.githubusercontent.com/assets/566536/23096175/41ecd68c-f617-11e6-91bb-37789cd16c32.png)
 
-- `align-self: end` with ` v ` or `↓`
+-   `align-self: end` with `v` or `↓`
+
 ```
 +-------------+    +-------------+
 |      v      | or |      ↓      |
 |   .item-a   |    |   .item-a   |
 +-------------+    +-------------+
 ```
+
 ![grid-align-self-end](https://cloud.githubusercontent.com/assets/566536/23096174/41ebf460-f617-11e6-9f6a-70c7ea8e4c1f.png)
 
-- `align-self: stretch` with `^` and ` v ` or `↑` and `↓` in this order
+-   `align-self: stretch` with `^` and `v` or `↑` and `↓` in this order
+
 ```
 +-------------+    +-------------+
 |      ^      |    |      ↑      |
@@ -685,9 +731,11 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      v      |    |      ↓      |
 +-------------+    +-------------+
 ```
+
 ![grid-align-self-stretch](https://cloud.githubusercontent.com/assets/566536/23096176/41f05fa0-f617-11e6-8841-f353256e0b3a.png)
 
-- `align-self: center` with ` v ` and `^` or `↓` and `↑` in this order
+-   `align-self: center` with `v` and `^` or `↓` and `↑` in this order
+
 ```
 +-------------+    +-------------+
 |      v      |    |      ↓      |
@@ -695,6 +743,7 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 |      ^      |    |      ↑      |
 +-------------+    +-------------+
 ```
+
 ![grid-align-self-center](https://cloud.githubusercontent.com/assets/566536/23096173/41eaf966-f617-11e6-91c1-251888ee903b.png)
 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
@@ -707,9 +756,9 @@ New lines and position of alignement characters do not matter. Just make it visu
 
 Credits for images : [CSS Tricks](https://css-tricks.com/snippets/css/complete-guide-grid/), [@aneveux](https://github.com/aneveux/)
 
-[playground]:https://sylvainpolletvillard.github.io/grid-kiss-playground/index.html
-[codepen]:http://codepen.io/sylvainpv/pen/oBxKWg
-[postcss-website]:http://postcss.org/
-[w3c-spec]:https://www.w3.org/TR/css-grid-1/
-[can-i-use]:http://caniuse.com/#feat=css-grid
-[browserslist]:https://github.com/ai/browserslist
+[playground]: https://sylvainpolletvillard.github.io/grid-kiss-playground/index.html
+[codepen]: http://codepen.io/sylvainpv/pen/oBxKWg
+[postcss-website]: http://postcss.org/
+[w3c-spec]: https://www.w3.org/TR/css-grid-1/
+[can-i-use]: http://caniuse.com/#feat=css-grid
+[browserslist]: https://github.com/ai/browserslist
