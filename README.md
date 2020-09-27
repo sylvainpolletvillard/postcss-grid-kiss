@@ -104,7 +104,7 @@ Use different `grid-kiss` declarations in media queries to easily get responsive
 -   with [npm](https://www.npmjs.com/)
 
 ```bash
-npm install postcss-grid-kiss --save-dev
+npm install --save-dev postcss postcss-grid-kiss
 ```
 
 -   with [yarn](https://yarnpkg.com/)

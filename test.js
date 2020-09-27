@@ -1,5 +1,5 @@
 const postcss = require('postcss'),
-	gridkiss = require('./lib/index'),
+	gridkiss = require('./lib/main'),
 	test = require('ava');
 
 const { remaining, sum } = require("./lib/calc-utils");
@@ -51,17 +51,17 @@ test("parsing dimensions", t => {
 	t.is(parseDimension("min"), "min-content")
 	t.is(parseDimension("max"), "max-content")
 	t.is(parseDimension("var(--test)"), "var(--test)")
-	t.is(parseDimension("$customVar", "vertical", { 
+	t.is(parseDimension("$customVar", "vertical", {
 		dimensionParser(dim) {
-			if(/\$[\w-]+/.test(dim)) return dim // custom var syntax, leave untouched for next pcss plugin in the chain
+			if (/\$[\w-]+/.test(dim)) return dim // custom var syntax, leave untouched for next pcss plugin in the chain
 			return null; // unrecognized syntax
 		}
 	}), "$customVar");
-	t.is(parseDimension("v(my-cool-length)", "horizontal", { 
+	t.is(parseDimension("v(my-cool-length)", "horizontal", {
 		dimensionParser(dim) {
 			const CUSTOM_VAR_SYNTAX = /v\(([^\)]+)\)/
 			const varMatch = dim.match(CUSTOM_VAR_SYNTAX)
-			if(varMatch != null){
+			if (varMatch != null) {
 				return `var(--${varMatch[1]})`
 			}
 			return null; // unrecognized syntax
