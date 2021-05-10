@@ -1,6 +1,6 @@
 {
 	"name": "postcss-grid-kiss",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "A PostCSS plugin to keep CSS grids stupidly simple",
 	"main": "lib/main.js",
 	"author": "Sylvain Pollet-Villard",
@@ -23,17 +23,17 @@
 		"node": ">=6.0.0"
 	},
 	"dependencies": {
-		"browserslist": "^4.14.2",
-		"caniuse-lite": "^1.0.30001125",
-		"postcss-merge-grid-template": "^0.8.0",
-		"reduce-css-calc": "^2.1.7"
+		"browserslist": "^4.16.6",
+		"caniuse-lite": "^1.0.30001228",
+		"postcss-merge-grid-template": "^0.8.1",
+		"reduce-css-calc": "^2.1.8"
 	},
 	"devDependencies": {
-		"ava": "^3.12.1",
-		"eslint": "^7.8.1",
-		"postcss": "^8.1.0"
+		"ava": "^3.15.0",
+		"eslint": "^7.26.0",
+		"postcss": "^8.2.14"
 	},
 	"peerDependencies": {
-		"postcss": "^8.1.0"
+		"postcss": "^8.2.14"
 	}
 }
