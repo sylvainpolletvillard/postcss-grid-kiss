@@ -880,3 +880,22 @@ test("css vars", async t => {
 	t.is(output["div"]["grid-template-rows"], `var(--fooh) 1fr`)
 	t.is(output["div"]["grid-template-columns"], `var(--barw) var(--quxw)`)
 })
+
+test("minimization", async t => {
+	let unminimized = await process(
+		`div {
+		grid-kiss:
+		   "+--------------------------+ --   "
+		   "| header                   | 48px "
+		   "+--------------------------+ --   "
+		   "+--------+ +---------------+ --   "
+		   "| aside  | | main          | auto "
+		   "+--------+ +---------------+ --   "
+		   "| 48px   | | auto          |      ";
+}`, { fallback:false })
+	let minimized = await process(
+		`div {
+			grid-kiss: "+--------------------------+ --   " "| header                   | 48px " "+--------------------------+ --   " "+--------+ +---------------+ --   " "| aside  | | main          | auto " "+--------+ +---------------+ --   " "| 48px   | | auto          |      ";
+	}`, { fallback:false })
+	t.deepEqual(unminimized, minimized)
+})
