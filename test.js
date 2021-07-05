@@ -59,7 +59,7 @@ test("parsing dimensions", t => {
 	}), "$customVar");
 	t.is(parseDimension("v(my-cool-length)", "horizontal", {
 		dimensionParser(dim) {
-			const CUSTOM_VAR_SYNTAX = /v\(([^\)]+)\)/
+			const CUSTOM_VAR_SYNTAX = /v\(([^)]+)\)/
 			const varMatch = dim.match(CUSTOM_VAR_SYNTAX)
 			if (varMatch != null) {
 				return `var(--${varMatch[1]})`
@@ -849,14 +849,14 @@ test("advanced selectors", async t => {
 		   "+-------+"
 		   "| Hello |"
 		   "+-------+"
-	}`, {
-		selectorParser: function (selector) {
-			if (/[A-Z]/.test(selector[0])) {
-				return `[data-component-name='${selector}']`
+		}`, {
+			selectorParser: function(selector) {
+				if (/[A-Z]/.test(selector[0])) {
+					return `[data-component-name='${selector}']`
+				} else return selector
 			}
-			else return selector
 		}
-	});
+	);
 
 	t.is("div > *:nth-child(1)" in output, true)
 	t.is("div > p:nth-of-type(2)" in output, true)
@@ -879,4 +879,12 @@ test("css vars", async t => {
 
 	t.is(output["div"]["grid-template-rows"], `var(--fooh) 1fr`)
 	t.is(output["div"]["grid-template-columns"], `var(--barw) var(--quxw)`)
+})
+
+test("should be able to parse inline grid declarations", async t => {
+	let output = await process(`div { grid-kiss: "+--------------------------+ --   " "| header                   | 48px " "+--------------------------+ --   " "+--------+ +---------------+ --   " "| aside  | | main          | auto " "+--------+ +---------------+ --   " "| 48px   | | auto          |      " ; }`);
+	t.is("div > header" in output, true)
+	t.is("div > aside" in output, true)
+	t.is("div > main" in output, true)
+	t.is(output["div"]["grid-template"], `"a a" 48px "b c " 1fr / 48px 1fr`)
 })
