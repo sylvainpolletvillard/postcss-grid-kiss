@@ -730,6 +730,10 @@ Each zone can specify an alignment indicator. When no indicators are specified, 
 
 New lines and position of alignement characters do not matter. Just make it visually understandable.
 
+### Usage with Prettier formatter
+
+People using [Prettier](https://prettier.io) code formatter may have issues with the automatic formating of `grid-kiss` declarations. In that case, write `grid-template-kiss` instead of `grid-kiss`. For some reason, Prettier correctly formats the declarations starting with `grid-template-***`.
+
 ---
 
 ![Sketchnote](https://user-images.githubusercontent.com/566536/52332976-553bf180-29fc-11e9-9578-8365ae7eee1b.jpg)

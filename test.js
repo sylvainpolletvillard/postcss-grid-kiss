@@ -850,12 +850,12 @@ test("advanced selectors", async t => {
 		   "| Hello |"
 		   "+-------+"
 		}`, {
-			selectorParser: function(selector) {
-				if (/[A-Z]/.test(selector[0])) {
-					return `[data-component-name='${selector}']`
-				} else return selector
-			}
+		selectorParser: function (selector) {
+			if (/[A-Z]/.test(selector[0])) {
+				return `[data-component-name='${selector}']`
+			} else return selector
 		}
+	}
 	);
 
 	t.is("div > *:nth-child(1)" in output, true)
@@ -887,4 +887,19 @@ test("should be able to parse inline grid declarations", async t => {
 	t.is("div > aside" in output, true)
 	t.is("div > main" in output, true)
 	t.is(output["div"]["grid-template"], `"a a" 48px "b c " 1fr / 48px 1fr`)
+})
+
+test("alternative property name", async t => {
+	let output = await process(
+		`div {
+	grid-template-kiss:
+	   "+-------------+ +--------------+"
+	   "|     foo     | |     baz      |"
+	   "+-------------+ +--------------+"
+	   "+-------------+ +--------------+"
+	   "|     bar     | |     qux      |"
+	   "+-------------+ +--------------+"
+}`, { optimize: false })
+
+	t.is(output["div"]["grid-template-areas"], `\n\t"foo baz"\n\t"bar qux"`)
 })
